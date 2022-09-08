@@ -1,0 +1,25 @@
+{
+  "name": "form-builder",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.1",
+    "bootstrap-vue": "^2.22.0",
+    "vue": "^2.7.10",
+    "vue-axios": "^3.4.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^2.0.0",
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "eslint": "^8.5.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "terser": "^5.14.2",
+    "vite": "^3.0.2"
+  }
+}
