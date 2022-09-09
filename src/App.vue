@@ -5,9 +5,22 @@
       <div class="form-row" >
         <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
           <div class="col">
-            <div class="p-3 border-dotted bg-light rounded" v-for="(row, index) in rows" :key="index"> <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+            <div id="filas-creadas" v-for="(row, index) in rows" :key="index">
+              <form>
+                <div class="form-group col-md-4">
+                  <input type="text" class="form-control" placeholder="Nombre Fila">
+                </div>
+              </form>
+              <br>
+              <div class="p-3 border-solid bg-light rounded container" v-bind="row.fila">
+                <p>Secciones...</p>
+                <br>
+              </div>
+              <hr>
+            </div>
+            <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
               <div class="container text-center">
-                <button type="button" v-bind="row.fila" class="btn btn-primary btn-circle btn-xl" @click="addRow">
+                <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow">
                   <h1 class="h1-button">+</h1>
                 </button>
                 <p>Añadir Fila</p>
@@ -27,9 +40,7 @@ export default {
   
   data: () => ({
     rows: [
-      {
-        fila: ''
-      }
+      
     ]
   }),
 
