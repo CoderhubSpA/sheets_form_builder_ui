@@ -1,49 +1,76 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <div id="app">
-    <header>
-      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
+  <div id="app" class="container">
+    <form>
+      <h1>Nombre Formulario</h1>
+      <div class="form-row" >
+        <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+          <div class="col">
+            <div class="p-3 border-dotted bg-light rounded" v-for="(row, index) in rows" :key="index"> <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+              <div class="container text-center">
+                <button type="button" v-bind="row.fila" class="btn btn-primary btn-circle btn-xl" @click="addRow">
+                  <h1 class="h1-button">+</h1>
+                </button>
+                <p>Añadir Fila</p>
+              </div>
+            </div>
+            <div class="p-3 border">
+              <p>Añadir Fila</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </header>
-
-    <main>
-      <TheWelcome />
-    </main>
+    </form>
   </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+
+export default {
+  name: "App",
+  
+  data: () => ({
+    rows: [
+      {
+        fila: ''
+      }
+    ]
+  }),
+
+  methods: {
+    addRow () {
+      this.rows.push({
+        fila: ''
+      })
+    },
+    changeRow (){
+
+    }
+  }
+};
+</script>
+
+<style>
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 12px;
+  text-align: center;
+  background: #008A94;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #008A94 !important;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.h1-button {
+  color: black;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.border-dotted{
+ border-style: dotted;
+ border-color: #BDBBBB;
 }
 </style>
