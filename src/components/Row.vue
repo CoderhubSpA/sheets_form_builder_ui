@@ -4,6 +4,8 @@
         <div class="form-row" >
           <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
             <div class="col">
+              <draggable v-model="rows">
+                <transition-group>
               <div v-for="(row, index) in rows" :key="index">
                 <form>
                   <div class="form-group col-md-4">
@@ -11,16 +13,18 @@
                   </div>
                 </form>
                 <br>
-                <div class="p-3 border-solid bg-light rounded container" v-bind="row.fila">
+                <div class="p-3 border-solid bg-light rounded container" v-bind="row">
                   <Section/>
                   <br>
                 </div>
                 <hr>
               </div>
+            </transition-group>
+            </draggable>
               <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
                 <div class="container text-center">
                   <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow">
-                    <h1 class="h1-button">+</h1>
+                    <v-icon name="plus" scale="2"/>
                   </button>
                   <p>Añadir Fila</p>
                 </div>
@@ -33,27 +37,42 @@
   </template>
   
   <script>
-  
+    import draggable from 'vuedraggable'
   import Section from './Section.vue';
+
   export default {
     name: "Row",
-    
+    components: {
+      Section,
+      draggable,
+        },
+    props:{
+      idForm:{
+        type:String,
+        required:false //por ahora es false, pero la idea es que una row sepa a que formulario pertenece
+      }
+    },
+
     data: () => ({
       rows: [
         
       ]
     }),
 
-    components: { Section },
-  
+
     methods: {
       addRow () {
         this.rows.push({
-          fila: ''
+          row: this.newRow()
         })
       },
       changeRow (){
   
+      },
+      newRow(){
+        return {
+          name:"",
+        }
       }
     }
   };
