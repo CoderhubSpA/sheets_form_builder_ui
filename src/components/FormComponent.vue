@@ -25,7 +25,7 @@ export default {
         Row },
     data(){
         return {
-            name:"",
+            name:"Nombre formulario",
             editingName: false,
         }
     }
