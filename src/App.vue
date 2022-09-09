@@ -1,15 +1,16 @@
 <template>
   <div id="app" class="container">
-    <Row/>
+    <FormComponent/>
   </div>
 </template>
 
 <script>
 
-import Row from './components/Row.vue';
+// import Row from './components/Row.vue';
+import FormComponent from './components/FormComponent.vue'
 export default {
     name: "App",
-    components: { Row }
+    components: { FormComponent }
 }
 
 </script>

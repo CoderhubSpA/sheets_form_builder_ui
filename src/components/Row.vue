@@ -1,7 +1,6 @@
 <template>
     <div id="row" class="container">
       <form>
-        <h1>Nombre Formulario</h1>
         <div class="form-row" >
           <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
             <div class="col">
