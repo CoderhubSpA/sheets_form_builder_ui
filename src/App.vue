@@ -13,9 +13,6 @@
                 <p>Añadir Fila</p>
               </div>
             </div>
-            <div class="p-3 border">
-              <p>Añadir Fila</p>
-            </div>
           </div>
         </div>
       </div>
