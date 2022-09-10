@@ -4,7 +4,7 @@
       :menu_name="'Campos'"
       :menu_id="'panelsStayOpen-collapseOne'"
       :elements="[{name: 'Campo 1'}, {name: 'Campo 2'}]"
-      ></DropdownMenu>
+      :draggable_elements="true"></DropdownMenu>
     <DropdownMenu
       :menu_name="'Configuración'"
       :menu_id="'panelsStayOpen-collapseTwo'"
