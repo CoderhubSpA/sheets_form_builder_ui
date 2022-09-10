@@ -1,25 +1,22 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
+// import HelloWorld from './components/HelloWorld.vue'
+// import TheWelcome from './components/TheWelcome.vue'
+import ToolboxComponent from './components/Toolbox/ToolboxComponent.vue'
+
 </script>
 
 <template>
-  <div id="app">
-    <header>
-      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
-      </div>
-    </header>
-
-    <main>
-      <TheWelcome />
-    </main>
+  <div id="app" style="min-height: 600px;" class="d-flex flex-row">
+    <ToolboxComponent></ToolboxComponent>
+    <div style="width: 80%; margin: 10px; border-radius: 5px; border-color: darkgreen; border-width: 2px; border-style:solid;"></div>
   </div>
 </template>
 
 <style scoped>
+
 header {
   line-height: 1.5;
 }

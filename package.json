@@ -12,7 +12,9 @@
     "bootstrap": "^5.2.1",
     "bootstrap-vue": "^2.22.0",
     "vue": "^2.7.10",
-    "vue-axios": "^3.4.1"
+    "vue-awesome": "^4.5.0",
+    "vue-axios": "^3.4.1",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^2.0.0",
