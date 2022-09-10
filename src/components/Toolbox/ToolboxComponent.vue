@@ -10,6 +10,11 @@
       :menu_id="'panelsStayOpen-collapseTwo'"
       :elements="[{name: 'Nombre de campo', type: 'text-input'}, {name: 'required', type: 'checkbox'}, {name: 'Unknown', type: 'Unknown'}]"
     ></DropdownMenu>
+    <div style="height: 100px"><!-- <div style="position: relative; bottom: 0;"> -->
+      <b-button variant="primary" class="button-save-form" style="position: absolute; bottom: 10px; left: 50%; -transform: translate(-50%, -50%);">
+        Guardar Formulario
+      </b-button>
+    </div>
   </div>
 </template>
 
