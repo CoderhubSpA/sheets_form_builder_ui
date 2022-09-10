@@ -2,10 +2,13 @@
   <div class="panel accordion align-self-stretch" id="tool-box" style="position: relative">
     <DropdownMenu
       :menu_name="'Campos'"
-      :menu_id="'panelsStayOpen-collapseOne'"></DropdownMenu>
+      :menu_id="'panelsStayOpen-collapseOne'"
+      :elements="[{name: 'Campo 1'}, {name: 'Campo 2'}]"
+      ></DropdownMenu>
     <DropdownMenu
       :menu_name="'Configuración'"
       :menu_id="'panelsStayOpen-collapseTwo'"
+      :elements="[{name: 'Nombre de campo', type: 'text-input'}, {name: 'required', type: 'checkbox'}, {name: 'Unknown', type: 'Unknown'}]"
     ></DropdownMenu>
   </div>
 </template>
