@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Icon from "vue-awesome/components/Icon";
-import BootstrapVue from "bootstrap-vue";
+import Icon from 'vue-awesome/components/Icon'
+import BootstrapVue from 'bootstrap-vue'
 
 import "vue-awesome/icons";
 import 'bootstrap'
