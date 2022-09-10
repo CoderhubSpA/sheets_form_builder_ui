@@ -4,8 +4,10 @@
     <b-collapse visible :id="menu_id">
       <div v-if="true">
         <div class="card-deck" style="display:flex; justify-content: flex-start;" group="Campos1">
-          <Campo v-for="element in elements" :key="element.name" :text="element.name">
-          </Campo>
+          <draggable class="card-deck" style="display:flex; justify-content: flex-start;" group="Campos1">
+            <Campo v-for="element in elements" :key="element.name" :text="element.name">
+            </Campo>
+          </draggable>
         </div>
       </div>
       <div v-else>
@@ -22,12 +24,14 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 import Campo from './CampoComponent.vue';
 
 export default {
   name: 'DropdownMenu',
   components: {
     Campo,
+    draggable,
   },
   props: {
     menu_name: {
