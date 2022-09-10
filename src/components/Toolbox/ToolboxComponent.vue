@@ -1,5 +1,12 @@
 <template>
   <div class="panel accordion align-self-stretch" id="tool-box" style="position: relative">
+    <DropdownMenu
+      :menu_name="'Campos'"
+      :menu_id="'panelsStayOpen-collapseOne'"></DropdownMenu>
+    <DropdownMenu
+      :menu_name="'Configuración'"
+      :menu_id="'panelsStayOpen-collapseTwo'"
+    ></DropdownMenu>
   </div>
 </template>
 
@@ -7,8 +14,13 @@
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+import DropdownMenu from './DropdownMenu.vue';
+
 export default {
   name: 'ToolboxComponent',
+  components: {
+    DropdownMenu,
+  },
   data() {
     
   }
