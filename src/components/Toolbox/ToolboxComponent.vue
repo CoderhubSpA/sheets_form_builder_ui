@@ -1,5 +1,6 @@
 <template>
-  <div class="panel accordion align-self-stretch" id="tool-box" style="position: relative">
+<b-container class="flex-shrink-0 p-3" id="tool-box">
+  <ul class="list-unstyled ps-0">
     <DropdownMenu
       :menu_name="'Campos'"
       :menu_id="'panelsStayOpen-collapseOne'"
@@ -15,7 +16,9 @@
         Guardar Formulario
       </b-button>
     </div>
-  </div>
+  </ul>
+  
+</b-container>
 </template>
 
 <script>
