@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="min-height: 600px;" class="d-flex flex-row">
+  <div id="app" style="min-height: 600px; height: 100vh;" class="d-flex flex-row">
     <ToolboxComponent></ToolboxComponent>
     <FormComponent/>
   </div>

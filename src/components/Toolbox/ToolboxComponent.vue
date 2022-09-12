@@ -11,12 +11,10 @@
       :menu_id="'panelsStayOpen-collapseTwo'"
       :elements="[{name: 'Nombre de campo', type: 'text-input'}, {name: 'required', type: 'checkbox'}, {name: 'Unknown', type: 'Unknown'}]"
     ></DropdownMenu>
-    <div style="height: 100px"><!-- <div style="position: relative; bottom: 0;"> -->
-      <b-button variant="primary" class="button-save-form" style="position: absolute; bottom: 10px; left: 50%; -transform: translate(-50%, -50%);">
-        Guardar Formulario
-      </b-button>
-    </div>
   </ul>
+  <b-button variant="primary" class="button-save-form" style="position: relative; left: 50%; -transform: translate(-50%, 0%);">
+    Guardar Formulario
+  </b-button>
   
 </b-container>
 </template>
@@ -41,9 +39,6 @@ export default {
 
 <style>
 #tool-box {
-  max-width: 20%;
-  width: 20%;
-  min-width: fit-content;
 
   background-color: #DEE6F1;
   border-color: #008A94;
@@ -51,8 +46,18 @@ export default {
   border-radius: 5px;
   border-style: solid;
 
-  margin: 10px;
   padding: 10px;
+
+  width: 25%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  position:fixed;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
 }
 
 .button-save-form {
