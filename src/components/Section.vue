@@ -5,7 +5,7 @@
         <draggable >
           <transition-group>
 
-          <div v-for="(section, index) in sections" :key="index">
+          <div v-for="(section, index) in sections" :key="section" :id="`section-${index}`">
             <form>
               <div class="form-group col-md-4 flex">
                 <input type="text" class="form-control" placeholder="Nombre Sección">

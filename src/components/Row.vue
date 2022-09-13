@@ -6,7 +6,7 @@
           <div class="col">
             <draggable v-model="rows">
               <transition-group>
-            <div v-for="(row, index) in rows" :key="index">
+                <div v-for="(row, index) in rows" :key="row" :id="`row-${index}`">
                 <form>
                   <div class="form-group col-md-4 flex">
                     <input type="text" class="form-control" placeholder="Nombre Fila">
@@ -74,6 +74,7 @@ export default {
       }
     },
     deleteRow (idx) {
+      console.log(idx)
       this.rows.splice(idx,1)
     }
   }
