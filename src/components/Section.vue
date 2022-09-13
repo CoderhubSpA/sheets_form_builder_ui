@@ -9,7 +9,7 @@
             <form>
               <div class="form-group col-md-4 flex">
                 <input type="text" class="form-control" placeholder="Nombre Sección">
-                <button type="button" class="btn btn-danger btn-sm" @click="deleteSection(index)"> 
+                <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteSection(index)"> 
                   x
                 </button>
               </div>
@@ -100,5 +100,10 @@ export default {
   display: flex;
   justify-content: space-between;
   text-align: right;
+}
+
+.close-rounded{
+  width: 2rem; 
+  height:2rem;
 }
 </style>
