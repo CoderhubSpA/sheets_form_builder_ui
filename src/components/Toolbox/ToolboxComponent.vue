@@ -28,7 +28,7 @@ export default {
     config,
   },
   data() {
-    
+
   }
 }
 
@@ -39,7 +39,7 @@ export default {
   max-width: 20%;
   width: 20%;
   min-width: fit-content;
-
+  
   background-color: #DEE6F1;
   border-color: #008A94;
   border-width: 2px;

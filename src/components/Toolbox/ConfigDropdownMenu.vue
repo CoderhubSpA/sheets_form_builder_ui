@@ -15,16 +15,16 @@
               :type="element.type"
               :placeholder="'Ingresa '+element.name">
             </b-form-input>
-            <multiselect v-else-if="element.type=='acciones'" 
+            <div v-else-if="element.type=='acciones'" >
+              <multiselect 
               :type="element.type"
               v-model="$store.state.acciones_value" 
               :options="$store.state.acciones_options" 
               :multiple="true" :close-on-select="false" 
               :clear-on-select="false" :preserve-search="true" placeholder="Seleccione acciones" label="action" track-by="action">
-              <template slot="selection" slot-scope="{ values, search, isOpen }">
-                <span class="multiselect__single" v-if="$store.state.acciones_value.length &amp;&amp; !isOpen">{{ $store.state.acciones_value.length }} options selected</span>
-              </template>
             </multiselect>
+            </div>
+
             <b-list-group-item v-else>
               {{ element }}
             </b-list-group-item>
@@ -66,3 +66,6 @@ export default {
   },
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css">
+</style>

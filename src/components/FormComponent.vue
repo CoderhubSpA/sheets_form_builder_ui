@@ -31,7 +31,14 @@ export default {
             name:"Nombre formulario",
             editingName: false,
         }
-    }
+    },
+    methods: {
+    clickOnForm(){
+        console.log("click on form")
+        this.$store.dispatch("setConfig", [{name: 'Acciones', type: 'acciones'}]);
+        this.$store.dispatch("setFields", [])
+      },
+    },
 }
 </script>
 
