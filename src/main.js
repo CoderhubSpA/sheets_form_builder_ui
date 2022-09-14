@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import Icon from 'vue-awesome/components/Icon'
 import BootstrapVue from 'bootstrap-vue'
+import store from './assets/store'
 
 import "vue-awesome/icons";
 import 'bootstrap'
@@ -12,6 +13,7 @@ Vue.component("v-icon", Icon);
 Vue.use(BootstrapVue);
 
 new Vue({
+  store,
   render: (h) => h(App)
 }).$mount('#app')
 

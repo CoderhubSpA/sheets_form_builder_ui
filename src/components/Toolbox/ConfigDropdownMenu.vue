@@ -2,17 +2,10 @@
   <div>
     <b-button v-b-toggle="menu_id" class="accordion-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
-      <div v-if="draggable_elements">
-        <draggable class="card-deck" style="display:flex; justify-content: flex-start;" group="Campos1">
-          <Campo v-for="element in elements" :key="element.name" :text="element.name">
-          </Campo>
-        </draggable>
-      </div>
-      <div v-else>
+      <div>
         <b-list-group style="padding: 1em">
-          <div v-for="element of elements" :key="element.name" style="padding: 0.5em">
+          <div v-for="(element, index) in $store.state.config" :key="element.name" style="padding: 0.5em">
             <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
-
             <!-- v-if else depending on element.type -->
             <b-form-checkbox v-if="element.type=='checkbox'"
               :id="'menu-'+menu_id+'-element-'+element.name">
@@ -22,6 +15,16 @@
               :type="element.type"
               :placeholder="'Ingresa '+element.name">
             </b-form-input>
+            <multiselect v-else-if="element.type=='acciones'" 
+              :type="element.type"
+              v-model="$store.state.acciones_value" 
+              :options="$store.state.acciones_options" 
+              :multiple="true" :close-on-select="false" 
+              :clear-on-select="false" :preserve-search="true" placeholder="Seleccione acciones" label="action" track-by="action">
+              <template slot="selection" slot-scope="{ values, search, isOpen }">
+                <span class="multiselect__single" v-if="$store.state.acciones_value.length &amp;&amp; !isOpen">{{ $store.state.acciones_value.length }} options selected</span>
+              </template>
+            </multiselect>
             <b-list-group-item v-else>
               {{ element }}
             </b-list-group-item>
@@ -34,26 +37,22 @@
 
 <script>
 import draggable from 'vuedraggable';
-import Campo from './CampoComponent.vue';
+import multiselect from 'vue-multiselect';
 
 export default {
   name: 'DropdownMenu',
   components: {
-    Campo,
     draggable,
+    multiselect,
   },
   props: {
     menu_name: {
       type: String,
-      required: true,
+      required: false,
     },
     menu_id: {
       type: String,
-      required: true,
-    },
-    elements: {
-      type: Array,
-      required: true,
+      required: false,
     },
     draggable_elements: {
       type: Boolean,
@@ -62,6 +61,7 @@ export default {
   },
   data() {
     return {
+
     }
   },
 }

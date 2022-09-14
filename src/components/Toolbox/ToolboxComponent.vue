@@ -1,15 +1,11 @@
 <template>
   <div class="panel accordion align-self-stretch" id="tool-box" style="position: relative">
-    <DropdownMenu
+    <fields
       :menu_name="'Campos'"
-      :menu_id="'panelsStayOpen-collapseOne'"
-      :elements="[{name: 'Campo 1'}, {name: 'Campo 2'}]"
-      :draggable_elements="true"></DropdownMenu>
-    <DropdownMenu
+      :menu_id="'panelsStayOpen-collapseOne'"></fields>
+    <config
       :menu_name="'Configuración'"
-      :menu_id="'panelsStayOpen-collapseTwo'"
-      :elements="[{name: 'Nombre de campo', type: 'text-input'}, {name: 'required', type: 'checkbox'}, {name: 'Unknown', type: 'Unknown'}]"
-    ></DropdownMenu>
+      :menu_id="'panelsStayOpen-collapseTwo'"></config>
     <div style="height: 100px"><!-- <div style="position: relative; bottom: 0;"> -->
       <b-button variant="primary" class="button-save-form" style="position: absolute; bottom: 10px; left: 50%; -transform: translate(-50%, -50%);">
         Guardar Formulario
@@ -22,12 +18,14 @@
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import DropdownMenu from './DropdownMenu.vue';
+import fields from './FieldsDropdownMenu.vue';
+import config from './ConfigDropdownMenu.vue';
 
 export default {
   name: 'ToolboxComponent',
   components: {
-    DropdownMenu,
+    fields,
+    config,
   },
   data() {
     

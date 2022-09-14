@@ -5,7 +5,7 @@
               <draggable >
                 <transition-group>
 
-                <div v-for="(section, index) in sections" :key="index">
+                <div v-for="(section, index) in sections" :key="index" @click="clickOnSection()">
                   <form>
                     <div class="form-group col-md-4">
                       <input type="text" class="form-control" placeholder="Nombre Sección">
@@ -63,6 +63,11 @@
         return {
           name:"",
         }
+      },
+      clickOnSection(){
+        console.log("click on section")
+        this.$store.dispatch("setConfig", [{name:'Nombre de seccion', type:'text-input'}]);
+        this.$store.dispatch("setFields", this.$store.state.possible_fields)
       }
     }
   };
