@@ -4,17 +4,18 @@
         <div class="form-row" >
           <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
             <div class="col">
-              <draggable v-model="rows">
+              <draggable>
                 <transition-group>
               <div v-for="(row, index) in rows" :key="index">
                 <form>
                   <div class="form-group col-md-4">
-                    <input type="text" class="form-control" placeholder="Nombre Fila">
+                    <div class="h3 d-inline-block">{{row.name}}</div>
+                    <!-- <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/> -->
                   </div>
                 </form>
                 <br>
                 <div class="p-3 border-solid bg-light rounded container" v-bind="row">
-                  <Section/>
+                  <Section :idxRow="index"/>
                   <br>
                 </div>
                 <hr>
@@ -52,19 +53,29 @@
         required:false //por ahora es false, pero la idea es que una row sepa a que formulario pertenece
       }
     },
-
+    computed:
+    {
+      rows(){
+        return this.$store.state.form.form.rows
+      }
+    },
     data: () => ({
-      rows: [
+      // rows: [
         
-      ]
+      // ]
     }),
-
+    mounted(){
+      console.log(this.$store.state.form.form)
+    },
 
     methods: {
       addRow () {
-        this.rows.push({
-          row: this.newRow()
-        })
+        this.rows.push(
+           this.newRow()
+        )
+        // this.$store.commit('form/addRow',{
+        //   row: this.newRow()
+        // })
       },
       changeRow (){
   
@@ -72,6 +83,7 @@
       newRow(){
         return {
           name:"",
+          sections:[]
         }
       }
     }

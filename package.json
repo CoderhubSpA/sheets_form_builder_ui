@@ -15,7 +15,8 @@
     "vue": "^2.7.10",
     "vue-awesome": "^4.5.0",
     "vue-axios": "^3.4.1",
-    "vuedraggable": "^2.24.3"
+    "vuedraggable": "^2.24.3",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vitejs/plugin-legacy": "^2.0.0",

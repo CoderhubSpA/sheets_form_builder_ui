@@ -1,69 +1,97 @@
 <template>
-        <div class="form-row" >
-          <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
-            <div class="col">
-              <draggable >
-                <transition-group>
-
-                <div v-for="(section, index) in sections" :key="index">
-                  <form>
-                    <div class="form-group col-md-4">
-                      <input type="text" class="form-control" placeholder="Nombre Sección">
-                    </div>
-                  </form>
-                  <br>
-                  <div class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
+  <div>
+    <b-row>
+        <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+          <!-- <div class="col"> -->
+            <draggable >
+              <transition-group name="fade" tag="b-row" class="sections">
+      
+                <b-col v-for="(section, index) in sections" :key="index" :cols="sections[index].cols ? sections[index].cols : 12" >
+                  
+                  <div>
+                    <b-form-row>
+                        <div class="h4 d-inline-block">{{section.name}}</div>
+                        <!-- <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/> -->
+                    </b-form-row>
                     <br>
-                  </div>
-                  <hr>
+                    <div class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
+                    <br>
+                    </div>
+                    <hr>
                 </div>
-              </transition-group>
-            </draggable>
-              <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
-                <div class="container text-center">
-                  <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
-                    <v-icon name="plus" scale="1.5"/>
-                  </button>
-                  <p>Añadir Sección</p>
-                </div>
+
+                </b-col>
+        
+
+            </transition-group>
+          </draggable>
+            <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+              <div class="container text-center">
+                <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
+                  <v-icon name="plus" scale="1.5"/>
+                </button>
+                <p>Añadir Sección</p>
               </div>
             </div>
-          </div>
-        </div>
+          <!-- </div> -->
+        </b-row>
+    </b-row>
+  </div>
+
   </template>
   
   <script>
   import draggable from 'vuedraggable'
+  
   export default {
     name: "Section",
     components: {
-            draggable,
+            draggable
         },
     props:{
       idRow:{
         type:String,
         required:false //por ahora es false, cada seccion debe saber a que fila pertenece
+      },
+      idxRow:{
+        type:Number,
+        required:true //por ahora es false, cada seccion debe saber a que fila pertenece
+      }
+    },
+    computed:
+    {
+      sections(){
+        return this.$store.state.form.form.rows[this.idxRow].sections
       }
     },
     data: () => ({
-      sections: [
-      ]
+      // sections: [
+      // ]
     }),
   
     methods: {
       addSection () {
-        this.sections.push({
-          seccion: this.newSection()
-        })
+        this.sections.push(
+           this.newSection()
+        )
+        // this.$store.commit('form/addSection',{
+        //   row_idx: this.idxRow,
+        //   section: this.newSection()
+        // })
+
       },
       changeSection (){
   
       },
       newSection(){
         return {
+          index: this.sections.length,
           name:"",
+          cols:12
         }
-      }
+      },
+
+
     }
   };
   </script>

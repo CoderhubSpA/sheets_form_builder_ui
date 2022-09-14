@@ -27,7 +27,19 @@
             </b-list-group-item>
           </div>
         </b-list-group>
+        <h4>Formulario {{form.name}}</h4>
+       
+        <div v-for="(row,rindex) of form.rows" :key="rindex">
+          <h5 class="p-2">Fila {{rindex+1}}</h5>
+          <b-input v-model="row.name" type="text" placeholder="Nombre Fila"/>
+          <div v-for="(section,sindex) of row.sections" :key="sindex">
+            <h6 class="p-2">Section {{rindex+1}}</h6>
+            <b-input v-model="section.name" type="text" placeholder="Nombre Sección"/>
+            <b-input v-model="section.cols" type="number"/>
+          </div>
+        </div>
       </div>
+
     </b-collapse>
   </div>
 </template>
@@ -60,6 +72,11 @@ export default {
       default: false,
     }
   },
+  computed:{
+        form(){
+           return this.$store.state.form.form
+        }
+    },
   data() {
     return {
     }
