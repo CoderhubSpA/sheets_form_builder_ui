@@ -2,10 +2,12 @@
   <div class="form-row" >
     <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
       <div class="col">
-        <draggable >
-          <transition-group>
+        <draggable
+          :animation="200"
+          ghost-class="moving-section" >
+          <transition-group  type="transition" :name="'flip-list'">
 
-          <div v-for="(section, index) in sections" :key="section" :id="`section-${index}`">
+          <div v-for="(section, index) in sections" :key="section" :id="`section-${index}`" class="cursor-move">
             <form>
               <div class="form-group col-md-4 flex">
                 <input type="text" class="form-control" placeholder="Nombre Sección">
@@ -50,7 +52,7 @@ export default {
   },
   data: () => ({
     sections: [
-    ]
+    ],
   }),
 
   methods: {
@@ -106,4 +108,22 @@ export default {
   width: 2rem; 
   height:2rem;
 }
+
+.moving-section {
+  opacity: 0.5;
+  background: #F7FAFC;
+  border: 2px solid #008A94;
+  border-radius: 5px;
+}
+.cursor-move{
+  cursor: move;
+}
+.cursor-move:hover{
+  cursor: move;
+  background: #F7FAFC;
+  border: 2px solid #008A94;
+  border-radius: 5px;
+}
+
+
 </style>
