@@ -1,11 +1,11 @@
 <template>
   <div class="container-fluid">
-   <NavbarComponent/>
-    <div id="app" style="min-height: 600px;" class="d-flex flex-row">
+    <NavbarComponent/>
+    <div id="app" style="min-height: 600px; height: 100vh;" class="d-flex flex-row">
       <ToolboxComponent></ToolboxComponent>
       <FormComponent/>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
