@@ -21,7 +21,14 @@
               v-model="$store.state.acciones_value" 
               :options="$store.state.acciones_options" 
               :multiple="true" :close-on-select="false" 
-              :clear-on-select="false" :preserve-search="true" placeholder="Seleccione acciones" label="action" track-by="action">
+              :clear-on-select="false" 
+              :preserve-search="true" 
+              placeholder="Seleccione acciones" 
+              label="name" 
+              track-by="name"
+              :select-label="''"
+              :selected-label="''"
+              :deselect-label="''">
             </multiselect>
             </div>
 
