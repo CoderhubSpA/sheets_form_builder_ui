@@ -12,23 +12,28 @@
             <div class="m-2 y-2">
                 <Row/>
             </div>
-            
+            <Actions/>
         </b-form-row>
     </b-container>
 </template>
 
 <script>
 import Row from "./Row.vue";
+import Actions from "./Actions.vue";
 export default {
     name:"FormComponent",
     components: { 
-        Row },
+        Row,
+        Actions,
+        },
     data(){
         return {
             name:"Nombre formulario",
             editingName: false,
         }
-    }
+    },
+    methods: {
+    },
 }
 </script>
 
