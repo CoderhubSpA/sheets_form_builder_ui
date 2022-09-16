@@ -47,13 +47,13 @@ export default {
   border-style: solid;
 
   padding: 10px;
+  margin-right: 5px;
 
   width: 25%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-  position:fixed;
 
   display: flex;
   flex-wrap: wrap;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 8vh;">
         <b-navbar variant="faded" type="dark">
             <b-navbar-brand href="#">
             <img src="../assets/logo_sm.png" alt="SheetsSoftware">

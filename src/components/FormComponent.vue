@@ -1,5 +1,5 @@
 <template>
-    <b-container class="border rounded p-3" style="margin-left: 25%;">
+    <b-container class="border rounded p-3" style="overflow-y: auto;">
         <b-form-row class="w-100 mx-auto">
             <b-input v-model="name" v-if="editingName" class="text-left w-50"
             @keyup.enter="editingName = false"/>
