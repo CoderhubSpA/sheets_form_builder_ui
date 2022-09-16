@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    config : [],
-    fields: [],
+    config : [{name: 'Nombre de campo', type: 'text-input'}, {name: 'required', type: 'checkbox'}, {name: 'Unknown', type: 'Unknown'}, {name: 'Acciones', type: 'acciones'}],
+    fields: [{name: 'Campo 1'}, {name: 'Campo 2'}],
     possible_fields: [{name: 'Campo 1'}, {name: 'Campo 2'}],
     acciones_value: [],
     acciones_options: [

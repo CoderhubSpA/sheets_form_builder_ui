@@ -1,5 +1,5 @@
 <template>
-    <b-container class="border rounded my-5 p-3" @click="clickOnForm()">
+    <b-container class="border rounded my-5 p-3">
         <b-form-row class="w-100 mx-auto">
             <b-input v-model="name" v-if="editingName" class="text-left w-50"
             @keyup.enter="editingName = false"/>
@@ -33,11 +33,6 @@ export default {
         }
     },
     methods: {
-    clickOnForm(){
-        console.log("click on form")
-        this.$store.dispatch("setConfig", [{name: 'Acciones', type: 'acciones'}]);
-        this.$store.dispatch("setFields", [])
-      },
     },
 }
 </script>
