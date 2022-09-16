@@ -10,8 +10,8 @@
                 <form>
                   <div class="form-group col-md-4 flex">
                     <input type="text" class="form-control" placeholder="Nombre Fila">
-                    <button type="button" class="btn btn-danger btn-sm" @click="deleteRow(index)"> 
-                      x
+                    <button type="button" class="btn btn-danger btn-sm delete" @click="deleteRow(index)"> 
+                      <v-icon class="custom-icon" name="trash"></v-icon>
                     </button>
                   </div>
                 </form>
@@ -107,5 +107,11 @@ export default {
   justify-content: space-between;
   text-align: right;
 }
+
+.custom-icon {
+  fill: white;
+}
+
+
 
 </style>
