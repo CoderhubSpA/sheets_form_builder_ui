@@ -4,8 +4,8 @@
       <div class="col">
         <draggable
           :animation="200"
-          ghost-class="moving-section" >
-          <transition-group  type="transition" :name="'flip-list'">
+          ghost-class="moving-section">
+          <transition-group>
 
           <div v-for="(section, index) in sections" :key="section" :id="`section-${index}`" class="cursor-move">
             <form>
@@ -117,12 +117,6 @@ export default {
 }
 .cursor-move{
   cursor: move;
-}
-.cursor-move:hover{
-  cursor: move;
-  background: #F7FAFC;
-  border: 2px solid #008A94;
-  border-radius: 5px;
 }
 
 
