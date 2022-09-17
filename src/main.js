@@ -13,7 +13,7 @@ Vue.component("v-icon", Icon);
 Vue.use(BootstrapVue);
 
 new Vue({
-  store,
+  store: store,
   render: (h) => h(App)
 }).$mount('#app')
 

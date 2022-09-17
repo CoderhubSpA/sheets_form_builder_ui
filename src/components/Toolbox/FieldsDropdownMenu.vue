@@ -4,7 +4,7 @@
     <b-collapse visible :id="menu_id">
       <div>
         <draggable class="card-deck" style="display:flex; justify-content: flex-start;" group="Campos1">
-          <Campo v-for="(element, index) in $store.state.fields" :key="element.name" :text="element.name">
+          <Campo v-for="(element, index) in $store.state.tools.fields" :key="element.name" :text="element.name">
           </Campo>
         </draggable>
       </div>

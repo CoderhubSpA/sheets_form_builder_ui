@@ -4,7 +4,7 @@
     <b-collapse visible :id="menu_id">
       <div>
         <b-list-group style="padding: 1em">
-          <div v-for="(element, index) in $store.state.config" :key="element.name" style="padding: 0.5em">
+          <div v-for="(element, index) in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
             <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
             <!-- v-if else depending on element.type -->
             <b-form-checkbox v-if="element.type=='checkbox'"
@@ -18,8 +18,8 @@
             <div v-else-if="element.type=='acciones'" >
               <multiselect 
               :type="element.type"
-              v-model="$store.state.acciones_value" 
-              :options="$store.state.acciones_options" 
+              v-model="$store.state.tools.acciones_value" 
+              :options="$store.state.tools.acciones_options" 
               :multiple="true" :close-on-select="false" 
               :clear-on-select="false" 
               :preserve-search="true" 
