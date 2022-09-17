@@ -1,15 +1,17 @@
 <template>
-  <div id="row" class="container">
-    <form>
-      <div class="form-row" >
-        <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
-          <div class="col">
-            <draggable v-model="rows">
-              <transition-group>
+    <div id="row" class="container">
+      <form>
+        <div class="form-row" >
+          <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+            <div class="col">
+              <draggable>
+                <transition-group>
                 <div v-for="(row, index) in rows" :key="row" :id="`row-${index}`">
                 <form>
                   <div class="form-group col-md-4 flex">
-                    <input type="text" class="form-control" placeholder="Nombre Fila">
+                    <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
+                    <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
+                    <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
                     <button type="button" class="btn btn-danger btn-sm delete" @click="deleteRow(index)"> 
                       <v-icon class="custom-icon" name="trash"></v-icon>
                     </button>
@@ -17,7 +19,7 @@
                 </form>
               <br>
               <div class="p-3 border-solid bg-light rounded container" v-bind="row">
-                <Section/>
+                <Section :idxRow="index"/>
                 <br>
               </div>
               <hr>
@@ -44,39 +46,48 @@ import draggable from 'vuedraggable'
 import Section from './Section.vue';
 
 export default {
-  name: "Row",
-  components: {
-    Section,
-    draggable,
-      },
-  props:{
-    idForm:{
-      type:String,
-      required:false //por ahora es false, pero la idea es que una row sepa a que formulario pertenece
-    }
-  },
-
-  data: () => ({
-    rows: [
-    ]
-  }),
-
-
-  methods: {
-    addRow () {
-      this.rows.push({
-        row: this.newRow()
-      })
+    name: "Row",
+    components: {
+      Section,
+      draggable,
     },
-    newRow (){
-      return {
-        name:"",
+    props:{
+      idForm:{
+        type:String,
+        required:false //por ahora es false, pero la idea es que una row sepa a que formulario pertenece
       }
     },
-    deleteRow (idx) {
-      console.log(idx)
-      this.rows.splice(idx,1)
-    }
+    computed:
+    {
+      rows(){
+        return this.$store.state.form.form.rows
+      }
+    },
+    data: () => ({
+      // rows: [
+        
+      // ]
+    }),
+    mounted(){
+      console.log(this.$store.state.form.form)
+    },
+
+    methods: {
+      addRow () {
+        this.rows.push(
+           this.newRow()
+        )
+      },
+      newRow(){
+        return {
+          name:"",
+          sections:[]
+        }
+      },
+      deleteRow (idx) {
+        console.log(idx)
+        this.rows.splice(idx,1)
+      }
   }
 };
 </script>

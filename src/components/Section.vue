@@ -1,72 +1,93 @@
 <template>
-  <div class="form-row" >
-    <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
-      <div class="col">
-        <draggable >
-          <transition-group>
+  <div>
+    <b-row>
+        <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+            <draggable >
+              <transition-group name="fade" tag="b-row" class="sections">
+      
+                <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" >
+                  
+                  <div>
+                    <b-form-row>
+                      <div class="form-group col-md-4 flex">
+                        <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
+                        <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
+                        <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
+                        <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteSection(index)"> 
+                          x
+                        </button>
+                      </div>
+                    </b-form-row>
+                    <br>
+                    <div class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
+                        <br>
+                    </div>
+                    <hr>
+                  </div>
 
-          <div v-for="(section, index) in sections" :key="section" :id="`section-${index}`">
-            <form>
-              <div class="form-group col-md-4 flex">
-                <input type="text" class="form-control" placeholder="Nombre Sección">
-                <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteSection(index)"> 
-                  x
+                </b-col>
+        
+
+            </transition-group>
+          </draggable>
+            <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+              <div class="container text-center">
+                <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
+                  <v-icon name="plus" scale="1.5"/>
                 </button>
+                <p>Añadir Sección</p>
               </div>
-            </form>
-            <br>
-            <div class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
-              <br>
             </div>
-            <hr>
-          </div>
-        </transition-group>
-      </draggable>
-        <div class="p-3 border-dotted bg-light rounded" >
-          <div class="container text-center">
-            <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
-              <v-icon name="plus" scale="1.5"/>
-            </button>
-            <p>Añadir Sección</p>
-          </div>
-        </div>
-      </div>
-    </div>
+        </b-row>
+    </b-row>
   </div>
 </template>
-
+  
 <script>
 import draggable from 'vuedraggable'
+  
 export default {
-  name: "Section",
-  components: {
-          draggable,
+    name: "Section",
+    components: {
+            draggable
+        },
+    props:{
+      idRow:{
+        type:String,
+        required:false //por ahora es false, cada seccion debe saber a que fila pertenece
       },
-  props:{
-    idRow:{
-      type:String,
-      required:false //por ahora es false, cada seccion debe saber a que fila pertenece
-    }
-  },
-  data: () => ({
-    sections: [
-    ]
-  }),
-
-  methods: {
-    addSection () {
-      this.sections.push({
-        seccion: this.newSection()
-      })
-    },
-    newSection(){
-      return {
-        name:"",
+      idxRow:{
+        type:Number,
+        required:true //por ahora es false, cada seccion debe saber a que fila pertenece
       }
     },
-    deleteSection (idx) {
-      this.sections.splice(idx,1)
-    }
+    computed:
+    {
+      sections(){
+        return this.$store.state.form.form.rows[this.idxRow].sections
+      }
+    },
+    data: () => ({
+      // sections: [
+      // ]
+    }),
+  
+    methods: {
+      addSection () {
+        this.sections.push(
+           this.newSection()
+        )
+      },
+      newSection(){
+        return {
+          index: this.sections.length,
+          name:"",
+          cols:12
+        }
+      },
+      deleteSection (idx) {
+        this.sections.splice(idx,1)
+      },
   }
 };
 </script>
