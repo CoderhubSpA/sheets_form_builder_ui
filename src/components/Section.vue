@@ -4,12 +4,10 @@
         <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
             <draggable >
               <transition-group name="fade" tag="b-row" class="sections">
-      
                 <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" >
-                  
                   <div>
                     <b-form-row>
-                      <div class="form-group col-md-4 flex">
+                      <div class="form-group flex">
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
                         <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
                         <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
@@ -19,17 +17,16 @@
                       </div>
                     </b-form-row>
                     <br>
-                    <div class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
-                        <br>
-                    </div>
+                    <b-form-row class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
+                      <Field :idxSection="index" :idxRow="idxRow"></Field>
+                    </b-form-row>
                     <hr>
                   </div>
-
                 </b-col>
-        
-
-            </transition-group>
-          </draggable>
+              </transition-group>
+            </draggable>
+            <!-- pa debuguear -->
+            <!-- {{sections}} -->
             <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
               <div class="container text-center">
                 <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
@@ -45,12 +42,16 @@
   
 <script>
 import draggable from 'vuedraggable'
+import Campo from './Toolbox/CampoComponent.vue';
+import Field from "./Fields/Field.vue"
   
 export default {
     name: "Section",
     components: {
-            draggable
-        },
+    draggable,
+    Campo,
+    Field
+},
     props:{
       idRow:{
         type:String,
@@ -68,21 +69,21 @@ export default {
       }
     },
     data: () => ({
-      // sections: [
-      // ]
     }),
   
     methods: {
       addSection () {
-        this.sections.push(
-           this.newSection()
-        )
+        let section = this.newSection();
+        section.idxRow = this.idxRow;
+        this.sections.push(section);
       },
       newSection(){
         return {
           index: this.sections.length,
-          name:"",
-          cols:12
+          name: "",
+          cols: 12,
+          fields: [],
+          idxRow: -1
         }
       },
       deleteSection (idx) {

@@ -1,12 +1,13 @@
 const state = {
     config : [
-        {name: 'Nombre de campo', type: 'text-input'},
-        {name: 'required', type: 'checkbox'},
-        {name: 'Unknown', type: 'Unknown'},
+        // {name: 'Nombre de campo', type: 'text-input'},
+        // {name: 'required', type: 'checkbox'},
+        // {name: 'Unknown', type: 'Unknown'},
         {name: 'Acciones', type: 'acciones'}],
     fields: [
-        {name: 'Campo 1'},
-        {name: 'Campo 2'}],
+        { name: 'Texto' }, 
+        { name: 'Area de texto' }, 
+        { name: 'Contraseña' }],
     possible_fields: [
         {name: 'Campo 1'},
         {name: 'Campo 2'}],
