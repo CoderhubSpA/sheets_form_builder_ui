@@ -6,22 +6,22 @@
             <div class="col">
               <draggable>
                 <transition-group>
-                <div v-for="(row, index) in rows" :key="row" :id="`row-${index}`">
-                <form>
-                  <div class="form-group col-md-4 flex">
-                    <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
-                    <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
-                    <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
-                    <button type="button" class="btn btn-danger btn-sm delete" @click="deleteRow(index)"> 
-                      <v-icon class="custom-icon" name="trash"></v-icon>
-                    </button>
-                  </div>
-                </form>
-              <br>
-              <div class="p-3 border-solid bg-light rounded container" v-bind="row">
-                <Section :idxRow="index"/>
-                <br>
-              </div>
+                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`">
+                  <form>
+                    <div class="form-group col-md-4 flex">
+                      <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
+                      <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
+                      <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
+                      <button type="button" class="btn btn-danger btn-sm delete" @click="deleteRow(index)"> 
+                        <v-icon class="custom-icon" name="trash"></v-icon>
+                      </button>
+                    </div>
+                  </form>
+                  <br>
+                  <div class="p-3 border-solid bg-light rounded container" v-bind="row">
+                  <Section :idxRow="index"></Section>
+                  <br>
+                </div>
               <hr>
             </div>
           </transition-group>

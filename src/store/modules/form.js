@@ -2,7 +2,8 @@ const state = {
     form:{
         name:"Nombre Formulario",
         rows:[]
-    }
+    },
+    current_field_config: null
 }
 const mutations = {
     addSection(state, payload){
@@ -12,8 +13,8 @@ const mutations = {
         state.form.rows.push(payload.row)
     },
     addField(state, payload){
-        state.form[payload.row_idx][payload.section_idx].push(payload.section)
-    },
+        state.form.rows[payload.row_idx].sections[payload.section_idx].push(payload.field)
+    }
  }
 
 const actions = {

@@ -3,7 +3,7 @@
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
-        <draggable class="card-deck" style="display:flex; justify-content: flex-start;" group="Campos1">
+        <draggable class="card-deck" style="display:flex; justify-content: flex-start;" :group="{name: 'Fields', pull: 'clone', put: false}" :list="$store.state.tools.fields" :clone="cloneAction">
           <Campo v-for="(element, index) in $store.state.tools.fields" :key="element.name" :text="element.name">
           </Campo>
         </draggable>
@@ -40,8 +40,26 @@ export default {
   },
   data() {
     return {
+      field_n: 0
     }
   },
+  methods: {
+    cloneAction(item) {
+      console.log('cloned', item)
+      let element = {
+        name: item.name,
+        index: this.field_n,
+        idxRow: -1,
+        idxSection: -1,
+        field_type: item.name,
+        field_type_text: item.name,
+        required: false,
+        description: ""
+      };
+      this.field_n += 1;
+      return element;
+    }
+  }
 }
 </script>
 
