@@ -3,7 +3,7 @@
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
-        <draggable class="card-deck" style="display:flex; justify-content: flex-start;" :group="{name: 'Fields', pull: 'clone', put: false}" :list="$store.state.tools.fields" :clone="cloneAction">
+        <draggable class="card-deck row" style="display:flex; justify-content: flex-start;" :group="{name: 'Fields', pull: 'clone', put: false}" :list="$store.state.tools.fields" :clone="cloneAction">
           <Campo v-for="(element, index) in $store.state.tools.fields" :key="element.name" :text="element.name">
           </Campo>
         </draggable>

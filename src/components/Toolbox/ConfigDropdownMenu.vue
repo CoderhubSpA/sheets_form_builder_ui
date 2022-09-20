@@ -5,7 +5,8 @@
       <div>
         <b-list-group style="padding: 1em">
           <div v-if="currentField">
-            <h4>Campo {{currentField.name}}</h4>
+            <h4>Campo:</h4>
+            <h5>"{{currentField.name}}"</h5>
             <label for="field-config-name">Nombre del campo</label>
             <b-form-input
               id="field-config-name"
@@ -23,7 +24,8 @@
             </div>
             <br>
           </div>
-          <h4>Formulario {{form.name}}</h4>
+          <h4>Formulario:</h4>
+          <h5>"{{form.name}}"</h5>
           <div v-for="(element, index) in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
             <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
             <!-- v-if else depending on element.type -->
@@ -60,7 +62,7 @@
             <h5 class="p-2">Fila {{rindex+1}}</h5>
             <b-input v-model="row.name" type="text" placeholder="Nombre Fila"/>
             <div v-for="(section,sindex) of row.sections" :key="sindex">
-              <h6 class="p-2">Section {{sindex+1}}</h6>
+              <h6 class="p-2">Sección {{sindex+1}}</h6>
               <b-input v-model="section.name" type="text" placeholder="Nombre Sección"/>
               <b-input v-model="section.cols" type="number"/>
             </div>
