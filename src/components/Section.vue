@@ -2,9 +2,12 @@
   <div>
     <b-row>
         <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
-            <draggable >
-              <transition-group name="fade" tag="b-row" class="sections">
-                <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" >
+        <draggable
+          :animation="200"
+          ghost-class="moving-section">
+          <transition-group>
+
+                <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" class="cursor-move">
                   <div>
                     <b-form-row>
                       <div class="form-group flex">
@@ -128,4 +131,16 @@ export default {
   width: 2rem; 
   height:2rem;
 }
+
+.moving-section {
+  opacity: 0.5;
+  background: #F7FAFC;
+  border: 2px solid #008A94;
+  border-radius: 5px;
+}
+.cursor-move{
+  cursor: move;
+}
+
+
 </style>

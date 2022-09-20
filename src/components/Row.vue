@@ -1,12 +1,14 @@
 <template>
-    <div id="row" class="container">
-      <form>
-        <div class="form-row" >
-          <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
-            <div class="col">
-              <draggable>
-                <transition-group>
-                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`">
+  <div id="row" class="container">
+    <form>
+      <div class="form-row" >
+        <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+          <div class="col">
+            <draggable v-model="rows"
+              :animation="200"
+              ghost-class="moving-section">
+              <transition-group>
+                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
                   <form>
                     <div class="form-group col-md-4 flex">
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
@@ -123,6 +125,15 @@ export default {
   fill: white;
 }
 
+.moving-section {
+  opacity: 0.5;
+  background: #F7FAFC;
+  border: 2px solid #008A94;
+  border-radius: 5px;
+}
 
+.cursor-move:hover{
+  cursor: move;
+}
 
 </style>
