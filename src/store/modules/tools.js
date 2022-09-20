@@ -5,9 +5,12 @@ const state = {
         // {name: 'Unknown', type: 'Unknown'},
         {name: 'Acciones', type: 'acciones'}],
     fields: [
-        { name: 'Texto' }, 
-        { name: 'Area de texto' }, 
-        { name: 'Contraseña' }],
+        { name: 'Nombre del Tutor' },
+        { name: 'Nombre de Mascota' },
+        { name: 'RUT' },
+        { name: 'Diagnóstico' },
+        { name: 'Número de Teléfono' },
+        { name: 'Correo' }],
     possible_fields: [
         {name: 'Campo 1'},
         {name: 'Campo 2'}],
