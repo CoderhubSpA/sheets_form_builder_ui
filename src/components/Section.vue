@@ -5,7 +5,7 @@
         <draggable
           :animation="200"
           ghost-class="moving-section">
-          <transition-group>
+          <transition-group name="fade" tag="b-row" class="sections">
 
                 <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" class="cursor-move">
                   <div>
