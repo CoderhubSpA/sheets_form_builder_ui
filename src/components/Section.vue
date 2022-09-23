@@ -3,11 +3,13 @@
     <b-row>
         <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
         <draggable
+          :list="sections"
+          @change="onChange"
           :animation="200"
           ghost-class="moving-section">
           <transition-group name="fade" tag="b-row" class="sections">
 
-                <b-col v-for="(section, index) in sections" :key="index" :id="`section-${index}`" :cols="sections[index].cols ? sections[index].cols : 12" class="cursor-move">
+                <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`" :cols="sections[index].cols ? sections[index].cols : 12" class="cursor-move">
                   <div>
                     <b-form-row>
                       <div class="form-group flex">
@@ -91,7 +93,22 @@ export default {
       },
       deleteSection (idx) {
         this.sections.splice(idx,1)
+        this.sections.forEach(
+          (s, sidx) => s.index=sidx
+        )
       },
+      onChange(event) {
+      
+      if (event.added) {
+        event.added.element.idxRow = this.idxRow;
+      } else if (event.moved) {
+        this.sections.forEach(
+          (s, sidx) => s.index=sidx
+        )
+      } else if (event.deleted) {
+        console.log("delete");
+      }
+    },
   }
 };
 </script>
