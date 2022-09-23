@@ -4,9 +4,9 @@
         <div class="form-row" >
           <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
             <div class="col">
-              <draggable>
-                <transition-group>
-              <div v-for="(row, index) in rows" :key="index">
+              <draggable v-model="rows">
+                <transition-group >
+              <div v-for="(row, index) in rows" :key="row.name">
                 <form>
                   <div class="form-group col-md-4">
                     <div class="h3 d-inline-block">{{row.name}}</div>
