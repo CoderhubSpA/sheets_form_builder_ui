@@ -1,5 +1,5 @@
 <template>
-    <b-container class="border rounded my-5 p-3">
+    <b-container class="border rounded p-3" style="overflow-y: auto;">
         <b-form-row class="w-100 mx-auto">
             <b-input v-model="form.name" v-if="editingName" class="text-left w-50"
             @keyup.enter="editingName = false"/>
@@ -12,17 +12,20 @@
             <div class="m-2 y-2">
                 <Row/>
             </div>
-            
+            <Actions/>
         </b-form-row>
     </b-container>
 </template>
 
 <script>
 import Row from "./Row.vue";
+import Actions from "./Actions.vue";
 export default {
     name:"FormComponent",
     components: { 
-        Row },
+        Row,
+        Actions,
+        },
     computed:{
         form(){
            return this.$store.state.form.form
@@ -33,7 +36,9 @@ export default {
             name:"Nombre formulario",
             editingName: false,
         }
-    }
+    },
+    methods: {
+    },
 }
 </script>
 
