@@ -25,4 +25,7 @@
   .center{
     text-align: center;
   }
+  button{
+    width: 20vh;
+  }
 </style>
