@@ -3,7 +3,10 @@ const state = {
         name:"Nombre Formulario",
         rows:[]
     },
-    current_field_config: null
+    current_form_config: null,
+    current_row_config: null,
+    current_section_config: null,
+    current_field_config: null,
 }
 const mutations = {
     addSection(state, payload){

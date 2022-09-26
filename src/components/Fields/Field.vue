@@ -3,9 +3,13 @@
     <draggable class="card-deck" :list="sections[idxSection].fields" group="Fields" @change="onChange">
       <transition-group tag="b-row" class="sections">
       <b-form-row style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
-        <div class="flex">
+        <div class="flex"
+        
+        >
           <div class="form-group col-12">
-            <div style="text-align: left !important; margin-bottom: 5px;">
+            <div style="text-align: left !important; margin-bottom: 5px;"
+           
+            >
               <i>{{field.field_type_text}}</i>
             </div>
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
@@ -73,7 +77,8 @@ export default {
         index: this.fields.length,
         name: "",
         idxRow: -1,
-        idxSection: -1
+        idxSection: -1,
+        description:"",
       };
     },
     onChange(event) {
@@ -89,7 +94,10 @@ export default {
       }
     },
     openFieldConfig(newField) {
-      this.$store.state.form.current_field_config = newField;
+      this.$store.state.form.current_section_config = null
+      this.$store.state.form.current_form_config = null
+      this.$store.state.form.current_row_config = null
+      this.$store.state.form.current_field_config = newField
     }
   }
 };

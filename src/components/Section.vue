@@ -9,8 +9,19 @@
           ghost-class="moving-section">
           <transition-group name="fade" tag="b-row" class="sections">
 
-                <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`" :cols="sections[index].cols ? sections[index].cols : 12" class="cursor-move">
-                  <div>
+                <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`" 
+                      :sm="sections[index].colSm ? sections[index].colSm : 12" 
+                      :md="sections[index].colMd ? sections[index].colMd : 12"
+                      :xl="sections[index].colXl ? sections[index].colXl : 12"
+                      class="cursor-move my-1"
+                      >
+                      <div 
+                     class="p-3 rounded"
+                     :style="$store.state.form.current_section_config?.index===section.index? 
+                                  'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;':
+                                  'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'"
+                     @click.self="openSectionConfig(section)"
+                     >
                     <b-form-row>
                       <div class="form-group flex">
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
@@ -22,10 +33,12 @@
                       </div>
                     </b-form-row>
                     <br>
-                    <b-form-row class="p-3 border-solid bg-light rounded container" v-bind="section.seccion">
+                    <b-form-row class="p-3 border-solid bg-light rounded container" v-bind="section.seccion"
+                    @click.self="openSectionConfig(section)"
+                    >
                       <Field :idxSection="index" :idxRow="idxRow"></Field>
                     </b-form-row>
-                    <hr>
+                    
                   </div>
                 </b-col>
               </transition-group>
@@ -86,16 +99,24 @@ export default {
         return {
           index: this.sections.length,
           name: "",
-          cols: 12,
+          description:"",
+          colSm:12,
+          colMd:12,
+          colXl:12,
+          image:'',
           fields: [],
           idxRow: -1
         }
       },
       deleteSection (idx) {
+        if (this.$store.state.form.current_section_config?.index == this.sections[idx].index) {
+          this.$store.state.form.current_section_config = null;
+        }
         this.sections.splice(idx,1)
         this.sections.forEach(
           (s, sidx) => s.index=sidx
         )
+
       },
       onChange(event) {
       
@@ -108,7 +129,16 @@ export default {
       } else if (event.deleted) {
         console.log("delete");
       }
-    },
+      },
+      openSectionConfig(section){
+        this.$store.state.form.current_form_config = null
+        this.$store.state.form.current_row_config = null
+        this.$store.state.form.current_field_config = null
+        this.$store.state.form.current_section_config = section
+        if(this.$store.state.form.current_section_config?.index===section.index){
+          console.log("si")
+        }
+      }
   }
 };
 </script>
