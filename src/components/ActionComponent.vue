@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-2 flex-fill center">
     <button class="btn btn-block btn-success" disabled>{{text}}</button>
   </div>
     
@@ -22,4 +22,10 @@
 </script>
     
 <style>
+  .center{
+    text-align: center;
+  }
+  button{
+    width: 20vh;
+  }
 </style>
