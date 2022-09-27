@@ -3,7 +3,7 @@
     <draggable class="card-deck" :list="sections[idxSection].fields" group="Fields" @change="onChange">
       <transition-group tag="b-row" class="sections">
       <b-form-row style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
-        <div class="flex">
+        <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
             <div style="text-align: left !important; margin-bottom: 5px;">
               <i>{{field.field_type_text}}</i>
@@ -11,10 +11,10 @@
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
           </div>
           <div class="flex-column">
-            <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteField(fieldIdx)"> 
+            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteField(fieldIdx)"> 
               x
             </button>
-            <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-info p-2" @click="openFieldConfig(field)"> 
+            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-info p-2" @click="openFieldConfig(field)"> 
               <!-- ඞ -->
               <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
             </button>
