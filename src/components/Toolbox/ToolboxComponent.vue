@@ -8,7 +8,7 @@
       :menu_name="'Configuración'"
       :menu_id="'panelsStayOpen-collapseTwo'"></config>
   </ul>
-  <b-button variant="primary" class="button-save-form" style="position: relative; left: 50%; -transform: translate(-50%, 0%);">
+  <b-button variant="primary" class="button-save-form" style="position: relative; margin: 0 25% 5% 25%;">
     Guardar Formulario
   </b-button>
   
