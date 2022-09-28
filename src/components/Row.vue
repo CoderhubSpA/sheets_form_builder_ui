@@ -4,11 +4,12 @@
       <div class="form-row" >
         <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
           <div class="col">
-            <draggable v-model="rows"
+            <draggable 
+              :list="rows" 
               :animation="200"
               ghost-class="moving-section">
               <transition-group>
-                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
+                <div v-for="(row, index) in rows" :key="row.name" :id="`row-${row.name}`" class="cursor-move">
                   <form>
                     <div class="form-group col-md-4 flex">
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->

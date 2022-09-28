@@ -4,7 +4,27 @@
     <b-collapse visible :id="menu_id">
       <div>
         <b-list-group style="padding: 1em">
-          <div v-if="currentField">
+          <div v-if="currentForm">
+
+          </div>
+          <div v-else-if="currentRow">
+          
+          </div>
+          <div v-else-if="currentSection">
+            <h4>Sección {{currentSection.index+1}}</h4>
+            <label>Nombre sección: </label>
+            <b-input v-model="currentSection.name" type="text" placeholder="Nombre Sección"/>
+            <label>col sm: </label>
+            <b-input v-model="currentSection.colSm" type="number"/>
+            <label>col md: </label>
+            <b-input v-model="currentSection.colMd" type="number"/>
+            <label>col xl: </label>
+            <b-input v-model="currentSection.colXl" type="number"/>
+            <label>Descripción: </label>
+            <b-form-textarea size="lg" v-model="currentSection.description"></b-form-textarea>
+          </div>
+
+          <div v-else-if="currentField">
             <h4>Campo:</h4>
             <h5>"{{currentField.name}}"</h5>
             <label for="field-config-name">Nombre del campo</label>
@@ -20,10 +40,11 @@
             <br>
             <label for="field-config-description">Descripción</label>
             <div>
-              <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentFielddescription"></textarea>
+              <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
             </div>
             <br>
           </div>
+
           <h4>Formulario:</h4>
           <h5>"{{form.name}}"</h5>
           <div v-for="(element, index) in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
@@ -57,15 +78,6 @@
             <b-list-group-item v-else>
               {{ element }}
             </b-list-group-item>
-          </div>
-          <div v-for="(row,rindex) of form.rows" :key="rindex">
-            <h5 class="p-2">Fila {{rindex+1}}</h5>
-            <b-input v-model="row.name" type="text" placeholder="Nombre Fila"/>
-            <div v-for="(section,sindex) of row.sections" :key="sindex">
-              <h6 class="p-2">Sección {{sindex+1}}</h6>
-              <b-input v-model="section.name" type="text" placeholder="Nombre Sección"/>
-              <b-input v-model="section.cols" type="number"/>
-            </div>
           </div>
         </b-list-group>
       </div>
@@ -102,9 +114,22 @@ export default {
     form(){
       return this.$store.state.form.form
     },
+    currentForm() {
+      return this.$store.state.form.current_form_config;
+    },
+    currentRow() {
+      return this.$store.state.form.current_row_config;
+    },
     currentField() {
       return this.$store.state.form.current_field_config;
+    },
+    currentSection() {
+      return this.$store.state.form.current_section_config;
+    },
+    currentConfig(){
+      return this.$store.state.form.current_config;
     }
+
   },
   data() {
     return {
