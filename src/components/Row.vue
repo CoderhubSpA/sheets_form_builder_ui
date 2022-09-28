@@ -9,7 +9,7 @@
               :animation="200"
               ghost-class="moving-section">
               <transition-group>
-                <div v-for="(row, index) in rows" :key="row.name" :id="`row-${row.name}`" class="cursor-move">
+                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
                   <form>
                     <div class="form-group col-md-4 flex">
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
