@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed">{{ menu_name }}</b-button>
+    <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
         <b-list-group style="padding: 1em">

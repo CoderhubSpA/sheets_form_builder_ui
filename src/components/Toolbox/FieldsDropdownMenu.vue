@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed">{{ menu_name }}</b-button>
+    <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
         <draggable class="card-deck row" style="display:flex; justify-content: flex-start;" :group="{name: 'Fields', pull: 'clone', put: false}" :list="$store.state.tools.fields" :clone="cloneAction">
@@ -67,6 +67,7 @@ export default {
 <style>
 
   .btn-toggle {
+    width: 100%;
     display: inline-flex;
     align-items: center;
     padding: .25rem .5rem;
@@ -94,4 +95,8 @@ export default {
   .btn-toggle[aria-expanded="true"]::before {
     transform: rotate(90deg);
   }
-  </style>
+
+  .menu-button{
+    font-size: 20pt !important;
+  }
+</style>
