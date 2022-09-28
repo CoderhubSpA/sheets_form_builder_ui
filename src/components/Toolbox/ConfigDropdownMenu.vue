@@ -4,8 +4,6 @@
     <b-collapse visible :id="menu_id">
       <div>
         <b-list-group style="padding: 1em">
-          
-
           <div v-if="currentForm">
 
           </div>
@@ -25,7 +23,6 @@
             <label>Descripción: </label>
             <b-form-textarea size="lg" v-model="currentSection.description"></b-form-textarea>
           </div>
-
 
           <div v-else-if="currentField">
             <h4>Campo:</h4>

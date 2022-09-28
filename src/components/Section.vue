@@ -135,9 +135,6 @@ export default {
         this.$store.state.form.current_row_config = null
         this.$store.state.form.current_field_config = null
         this.$store.state.form.current_section_config = section
-        if(this.$store.state.form.current_section_config?.index===section.index){
-          console.log("si")
-        }
       }
   }
 };
