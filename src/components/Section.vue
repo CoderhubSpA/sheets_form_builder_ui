@@ -27,9 +27,10 @@
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
                         <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
                         <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
-                        <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteSection(index)"> 
+                        <!-- <button type="button" class="close-rounded badge border border-light rounded-circle bg-danger p-2" @click="deleteSection(index)"> 
                           x
-                        </button>
+                        </button> -->
+                        <button type="button" class="btn-close" aria-label="Close" @click="deleteSection(index)"></button>
                       </div>
                     </b-form-row>
                     <br>
@@ -156,6 +157,13 @@ export default {
     background-color: #008A94 !important;
 }
 
+.btn-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
 .h1-button {
   color: black;
 }
@@ -173,7 +181,7 @@ export default {
 
 .close-rounded{
   width: 2rem; 
-  height:2rem;
+  height: 2rem;
 }
 
 .moving-section {
