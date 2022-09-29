@@ -16,15 +16,7 @@
             </div>
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
           </div>
-          <!-- <div class="flex-column">
-            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteField(fieldIdx)"> 
-              x
-            </button>
-            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-info p-2" @click="openFieldConfig(field)">  -->
-              <!-- ඞ -->
-              <!-- <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
-            </button>
-          </div> -->
+         <!-- ඞ -->
         </div>
       </b-form-row>
       </transition-group>
