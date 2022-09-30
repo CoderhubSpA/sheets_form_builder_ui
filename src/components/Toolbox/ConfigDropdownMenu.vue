@@ -5,8 +5,42 @@
       <div>
         <b-list-group style="padding: 1em">
           <div v-if="currentForm">
+            <h4>Formulario:</h4>
+            <h5>"{{form.name}}"</h5>
+            <div v-for="element in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
+              <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
+              <!-- v-if else depending on element.type -->
+              <b-form-checkbox v-if="element.type=='checkbox'"
+                :id="'menu-'+menu_id+'-element-'+element.name">
+              </b-form-checkbox>
+              <b-form-input v-else-if="element.type=='text-input'"
+                :id="'menu-'+menu_id+'-element-'+element.name"
+                :type="element.type"
+                :placeholder="'Ingresa '+element.name">
+              </b-form-input>
+              <div v-else-if="element.type=='acciones'" >
+                <multiselect 
+                :type="element.type"
+                v-model="$store.state.tools.acciones_value" 
+                :options="$store.state.tools.acciones_options" 
+                :multiple="true" :close-on-select="false" 
+                :clear-on-select="false" 
+                :preserve-search="true" 
+                placeholder="Seleccione acciones" 
+                label="name" 
+                track-by="name"
+                :select-label="''"
+                :selected-label="''"
+                :deselect-label="''">
+              </multiselect>
+              </div>
 
+              <b-list-group-item v-else>
+                {{ element }}
+              </b-list-group-item>
+            </div>
           </div>
+          
           <div v-else-if="currentRow">
           
           </div>
@@ -44,41 +78,43 @@
             </div>
             <br>
           </div>
+          <div v-else>
+            <h4>Formulario:</h4>
+            <h5>"{{form.name}}"</h5>
+            <div v-for="element in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
+              <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
+              <!-- v-if else depending on element.type -->
+              <b-form-checkbox v-if="element.type=='checkbox'"
+                :id="'menu-'+menu_id+'-element-'+element.name">
+              </b-form-checkbox>
+              <b-form-input v-else-if="element.type=='text-input'"
+                :id="'menu-'+menu_id+'-element-'+element.name"
+                :type="element.type"
+                :placeholder="'Ingresa '+element.name">
+              </b-form-input>
+              <div v-else-if="element.type=='acciones'" >
+                <multiselect 
+                :type="element.type"
+                v-model="$store.state.tools.acciones_value" 
+                :options="$store.state.tools.acciones_options" 
+                :multiple="true" :close-on-select="false" 
+                :clear-on-select="false" 
+                :preserve-search="true" 
+                placeholder="Seleccione acciones" 
+                label="name" 
+                track-by="name"
+                :select-label="''"
+                :selected-label="''"
+                :deselect-label="''">
+              </multiselect>
+              </div>
 
-          <h4>Formulario:</h4>
-          <h5>"{{form.name}}"</h5>
-          <div v-for="(element, index) in $store.state.tools.config" :key="element.name" style="padding: 0.5em">
-            <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
-            <!-- v-if else depending on element.type -->
-            <b-form-checkbox v-if="element.type=='checkbox'"
-              :id="'menu-'+menu_id+'-element-'+element.name">
-            </b-form-checkbox>
-            <b-form-input v-else-if="element.type=='text-input'"
-              :id="'menu-'+menu_id+'-element-'+element.name"
-              :type="element.type"
-              :placeholder="'Ingresa '+element.name">
-            </b-form-input>
-            <div v-else-if="element.type=='acciones'" >
-              <multiselect 
-              :type="element.type"
-              v-model="$store.state.tools.acciones_value" 
-              :options="$store.state.tools.acciones_options" 
-              :multiple="true" :close-on-select="false" 
-              :clear-on-select="false" 
-              :preserve-search="true" 
-              placeholder="Seleccione acciones" 
-              label="name" 
-              track-by="name"
-              :select-label="''"
-              :selected-label="''"
-              :deselect-label="''">
-            </multiselect>
+              <b-list-group-item v-else>
+                {{ element }}
+              </b-list-group-item>
             </div>
-
-            <b-list-group-item v-else>
-              {{ element }}
-            </b-list-group-item>
           </div>
+
         </b-list-group>
       </div>
 

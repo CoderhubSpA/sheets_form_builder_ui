@@ -1,5 +1,5 @@
 <template>
-    <b-container class="border rounded p-3" style="overflow-y: auto;">
+    <b-container class="border rounded p-3" style="overflow-y: auto;" @click.self="openFormConfig(form)">
         <b-form-row class="w-100 mx-auto">
             <b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
             @keyup.enter="editingName = false"/>
@@ -38,6 +38,12 @@ export default {
         }
     },
     methods: {
+        openFormConfig(form){
+        this.$store.state.form.current_form_config = form
+        this.$store.state.form.current_row_config = null
+        this.$store.state.form.current_field_config = null
+        this.$store.state.form.current_section_config = null
+      }
     },
 }
 </script>
