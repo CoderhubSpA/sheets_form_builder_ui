@@ -55,7 +55,10 @@ export default {
         field_type_text: item.name,
         required: false,
         description: "", 
-        show:false
+        show:false,
+        colSm:12,
+        colMd:12,
+        colXl:12,
       };
       this.field_n += 1;
       return element;
