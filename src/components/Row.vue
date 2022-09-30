@@ -15,9 +15,17 @@
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
                       <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
-                      <button type="button" class="btn btn-danger btn-sm delete" @click="deleteRow(index)"> 
+                      <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" > 
                         <v-icon class="custom-icon" name="trash"></v-icon>
                       </button>
+                      <b-modal :id="`modal-borrar-fila-${index}`" centered hide-backdrop content-class="shadow" hide-header @ok="deleteRow(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+                        <template #default="{ close }">
+                          <div class="container row justify-content-end">
+                            <b-button class="btn btn-close"  @click="close()"> </b-button>
+                            <h5 class="text-center" >¿Está seguro que desea eliminar esta fila?</h5>
+                          </div>
+                        </template>
+                      </b-modal>
                     </div>
                   </form>
                   <br>
