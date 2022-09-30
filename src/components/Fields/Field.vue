@@ -30,6 +30,7 @@
     
 <script>
 import draggable from 'vuedraggable'
+import FieldsDropdownMenuVue from '../Toolbox/FieldsDropdownMenu.vue';
 
 export default {
   name: "Field",
@@ -68,6 +69,7 @@ export default {
       if (this.$store.state.form.current_field_config?.index == this.fields[index].index) {
         this.$store.state.form.current_field_config = null;
       }
+      this.$store.state.tools.fields.push(this.fields[index]);
       this.fields.splice(index, 1);
     },
     newField() {
