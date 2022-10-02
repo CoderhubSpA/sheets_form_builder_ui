@@ -17,9 +17,17 @@
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
           </div>
           <div class="flex-column">
-            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" @click="deleteField(fieldIdx)"> 
+            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" v-b-modal="`modal-borrar-campo-${index}`"> 
               x
             </button>
+            <b-modal :id="`modal-borrar-campo-${index}`" centered hide-backdrop content-class="shadow" hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+              <template #default="{ close }">
+                <div class="container row justify-content-end">
+                  <b-button class="btn btn-close"  @click="close()"> </b-button>
+                  <h5 class="text-center" >¿Está seguro que desea eliminar este campo?</h5>
+                </div>
+              </template>
+            </b-modal>
             <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-info p-2" @click="openFieldConfig(field)"> 
               <!-- ඞ -->
               <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
