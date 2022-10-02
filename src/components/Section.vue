@@ -30,7 +30,7 @@
                         <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" v-b-modal="`modal-borrar-seccion-${index}`"> 
                           x
                         </button>
-                        <b-modal :id="`modal-borrar-seccion-${index}`" centered hide-backdrop content-class="shadow" hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+                        <b-modal :id="`modal-borrar-seccion-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                           <template #default="{ close }">
                             <div class="container row justify-content-end">
                               <b-button class="btn btn-close"  @click="close()"> </b-button>

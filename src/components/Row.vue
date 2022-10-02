@@ -18,7 +18,7 @@
                       <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" > 
                         <v-icon class="custom-icon" name="trash"></v-icon>
                       </button>
-                      <b-modal :id="`modal-borrar-fila-${index}`" centered hide-backdrop content-class="shadow" hide-header @ok="deleteRow(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+                      <b-modal :id="`modal-borrar-fila-${index}`" centered hide-header @ok="deleteRow(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                         <template #default="{ close }">
                           <div class="container row justify-content-end">
                             <b-button class="btn btn-close"  @click="close()"> </b-button>
