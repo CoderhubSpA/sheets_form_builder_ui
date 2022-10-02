@@ -27,9 +27,7 @@
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
                         <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
                         <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
-                        <button type="button" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" v-b-modal="`modal-borrar-seccion-${index}`"> 
-                          x
-                        </button>
+                        <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${index}`">×</button>
                         <b-modal :id="`modal-borrar-seccion-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                           <template #default="{ close }">
                             <div class="container row justify-content-end">
@@ -181,7 +179,7 @@ export default {
 
 .close-rounded{
   width: 2rem; 
-  height:2rem;
+  height: 2rem;
 }
 
 .moving-section {
@@ -192,6 +190,24 @@ export default {
 }
 .cursor-move{
   cursor: move;
+}
+
+.close {
+  cursor: pointer;
+  right: 0%;
+  width: 32px;
+  height: 32px;
+  font-size: 21px;
+  font-weight: 700;
+  color: #ff4949;
+  border: none;
+  background: none;
+  opacity: 0.8;
+}
+
+.close:hover {
+  color: red;
+  opacity: 1;
 }
 
 

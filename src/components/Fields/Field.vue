@@ -10,29 +10,25 @@
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
             <div style="text-align: left !important; margin-bottom: 5px;"
-           
+
             >
               <i>{{field.field_type_text}}</i>
+              <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${fieldIdx}`">x</button> 
+              <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
+                <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
+              </button>   
+              <b-modal :id="`modal-borrar-campo-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+                <template #default="{ close }">
+                  <div class="container row justify-content-end">
+                    <b-button class="btn btn-close"  @click="close()"> </b-button>
+                    <h5 class="text-center" >¿Está seguro que desea eliminar este campo?</h5>
+                  </div>
+                </template>
+              </b-modal>         
             </div>
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
           </div>
-          <div class="flex-column">
-            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-danger p-2" v-b-modal="`modal-borrar-campo-${fieldIdx}`"> 
-              x
-            </button>
-            <b-modal :id="`modal-borrar-campo-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
-              <template #default="{ close }">
-                <div class="container row justify-content-end">
-                  <b-button class="btn btn-close"  @click="close()"> </b-button>
-                  <h5 class="text-center" >¿Está seguro que desea eliminar este campo?</h5>
-                </div>
-              </template>
-            </b-modal>
-            <button type="button" v-if="field.show" class="close-rounded position-relative translate-middle badge border border-light rounded-circle bg-info p-2" @click="openFieldConfig(field)"> 
-              <!-- ඞ -->
-              <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
-            </button>
-          </div>
+            
         </div>
       </b-col>
       </transition-group>

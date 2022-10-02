@@ -10,7 +10,7 @@
               ghost-class="moving-section">
               <transition-group>
                 <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
-                  <form>
+                  <form @click.self="openRowConfig(row)">
                     <div class="form-group col-md-4 flex">
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
@@ -98,6 +98,12 @@ export default {
       deleteRow (idx) {
         console.log(idx)
         this.rows.splice(idx,1)
+      },
+      openRowConfig(row){
+        this.$store.state.form.current_form_config = row
+        this.$store.state.form.current_row_config = null
+        this.$store.state.form.current_field_config = null
+        this.$store.state.form.current_section_config = null
       }
   }
 };
