@@ -27,8 +27,8 @@
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
                         <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
                         <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
-                        <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${index}`">×</button>
-                        <b-modal :id="`modal-borrar-seccion-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+                        <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`">×</button>
+                        <b-modal :id="`modal-borrar-seccion-${idxRow}-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                           <template #default="{ close }">
                             <div class="container row justify-content-end">
                               <b-button class="btn btn-close"  @click="close()"> </b-button>

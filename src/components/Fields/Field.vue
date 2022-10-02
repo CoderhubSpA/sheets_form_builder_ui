@@ -13,11 +13,11 @@
 
             >
               <i>{{field.field_type_text}}</i>
-              <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${fieldIdx}`">x</button> 
+              <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
-              </button>   
-              <b-modal :id="`modal-borrar-campo-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
+              </button>
+              <b-modal :id="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                 <template #default="{ close }">
                   <div class="container row justify-content-end">
                     <b-button class="btn btn-close"  @click="close()"> </b-button>
