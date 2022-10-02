@@ -7,6 +7,7 @@ import store from './store'
 import "vue-awesome/icons";
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // import './assets/main.css'
 Vue.component("v-icon", Icon);

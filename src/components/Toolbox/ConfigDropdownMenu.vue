@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
@@ -12,16 +13,28 @@
           </div>
           <div v-else-if="currentSection">
             <h4>Sección {{currentSection.index+1}}</h4>
-            <label>Nombre sección: </label>
-            <b-input v-model="currentSection.name" type="text" placeholder="Nombre Sección"/>
-            <label>col sm: </label>
-            <b-input v-model="currentSection.colSm" type="number"/>
-            <label>col md: </label>
-            <b-input v-model="currentSection.colMd" type="number"/>
-            <label>col xl: </label>
-            <b-input v-model="currentSection.colXl" type="number"/>
-            <label>Descripción: </label>
-            <b-form-textarea size="lg" v-model="currentSection.description"></b-form-textarea>
+            <label for="section-config-name">Nombre sección: </label>
+            <b-input v-model="currentSection.name" id="section-config-name" type="text" placeholder="Nombre Sección"/>
+            <label for="section-config-col-sm">col sm: </label>
+            <b-input v-model="currentSection.colSm" id="section-config-col-sm" type="number"/>
+            <label for="section-config-col-md">col md: </label>
+            <b-input v-model="currentSection.colMd" id="section-config-col-md" type="number"/>
+            <label for="section-config-col-xl">col xl: </label>
+            <b-input v-model="currentSection.colXl" id="section-config-col-xl" type="number"/>
+            <label for="section-config-description">Descripción: </label>
+            <b-form-textarea size="lg" v-model="currentSection.description" id="section-config-description"/>
+            <br>
+            <label for="section-config-image">Agregar imagen: </label>
+            <b-form-file v-model="currentSection.image"  id="section-config-image"
+            @change="handleImage(currentSection)" accept="image/jpeg, image/png, image/gif" plain></b-form-file>
+            
+            <b-form-row class="py-1 w-100">
+              <b-button v-b-modal.modal-1 variant="primary">Ver imagen</b-button>
+              <b-modal class="modal-img" id="modal-1" title="BootstrapVue" hide-footer hide-header centered>
+                <b-img :src="currentSection.image_url" alt="image-section" width="320px"/>
+            </b-modal>
+            </b-form-row>
+
           </div>
 
           <div v-else-if="currentField">
@@ -38,11 +51,19 @@
             <label for="field-config-required">Requerido</label>
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
             <br>
+            <label for="field-config-col-sm">col sm: </label>
+            <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/>
+            <label for="field-config-col-md">col md: </label>
+            <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/>
+            <label for="field-config-col-xl">col xl: </label>
+            <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/>
+            <br>
             <label for="field-config-description">Descripción</label>
             <div>
               <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
             </div>
             <br>
+
           </div>
 
           <h4>Formulario:</h4>
@@ -90,6 +111,7 @@
 import draggable from 'vuedraggable';
 import multiselect from 'vue-multiselect';
 
+
 export default {
   name: 'ConfigDropdownMenu',
   components: {
@@ -133,9 +155,17 @@ export default {
   },
   data() {
     return {
-
+      pondObject: null, 
     }
   },
+  methods:{
+    handleImage(obj){
+      obj.image_url = window.URL.createObjectURL(obj.image)
+
+
+    }
+  }
+
 }
 </script>
 

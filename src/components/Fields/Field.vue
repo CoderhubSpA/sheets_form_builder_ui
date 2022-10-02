@@ -2,7 +2,11 @@
   <div class="form-group">
     <draggable class="card-deck" :list="sections[idxSection].fields" group="Fields" @change="onChange">
       <transition-group tag="b-row" class="sections">
-      <b-form-row style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
+      <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
+        :sm="field.colSm ? field.colSm : 12" 
+        :md="field.colMd ? field.colMd : 12"
+        :xl="field.colXl ? field.colXl : 12"
+        v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
             <div style="text-align: left !important; margin-bottom: 5px;"
@@ -22,7 +26,7 @@
             </button>
           </div>
         </div>
-      </b-form-row>
+      </b-col>
       </transition-group>
     </draggable>
   </div>
@@ -30,6 +34,7 @@
     
 <script>
 import draggable from 'vuedraggable'
+import FieldsDropdownMenuVue from '../Toolbox/FieldsDropdownMenu.vue';
 
 export default {
   name: "Field",
@@ -68,6 +73,7 @@ export default {
       if (this.$store.state.form.current_field_config?.index == this.fields[index].index) {
         this.$store.state.form.current_field_config = null;
       }
+      this.$store.state.tools.fields.push(this.fields[index]);
       this.fields.splice(index, 1);
     },
     newField() {
