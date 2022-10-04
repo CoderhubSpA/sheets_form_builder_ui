@@ -97,7 +97,15 @@ export default {
       },
       deleteRow (idx) {
         console.log(idx)
+        this.updateFields(idx)
         this.rows.splice(idx,1)
+      },
+      updateFields(index){
+        this.rows[index].sections.forEach((section) => {
+          section.fields.forEach(field => {
+            this.$store.state.tools.fields.push(field);
+          })
+        })
       },
       openRowConfig(row){
         this.$store.state.form.current_form_config = row
