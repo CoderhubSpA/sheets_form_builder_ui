@@ -38,7 +38,6 @@
     
 <script>
 import draggable from 'vuedraggable'
-import FieldsDropdownMenuVue from '../Toolbox/FieldsDropdownMenu.vue';
 
 export default {
   name: "Field",

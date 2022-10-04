@@ -66,4 +66,8 @@ export default {
   --bs-btn-active-bg: #17474b;
   --bs-btn-active-border-color: #17474b;
 }
+
+ul {
+  width: 100%;
+}
 </style>

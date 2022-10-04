@@ -1,7 +1,9 @@
 <template>
-<div class="card campo col-5">
-  <div class="card-body" style="padding:0.25em 0.5em;">
-    <div class="card-text">{{ text }}</div>
+<div class="campo col-6">
+  <div class="card">
+    <div class="card-body" style="padding:0.25em 0.5em;">
+      <div class="card-text">{{ text }}</div>
+    </div>
   </div>
 </div>
 </template>
@@ -25,11 +27,9 @@ export default {
 
 <style>
 .campo {
-  background-color: #008A94;
   color: #000000;
-  border-radius: 13px;
 
-  margin: 5px 10px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 </style>
