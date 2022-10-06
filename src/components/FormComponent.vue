@@ -1,18 +1,24 @@
 <template>
-    <b-container class="border rounded p-3" style="overflow-y: auto;" @click.self="openFormConfig(form)">
-        <b-form-row class="w-100 mx-auto">
-            <b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
-            @keyup.enter="editingName = false"/>
-            <div class="h3 d-inline-block" v-else>{{form.name}}</div>
-            <v-icon class="d-inline-block ml-2 mb-1"
-                :name="editingName? 'check': 'pencil-alt'"
-                @click="editingName=!editingName"
-                style="cursor: pointer"   
-            />
-            <div class="m-2 y-2">
-                <Row/>
-            </div>
-            <Actions/>
+    <b-container class="container" style="overflow-y: auto;" @click.self="openFormConfig(form)">
+        <b-form-row class= "row justify-content-center mx-auto"> 
+            <b-col :xl="view =='xl' ? 12 : 
+                        (view =='md' ? 8 : 5)"
+                    :md="view =='xl' || view == 'md' ? 12 : 8" 
+                    :sm="12"
+                    class=" border rounded p-3">
+                <b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
+                    @keyup.enter="editingName = false"/>
+                <div class="h3 d-inline-block" v-else>{{form.name}}</div>
+                <v-icon class="d-inline-block ml-2 mb-1"
+                    :name="editingName? 'check': 'pencil-alt'"
+                    @click="editingName=!editingName"
+                    style="cursor: pointer"   
+                />
+                <div class="m-2 y-2">
+                    <Row/>
+                </div>
+                <Actions/>
+            </b-col>
         </b-form-row>
     </b-container>
 </template>
@@ -29,6 +35,9 @@ export default {
     computed:{
         form(){
            return this.$store.state.form.form
+        }, 
+        view(){
+            return this.$store.state.form.current_view 
         }
     },
     data(){

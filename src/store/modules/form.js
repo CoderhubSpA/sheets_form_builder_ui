@@ -7,6 +7,7 @@ const state = {
     current_row_config: null,
     current_section_config: null,
     current_field_config: null,
+    current_view: "xl"
 }
 const mutations = {
     addSection(state, payload){
