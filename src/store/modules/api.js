@@ -8,7 +8,7 @@ const state = {
   configuration_id: '41045a45-3ba9-11eb-877b-f23c911d2162',
   fields_id: '41045aca-3ba9-11eb-877b-f23c911d2162',
   config: [
-    
+    // {"id-example"...}, {"id-example2"...}
   ],
   config_select: {
     "id-example": {
@@ -17,8 +17,28 @@ const state = {
     },
   },
   fields: [
-    // each field will have its config and config_select
+    // {"id":"id-field1", ...}, {"id": "id-field2", ...}
   ],
+  fields_config: [
+    // each field will have it's own independent config values
+    // but they share the configuration columns, so all of them are stored here like shared config
+    // [{"id-config1"...}, {"id-config2"...}, ...]
+  ],
+  fields_config_select: {
+    // each configuration may have its possible options, but it's values are field-dependent so they are not stored here
+    "id-config": {
+      "options": [],
+    }
+  },
+  field_config_values: {
+    // stores, for each field, its config's values
+    "id-field": {
+      "id-config": {
+        "values": []
+      }
+    }
+
+  }
 }
 
 const mutations = {
@@ -79,13 +99,27 @@ const mutations = {
       );
       state.fields = all_possible_fields;
       console.log(all_possible_fields);
+      
+      // All fields share the configuration columns, so we load that shared information
+      state.fields_config = columns;
+      // and for selectors and those configuration of that kind, we load their options
+      for (const config in state.fields_config) {
+        const fk = config.entity_type_fk
+        state.fields_config_select[config.id] = {
+          "options": response.data.content.entities_fk[fk]
+        }
+      }
 
-      // Each field will have their own configuration, so all of them must have these columns as their own's
-      /*
-      for (let i_col = 0; i_col < columns.length; i_col++)
-      {
-        let column = columns[i_col];
-      }*/
+      // Finally, we prepare the store for keep the values for each configuration of each field
+      for (const field in state.fields) {
+        state.field_config_values[field.id] = {}
+        for (const config in state.fields_config) {
+          state.field_config_values[field.id][config.id] = {
+            "values": []
+          }
+        }
+      }
+      
     })
   }
 }
