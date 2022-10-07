@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 const state = {
   base_url: 'http://127.0.0.1:8081/',
@@ -16,6 +16,8 @@ const state = {
       "values": [],
     },
   },
+  actions_id: "",
+  actions: [],
   fields: [
     // {"id":"id-field1", ...}, {"id": "id-field2", ...}
   ],
@@ -37,27 +39,25 @@ const state = {
         "values": []
       }
     }
-
   }
 }
 
 const mutations = {
-  API_CONFIG(state) {
+  API_CONFIG(state){
     axios.get(
       state.base_url + state.info_url + state.configuration_id
     )
     .then(response => {
-      console.log(response.data.content);
       let columns = response.data.content.columns;
 
       for (let i_col = 0; i_col < columns.length; i_col++) {
         let column = columns[i_col];
         state.config.push(column)
-
+        if(column.name == "ACTIONS")
+          state.actions_id = column.id
         if (["SELECTOR", "SELECTOR[MULTIPLE]"].includes(column.format))
         {
           let options = [];
-          
           let options_fk = column.entity_type_fk;
           if (!options_fk)
           {
@@ -80,6 +80,7 @@ const mutations = {
         }
       }
     })
+    return state.config
   },
   FETCH_FIELDS(state) {
     axios.get(
@@ -87,7 +88,6 @@ const mutations = {
     )
     .then(response => {
       console.log(response.data.content);
-
       let columns = response.data.content.columns;
 
       // First, we need to get the possible fields, so we search for the column "Columna"
@@ -119,14 +119,22 @@ const mutations = {
           }
         }
       }
-      
     })
+  },
+
+  UPDATE_VALUE_CONFIG_SELECT(state, payload){
+    state.config_select[payload.id].values = payload.values
+    console.log(state.config_select[payload.id].values)
   }
 }
 
 const actions = {
-  api_config(context) {
-    context.commit('API_CONFIG');
+  api_config(context){
+    context.commit('API_CONFIG')
+  },
+  update_value_config_select(context, payload){
+    console.log(payload)
+    context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)
   },
   fetch_fields(context) {
     context.commit('FETCH_FIELDS');
