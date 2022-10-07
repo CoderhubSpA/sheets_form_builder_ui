@@ -7,7 +7,9 @@ const state = {
       "values": [],
     },
   },
-  valores_acciones: [],
+  fields: [
+    // each field will have its config and config_select
+  ],
 }
 
 const mutations = {
