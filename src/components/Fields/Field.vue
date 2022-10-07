@@ -69,24 +69,12 @@ export default {
   data: () => ({
   }),
   methods: {
-    addField() {
-      this.fields.push(this.newField());
-    },
     deleteField(index) {
       if (this.$store.state.form.current_field_config?.index == this.fields[index].index) {
         this.$store.state.form.current_field_config = null;
       }
       this.$store.state.api.fields.push(this.fields[index]);
       this.fields.splice(index, 1);
-    },
-    newField() {
-      return {
-        index: this.fields.length,
-        name: "",
-        idxRow: -1,
-        idxSection: -1,
-        description:"",
-      };
     },
     onChange(event) {
       console.log("change", event)
