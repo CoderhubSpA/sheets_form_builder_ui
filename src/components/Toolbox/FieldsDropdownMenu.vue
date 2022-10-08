@@ -46,22 +46,21 @@ export default {
   methods: {
     cloneAction(item) {
       console.log('cloned', item)
+      
       let element = {
-        name: item.name,
         index: this.field_n,
         idxRow: -1,
         idxSection: -1,
-        field_type: item.name,
-        field_type_text: item.name,
-        required: false,
+        // TODO: remove the following keys and refactor the project to use the fields in item
         description: "", 
         show:false,
         colSm:12,
         colMd:12,
         colXl:12,
       };
+      
       this.field_n += 1;
-      return element;
+      return {...element, ...item};
     }
   }
 }

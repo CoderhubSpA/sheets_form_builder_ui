@@ -12,7 +12,7 @@
             <div style="text-align: left !important; margin-bottom: 5px;"
 
             >
-              <i>{{field.field_type_text}}</i>
+              <!--<i>{{field.field_type_text}}</i>-->
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
