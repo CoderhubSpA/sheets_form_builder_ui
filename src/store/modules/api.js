@@ -32,7 +32,7 @@ const state = {
       "options": [],
     }
   },
-  field_config_values: {
+  fields_config_values: {
     // stores, for each field, its config's values
     "id-field": {
       "id-config": {
@@ -87,7 +87,7 @@ const mutations = {
       state.base_url + state.info_url + state.fields_id
     )
     .then(response => {
-      console.log(response.data.content);
+      // console.log(response.data.content);
       let columns = response.data.content.columns;
 
       // First, we need to get the possible fields, so we search for the column "Columna"
@@ -98,27 +98,55 @@ const mutations = {
         field => (field.form_id == state.form_id) && (field.form_id != null)
       );
       state.fields = all_possible_fields;
-      console.log(all_possible_fields);
       
       // All fields share the configuration columns, so we load that shared information
       state.fields_config = columns;
       // and for selectors and those configuration of that kind, we load their options
-      for (const config in state.fields_config) {
-        const fk = config.entity_type_fk
-        state.fields_config_select[config.id] = {
-          "options": response.data.content.entities_fk[fk]
-        }
-      }
-
-      // Finally, we prepare the store for keep the values for each configuration of each field
-      for (const field in state.fields) {
-        state.field_config_values[field.id] = {}
-        for (const config in state.fields_config) {
-          state.field_config_values[field.id][config.id] = {
-            "values": []
+      state.fields_config.forEach(config => {
+        const options_fk = config.entity_type_fk;
+        if (!options_fk)
+        {
+          let options = [];
+          let json_options = JSON.parse(config.options);
+          for (let key in json_options)
+          {
+            options.push({
+              "id": key,
+              "name": json_options[key]
+            })
+          }
+          state.fields_config_select[config.id] = {
+            'options': options
+          };
+        } else {
+          if (!response.data.content.entities_fk[options_fk])
+          {
+            state.fields_config_select[config.id] = {
+              'options': [{'id': 'ff', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+            }
+          } else {
+            state.fields_config_select[config.id] = {
+              'options': response.data.content.entities_fk[options_fk]
+            }
           }
         }
-      }
+      });
+      
+      // Finally, we prepare the store for keep the values for each configuration of each field
+      state.fields.forEach(field => {
+        state.fields_config_values[field.id] = {}
+
+        state.fields_config.forEach(config => {
+          state.fields_config_values[field.id][config.id] = {
+            "values": []
+          }
+        });
+      });
+      /*
+      console.log(state.fields)
+      console.log(state.fields_config_select)
+      console.log(state.fields_config_values)
+      */
     })
   },
 
