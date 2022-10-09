@@ -86,34 +86,40 @@
           </div>
 
           <div v-else-if="currentField">
-            <h4 @click="myPrint(currentField)">{{currentField.name + currentField.id}}</h4>
+            <h4 @click="myPrint(currentField)">{{ currentField.name }}</h4>
             <br>
-            <div v-for="element in $store.state.api.fields_config" :key="element" style="padding: 0.5em">
-              <label :for="'menu-'+menu_id+'-element-'+element.id">{{ element.name + element.id }}</label>
+            <div v-for="element in $store.state.api.fields_config" :key="element.id" style="padding: 0.5em">
+              <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
+              >
+                {{ element.name }}
+              </label>
               
-              <b-form-checkbox v-if="element.format=='checkbox'"
-                :id="'menu-'+menu_id+'-element-'+element.id"
-                :v-model="$store.state.api.fields_config_values[currentField.id][element.id].values">
+              <b-form-checkbox
+              v-if="element.format=='SiNo'"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values">
               </b-form-checkbox>
-              <b-form-input v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
-                :id="'menu-'+menu_id+'-element-'+element.id"
-                type="text-input"
-                :v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
+
+              <b-form-input
+              v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
                 :placeholder="'Ingresa' + element.name">
               </b-form-input>
-              <div v-else-if="element.format=='SELECTOR'">
-                <select class="form-select"
-                  :id="'menu-'+menu_id+'-element-'+element.id"
-                >
-                  
-                  <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
-                  :v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
-                  :value="option"
-                  :key="option.id"
-                  >{{option.name}}</option>
 
-                </select>
-              </div>
+              <select
+              v-else-if="element.format=='SELECTOR'"
+                class="form-select"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
+              >
+                <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
+                  :value="option"
+                >
+                  {{ option.name }}
+                </option>
+              </select>
               <b-list-group-item v-else>
                 {{ element }}
               </b-list-group-item>
