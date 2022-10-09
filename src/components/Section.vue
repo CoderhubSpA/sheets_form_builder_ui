@@ -102,6 +102,13 @@ export default {
         this.sections.push(section);
       },
       newSection(){
+        let config_values = {};
+        this.$store.state.api.sections_config.forEach(config => {
+          config_values[config.id] = {
+            'values': config.format === "TEXT" ? "": [],
+          }
+        })
+
         return {
           index: this.sections.length,
           name: "",
@@ -111,7 +118,8 @@ export default {
           colXl:12,
           image:'',
           fields: [],
-          idxRow: -1
+          idxRow: -1,
+          config_values: config_values, // here we store the values for the sections_config
         }
       },
       deleteSection (idx) {

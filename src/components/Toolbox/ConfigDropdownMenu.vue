@@ -60,7 +60,43 @@
           
           </div>
           <div v-else-if="currentSection">
-            <h4>Sección {{currentSection.index+1}}</h4>
+            <h4 @click="myPrint(currentSection)">Sección {{currentSection.index+1}}</h4>
+            <br>
+            <div v-for="element in $store.state.api.sections_config" :key="element.id" style="padding: 0.5em">
+              <label :for="'menu-'+menu_id+'-element-'+element.id">
+                {{ element.name }}
+              </label>
+
+              <b-form-checkbox
+              v-if="element.format=='SiNo'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                v-model="currentSection.config_values[element.id].values"
+              ></b-form-checkbox>
+              
+              <b-form-input
+              v-else-if="element.format=='TEXT'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                v-model="currentSection.config_values[element.id].values"
+              ></b-form-input>
+
+              <select
+              v-else-if="element.format=='SELECTOR'"
+                class="form-select"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                v-model="currentSection.config_values[element.id].values"
+              >
+                <option v-for="option in $store.state.api.sections_config_select[element.id].options"
+                  :value="option"
+                  :key="option.id">
+                  {{ option.name }}
+                </option>
+              </select>
+
+              <b-list-group-item
+              v-else>
+                {{ element }}
+              </b-list-group-item>
+            </div>
             <label for="section-config-name">Nombre sección: </label>
             <b-input v-model="currentSection.name" id="section-config-name" type="text" placeholder="Nombre Sección"/>
             <label for="section-config-col-sm">col sm: </label>
