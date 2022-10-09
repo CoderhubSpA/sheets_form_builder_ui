@@ -13,26 +13,28 @@
               <!-- v-if else depending on element.format -->
               <b-form-checkbox v-if="element.format=='SiNo'"
                 :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_select[element.id].values"
+                v-model="$store.state.api.config_values[element.id]"
               >
               </b-form-checkbox>
               <b-form-input v-else-if="element.format=='TEXT'"
                 :id="'menu-'+menu_id+'-element-'+element.name"
                 :placeholder="'Ingresa '+element.name"
-                v-model="$store.state.api.config_select[element.id].values"
+                v-model="$store.state.api.config_values[element.id]"
               >
               </b-form-input>
               <div v-else-if="element.format=='SELECTOR'">
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_select[element.id].values" @change="myPrint([$store.state.api.config_select[element.id].values])">
+                v-model="$store.state.api.config_values[element.id]" @change="myPrint([$store.state.api.config_values[element.id]])">
                   <option v-for="option in $store.state.api.config_select[element.id].options" 
-                  :value="option">{{option.name}}</option>
+                  :value="option"
+                  :key="option.id"
+                >{{option.name}}</option>
                 </select>
               </div>
               <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
                 <!--  Idealmente que sea este
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_select[element.id].values" multiple>
+                v-model="$store.state.api.config_select[element.id]" multiple>
                   <option v-for="option in $store.state.api.config_select[element.id].options" 
                   :value="option">{{option.name}}</option>
                 </select> -->

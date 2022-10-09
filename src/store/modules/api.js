@@ -8,6 +8,7 @@ const state = {
   configuration_id: '41045a45-3ba9-11eb-877b-f23c911d2162',
   config: [],
   config_select: {},
+  config_values: {},
   actions_id: "",
   actions: [],
 }
@@ -40,13 +41,11 @@ const mutations = {
             }
             state.config_select[config.id] = {
               'options': options,
-              'values': values,
             }
           } else {
             const options_fk = config.entity_type_fk;
             state.config_select[config.id] = {
               'options': response.data.content.entities_fk[options_fk],
-              'values': values
             }
 
             if (!state.config_select[config.id].options)
@@ -54,14 +53,16 @@ const mutations = {
               state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
             }
           }
+
+          state.config_values[config.id] = values;
       });
     });
     return state.config
   },
 
   UPDATE_VALUE_CONFIG_SELECT(state, payload){
-    state.config_select[payload.id].values = payload.values
-    console.log(state.config_select[payload.id].values)
+    state.config_values[payload.id] = payload.values
+    console.log(state.config_values[payload.id])
   }
 }
 
