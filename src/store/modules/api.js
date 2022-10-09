@@ -19,37 +19,43 @@ const mutations = {
     )
     .then(response => {
       let columns = response.data.content.columns;
+      state.config = columns;
+      
+      state.config.forEach(config => {
+        let values = config.format === "TEXT" ? "": [];
 
-      for (let i_col = 0; i_col < columns.length; i_col++) {
-        let column = columns[i_col];
-        state.config.push(column)
-        if(column.name == "ACTIONS")
-          state.actions_id = column.id
-        if (["SELECTOR", "SELECTOR[MULTIPLE]"].includes(column.format))
-        {
-          let options = [];
-          let options_fk = column.entity_type_fk;
-          if (!options_fk)
+        if(config.name == "ACTIONS")
+          state.actions_id = config.id
+          //if (["SELECTOR", "SELECTOR[MULTIPLE]"].includes(column.format))
+          if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
           {
-            let json_options = JSON.parse(column.options);
+            let options = [];
+            let json_options = JSON.parse(config.options);
             for (let key in json_options)
             {
               options.push({
-                "id": key,
-                "name":json_options[key]
+                'id': key,
+                'name': json_options[key],
               });
             }
+            state.config_select[config.id] = {
+              'options': options,
+              'values': values,
+            }
           } else {
-            options = response.data.content.entities_fk[options_fk];
+            const options_fk = config.entity_type_fk;
+            state.config_select[config.id] = {
+              'options': response.data.content.entities_fk[options_fk],
+              'values': values
+            }
+
+            if (!state.config_select[config.id].options)
+            {
+              state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+            }
           }
-          
-          state.config_select[column.id] = {
-            "options": options,
-            "values": [],
-          }
-        }
-      }
-    })
+      });
+    });
     return state.config
   },
 
