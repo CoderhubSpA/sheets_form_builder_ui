@@ -104,9 +104,7 @@ export default {
       newSection(){
         let config_values = {};
         this.$store.state.api.sections_config.forEach(config => {
-          config_values[config.id] = {
-            'values': config.format === "TEXT" ? "": [],
-          }
+          config_values[config.id] = config.format === "TEXT" ? "": []
         })
 
         return {

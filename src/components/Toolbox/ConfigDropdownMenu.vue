@@ -70,20 +70,20 @@
               <b-form-checkbox
               v-if="element.format=='SiNo'"
                 :id="'menu-'+menu_id+'-element-'+element.id"
-                v-model="currentSection.config_values[element.id].values"
+                v-model="currentSection.config_values[element.id]"
               ></b-form-checkbox>
               
               <b-form-input
               v-else-if="element.format=='TEXT'"
                 :id="'menu-'+menu_id+'-element-'+element.id"
-                v-model="currentSection.config_values[element.id].values"
+                v-model="currentSection.config_values[element.id]"
               ></b-form-input>
 
               <select
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
                 :id="'menu-'+menu_id+'-element-'+element.id"
-                v-model="currentSection.config_values[element.id].values"
+                v-model="currentSection.config_values[element.id]"
               >
                 <option v-for="option in $store.state.api.sections_config_select[element.id].options"
                   :value="option"
