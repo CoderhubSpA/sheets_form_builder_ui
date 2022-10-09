@@ -11,13 +11,16 @@
             <div v-for="element in $store.state.api.config" :key="element.name" style="padding: 0.5em">
               <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
               <!-- v-if else depending on element.format -->
-              <b-form-checkbox v-if="element.format=='checkbox'"
-                :id="'menu-'+menu_id+'-element-'+element.name">
-              </b-form-checkbox>
-              <b-form-input v-else-if="element.format=='text-input'"
+              <b-form-checkbox v-if="element.format=='SiNo'"
                 :id="'menu-'+menu_id+'-element-'+element.name"
-                :type="element.format"
-                :placeholder="'Ingresa '+element.name">
+                v-model="$store.state.api.config_select[element.id].values"
+              >
+              </b-form-checkbox>
+              <b-form-input v-else-if="element.format=='TEXT'"
+                :id="'menu-'+menu_id+'-element-'+element.name"
+                :placeholder="'Ingresa '+element.name"
+                v-model="$store.state.api.config_select[element.id].values"
+              >
               </b-form-input>
               <div v-else-if="element.format=='SELECTOR'">
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
