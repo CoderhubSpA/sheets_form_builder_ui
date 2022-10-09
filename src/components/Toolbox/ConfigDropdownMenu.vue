@@ -105,7 +105,7 @@
               v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
                 v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
-                :placeholder="'Ingresa' + element.name">
+                :placeholder="'Ingresa ' + element.name">
               </b-form-input>
 
               <select
