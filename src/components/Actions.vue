@@ -1,6 +1,6 @@
 <template>
-    <div id="actions-buttons" class="d-flex flex-row justify">
-        <ActionComponent v-for="(button, index) in $store.state.tools.acciones_value" :text="button.name" :key="index"/>
+    <div id="actions-buttons" class="row justify-content-md-center">
+        <ActionComponent v-for="(button, index) in getAction" :text="button.name" :key="index"/>
     </div>
 </template>
 
@@ -10,6 +10,16 @@
         components: { 
             ActionComponent,
         },
+        data() {
+            return {
+                actions: [],
+            }
+        },
+        computed: {
+            getAction() {
+                return this.$store.state.api.actions
+            }
+        }
     }
 </script>
 
