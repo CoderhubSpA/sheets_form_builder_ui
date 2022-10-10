@@ -98,13 +98,13 @@
               <b-form-checkbox
               v-if="element.format=='SiNo'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values">
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]">
               </b-form-checkbox>
 
               <b-form-input
               v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
                 :placeholder="'Ingresa ' + element.name">
               </b-form-input>
 
@@ -112,7 +112,7 @@
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                v-model="$store.state.api.fields_config_values[currentField.id][element.id].values"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
               >
                 <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
                   :value="option"

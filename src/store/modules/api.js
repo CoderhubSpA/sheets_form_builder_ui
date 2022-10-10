@@ -137,9 +137,7 @@ const mutations = {
         state.fields_config_values[field.id] = {}
 
         state.fields_config.forEach(config => {
-          state.fields_config_values[field.id][config.id] = {
-            "values": config.format === "TEXT" ? "": [],
-          }
+          state.fields_config_values[field.id][config.id] = config.format === "TEXT" ? "": [];
         });
       });
       /*
