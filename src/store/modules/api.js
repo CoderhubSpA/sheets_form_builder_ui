@@ -6,11 +6,14 @@ const state = {
   records_url: 'sheets/getrecord/form/',
   form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
   configuration_id: '41045a45-3ba9-11eb-877b-f23c911d2162',
+  rows_id: '4d91f765-88da-11eb-965c-ed7fb50d217e',
   sections_id: '41041176-3ba9-11eb-877b-f23c911d2162',
   fields_id: '41045aca-3ba9-11eb-877b-f23c911d2162',
   config: [],
   config_select: {},
   config_values: {},
+  rows_config: [],
+  rows_config_select: {},
   actions_id: "",
   actions: [],
   sections: [],
@@ -152,6 +155,46 @@ const mutations = {
     })
   },
 
+  FETCH_ROWS_CONFIG() {
+    axios.get(
+      state.base_url + state.info_url + state.rows_id
+    )
+    .then(response => {
+      console.log(response.data.content);
+      state.rows_config = response.data.content.columns;
+
+      state.rows_config.forEach(config => {
+        if (!config.entity_type_fk)
+        {
+          // The options are in config.options, or there aren't any options (it may not be a selector)
+          let options = [];
+          let json_options = JSON.parse(config.options);
+          for (let key in json_options)
+          {
+            options.push({
+              'id': key,
+              'name': json_options[key]
+            })
+          }
+          state.rows_config_select[config.id] = {
+            'options': options,
+          }
+        } else {
+          const options_fk = config.entity_type_fk;
+          state.rows_config_select[config.id] = {
+            'options': response.data.content.entities_fk[options_fk]
+          }
+
+          if (!state.rows_config_select[config.id].options)
+          {
+            state.rows_config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+          }
+        }
+      });
+      
+    });
+  },
+
   FETCH_SECTIONS_CONFIG(state) {
     axios.get(
       state.base_url + state.info_url + state.sections_id
@@ -203,6 +246,9 @@ const mutations = {
 const actions = {
   api_config(context){
     context.commit('API_CONFIG')
+  },
+  fetch_rows_config(context) {
+    context.commit('FETCH_ROWS_CONFIG');
   },
   fetch_section_config(context) {
     context.commit('FETCH_SECTIONS_CONFIG');
