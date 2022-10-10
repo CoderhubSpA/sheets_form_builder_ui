@@ -91,18 +91,48 @@
           </div>
 
           <div v-else-if="currentField">
-            <h4>Campo:</h4>
-            <h5>"{{currentField.name}}"</h5>
-            <label for="field-config-name">Nombre del campo</label>
-            <b-form-input
-              id="field-config-name"
-              type="text-input"
-              v-model="currentField.name"
-              placeholder="Ingresa nombre del campo">
-            </b-form-input>
+            <h4 @click="myPrint(currentField)">{{ currentField.name }}</h4>
             <br>
+            <div v-for="element in $store.state.api.fields_config" :key="element.id" style="padding: 0.5em">
+              <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
+              >
+                {{ element.name }}
+              </label>
+              
+              <b-form-checkbox
+              v-if="element.format=='SiNo'"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]">
+              </b-form-checkbox>
+
+              <b-form-input
+              v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+                :placeholder="'Ingresa ' + element.name">
+              </b-form-input>
+
+              <select
+              v-else-if="element.format=='SELECTOR'"
+                class="form-select"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+              >
+                <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
+                  :value="option"
+                >
+                  {{ option.name }}
+                </option>
+              </select>
+              <b-list-group-item v-else>
+                {{ element }}
+              </b-list-group-item>
+            </div>
+            <!--
             <label for="field-config-required">Requerido</label>
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
+            -->
             <br>
             <label for="field-config-col-sm">col sm: </label>
             <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/>

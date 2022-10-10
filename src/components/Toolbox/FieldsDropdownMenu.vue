@@ -3,8 +3,8 @@
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
-        <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.tools.fields" :clone="cloneAction">
-          <Campo v-for="(element, index) in $store.state.tools.fields" :key="element.name" :text="element.name">
+        <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields" :clone="cloneAction">
+          <Campo v-for="(element, index) in $store.state.api.fields" :key="element.name" :text="element.name">
           </Campo>
         </draggable>
       </div>
@@ -46,22 +46,21 @@ export default {
   methods: {
     cloneAction(item) {
       console.log('cloned', item)
+      
       let element = {
-        name: item.name,
         index: this.field_n,
         idxRow: -1,
         idxSection: -1,
-        field_type: item.name,
-        field_type_text: item.name,
-        required: false,
+        // TODO: remove the following keys and refactor the project to use the fields in item
         description: "", 
         show:false,
         colSm:12,
         colMd:12,
         colXl:12,
       };
+      
       this.field_n += 1;
-      return element;
+      return {...element, ...item};
     }
   }
 }

@@ -22,6 +22,9 @@ export default {
     }),
     mounted: function() {
       this.$store.dispatch('api/api_config')
+        this.$store.dispatch('api/fetch_fields');
+    },
+    methods: {
     },
 }
 
