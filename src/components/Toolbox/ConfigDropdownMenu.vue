@@ -49,12 +49,16 @@
             <h4>Sección {{currentSection.index+1}}</h4>
             <label for="section-config-name">Nombre sección: </label>
             <b-input v-model="currentSection.name" id="section-config-name" type="text" placeholder="Nombre Sección"/>
+            <br>
             <label for="section-config-col-sm">col sm: </label>
-            <b-input v-model="currentSection.colSm" id="section-config-col-sm" type="number"/>
+            <!-- <b-input v-model="currentSection.colSm" id="section-config-col-sm" type="number"/> -->
+            <custom-slider min="1" max="12" step="1" id="section-config-col-sm" v-model="currentSection.colSm" class="slider"/>
             <label for="section-config-col-md">col md: </label>
-            <b-input v-model="currentSection.colMd" id="section-config-col-md" type="number"/>
+            <!-- <b-input v-model="currentSection.colMd" id="section-config-col-md" type="number"/> -->
+            <custom-slider min="1" max="12" step="1" id="section-config-col-md" v-model="currentSection.colMd"/>
             <label for="section-config-col-xl">col xl: </label>
-            <b-input v-model="currentSection.colXl" id="section-config-col-xl" type="number"/>
+            <!-- <b-input v-model="currentSection.colXl" id="section-config-col-xl" type="number"/> -->
+            <custom-slider class="slider" min="1" max="12" step="1" id="section-config-col-xl" v-model="currentSection.colXl"/>
             <label for="section-config-description">Descripción: </label>
             <b-form-textarea size="lg" v-model="currentSection.description" id="section-config-description"/>
             <br>

@@ -16,7 +16,7 @@
                       class="cursor-move my-1"
                       >
                       <div 
-                     class="p-3 rounded"
+                     class="p-3 rounded panel-resizable"
                      :style="$store.state.form.current_section_config?.index===section.index? 
                                   'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;':
                                   'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'"
@@ -210,5 +210,11 @@ export default {
   opacity: 1;
 }
 
+.panel-resizable {
+  resize: horizontal;
+  max-width: 100%;
+  min-width: 25%;
+  overflow: hidden;
+}
 
 </style>
