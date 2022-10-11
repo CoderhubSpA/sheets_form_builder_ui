@@ -25,7 +25,7 @@ export default {
 
 <style>
 .campo {
-  background-color: #008A94;
+  background-color: #94004f;
   color: #000000;
   border-radius: 13px;
 

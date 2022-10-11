@@ -20,6 +20,7 @@ const state = {
         {name: 'Guardar y Cerrar', action:'Guardar y Cerrar'},
         {name: 'Guardar y Refrescar', action:'Guardar y Refrescar'},
     ],
+    hover_fields:false,
 }
 const mutations = {
     SET_CONFIG(state, newConfig){
@@ -28,6 +29,9 @@ const mutations = {
     SET_FIELDS(state, newFields){
         state.fields = newFields
     },
+    change_hover(state, activated){
+        state.hover_fields = activated
+    }
  }
 
 const actions = {
