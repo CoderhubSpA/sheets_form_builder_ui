@@ -146,16 +146,13 @@ export default {
 
       },
       onChange(event) {
-      
-      if (event.added) {
-        event.added.element.idxRow = this.idxRow;
-      } else if (event.moved) {
-        this.sections.forEach(
-          (s, sidx) => s.index=sidx
-        )
-      } else if (event.deleted) {
-        console.log("delete");
-      }
+        if (event.added) {
+          event.added.element.idxRow = this.idxRow;
+        } else if (event.moved) {
+          this.sections.forEach(
+            (s, sidx) => s.index=sidx
+          )
+        }
       },
       openSectionConfig(section){
         this.$store.state.form.current_form_config = null

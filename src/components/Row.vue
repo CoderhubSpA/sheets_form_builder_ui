@@ -80,7 +80,6 @@ export default {
       // ]
     }),
     mounted(){
-      console.log(this.$store.state.form.form)
     },
 
     methods: {
@@ -102,7 +101,6 @@ export default {
         }
       },
       deleteRow (idx) {
-        console.log(idx)
         this.updateFields(idx)
         this.rows.splice(idx,1)
       },

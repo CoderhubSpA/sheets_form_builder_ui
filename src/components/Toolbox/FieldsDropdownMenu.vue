@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     cloneAction(item) {
-      console.log('cloned', item)
       
       let element = {
         index: this.field_n,

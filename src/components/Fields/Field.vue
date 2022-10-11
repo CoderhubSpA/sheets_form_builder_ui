@@ -94,17 +94,10 @@ export default {
       this.$store.state.api.fields.push(this.fields[index]);
     },
     onChange(event) {
-      console.log("change", event)
       if (event.added) {
-        console.log("add");
         event.added.element.idxRow = this.idxRow;
         event.added.element.idxSection = this.idxSection;
         this.openFieldConfig(event.added.element);
-      } else if (event.moved) {
-        console.log("move");
-
-      } else if (event.deleted) {
-        console.log("delete");
       }
     },
     openFieldConfig(newField) {
@@ -113,8 +106,7 @@ export default {
       this.$store.state.form.current_row_config = null;
       this.$store.state.form.current_field_config = newField;
     },
-    dragleave(event){
-      console.log('dragleave');
+    dragleave() {
       this.$store.commit('tools/change_hover', false);
   
     },
