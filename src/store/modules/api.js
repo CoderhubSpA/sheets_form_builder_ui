@@ -14,7 +14,6 @@ const state = {
   config_values: {},
   rows_config: [],
   rows_config_select: {},
-  actions_id: "",
   actions: [],
   sections: [],
   sections_config: [],  // shared config, the values are stored in each section separated
@@ -55,36 +54,33 @@ const mutations = {
       state.config.forEach(config => {
         let values = config.format === "TEXT" ? "": [];
 
-        if(config.name == "ACTIONS")
-          state.actions_id = config.id
-          //if (["SELECTOR", "SELECTOR[MULTIPLE]"].includes(column.format))
-          if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
+        if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
+        {
+          let options = [];
+          let json_options = JSON.parse(config.options);
+          for (let key in json_options)
           {
-            let options = [];
-            let json_options = JSON.parse(config.options);
-            for (let key in json_options)
-            {
-              options.push({
-                'id': key,
-                'name': json_options[key],
-              });
-            }
-            state.config_select[config.id] = {
-              'options': options,
-            }
-          } else {
-            const options_fk = config.entity_type_fk;
-            state.config_select[config.id] = {
-              'options': response.data.content.entities_fk[options_fk],
-            }
-
-            if (!state.config_select[config.id].options)
-            {
-              state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-            }
+            options.push({
+              'id': key,
+              'name': json_options[key],
+            });
+          }
+          state.config_select[config.id] = {
+            'options': options,
+          }
+        } else {
+          const options_fk = config.entity_type_fk;
+          state.config_select[config.id] = {
+            'options': response.data.content.entities_fk[options_fk],
           }
 
-          state.config_values[config.id] = values;
+          if (!state.config_select[config.id].options)
+          {
+            state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+          }
+        }
+
+        state.config_values[config.id] = values;
       });
     });
     return state.config
@@ -94,7 +90,6 @@ const mutations = {
       state.base_url + state.info_url + state.fields_id
     )
     .then(response => {
-      // console.log(response.data.content);
       let columns = response.data.content.columns;
 
       // First, we need to get the possible fields, so we search for the column "Columna"
@@ -147,11 +142,6 @@ const mutations = {
           state.fields_config_values[field.id][config.id] = config.format === "TEXT" ? "": [];
         });
       });
-      /*
-      console.log(state.fields)
-      console.log(state.fields_config_select)
-      console.log(state.fields_config_values)
-      */
     })
   },
 
@@ -160,7 +150,6 @@ const mutations = {
       state.base_url + state.info_url + state.rows_id
     )
     .then(response => {
-      console.log(response.data.content);
       state.rows_config = response.data.content.columns;
 
       state.rows_config.forEach(config => {
@@ -200,7 +189,6 @@ const mutations = {
       state.base_url + state.info_url + state.sections_id
     )
     .then(response => {
-      console.log(response.data.content);
       state.sections_config = response.data.content.columns;
 
       state.sections_config.forEach(config => {
@@ -239,7 +227,6 @@ const mutations = {
 
   UPDATE_VALUE_CONFIG_SELECT(state, payload){
     state.config_values[payload.id] = payload.values
-    console.log(state.config_values[payload.id])
   }
 }
 
@@ -257,7 +244,6 @@ const actions = {
     context.commit('FETCH_FIELDS');
   },
   update_value_config_select(context, payload){
-    console.log(payload)
     context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)
   },
 }

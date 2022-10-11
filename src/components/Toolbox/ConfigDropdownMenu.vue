@@ -24,7 +24,7 @@
               </b-form-input>
               <div v-else-if="element.format=='SELECTOR'">
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_values[element.id]" @change="myPrint([$store.state.api.config_values[element.id]])">
+                v-model="$store.state.api.config_values[element.id]">
                   <option v-for="option in $store.state.api.config_select[element.id].options" 
                   :value="option"
                   :key="option.id"
@@ -32,12 +32,6 @@
                 </select>
               </div>
               <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
-                <!--  Idealmente que sea este
-                <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_select[element.id]" multiple>
-                  <option v-for="option in $store.state.api.config_select[element.id].options" 
-                  :value="option">{{option.name}}</option>
-                </select> -->
                 <multiselect
                   :type="element.format"
                   v-model="$store.state.api.actions" 
@@ -65,7 +59,7 @@
           
           </div>
           <div v-else-if="currentSection">
-            <h4 @click="myPrint(currentSection)">Sección {{currentSection.index+1}}</h4>
+            <h4>Sección {{currentSection.index+1}}</h4>
             <br>
             <div v-for="element in $store.state.api.sections_config" :key="element.id" style="padding: 0.5em">
               <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -127,12 +121,10 @@
           </div>
 
           <div v-else-if="currentField">
-            <h4 @click="myPrint(currentField)">{{ currentField.name }}</h4>
+            <h4>{{ currentField.name }}</h4>
             <br>
             <div v-for="element in $store.state.api.fields_config" :key="element.id" style="padding: 0.5em">
-              <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
-              >
+              <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
                 {{ element.name }}
               </label>
               
@@ -143,7 +135,7 @@
               </b-form-checkbox>
 
               <b-form-input
-              v-else-if="element.format=='TEXT'" @click="myPrint($store.state.api.fields_config_values[currentField.id][element.id])"
+              v-else-if="element.format=='TEXT'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
                 v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
                 :placeholder="'Ingresa ' + element.name">
@@ -246,9 +238,6 @@ export default {
     handleImage(obj){
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
-    myPrint(log){
-      console.log(log)
-    }
   }
 }
 </script>
