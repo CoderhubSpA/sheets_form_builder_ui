@@ -118,10 +118,16 @@ export default {
         if (this.$store.state.form.current_section_config?.index == this.sections[idx].index) {
           this.$store.state.form.current_section_config = null;
         }
+        this.updateFields(idx);
         this.sections.splice(idx,1)
         this.sections.forEach(
           (s, sidx) => s.index=sidx
         )
+      },
+      updateFields(index){
+        this.sections[index].fields.forEach(field => {
+          this.$store.state.tools.fields.push(field);
+        });
 
       },
       onChange(event) {
