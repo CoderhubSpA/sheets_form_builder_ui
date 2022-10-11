@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div 
+    
+    @mouseover="hover_fields=true"
+    @mouseleave="hover_fields=false"
+           >
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
@@ -24,6 +28,7 @@ export default {
     draggable,
     multiselect,
   },
+
   props: {
     menu_name: {
       type: String,
@@ -36,6 +41,17 @@ export default {
     draggable_elements: {
       type: Boolean,
       default: false,
+    }
+  },
+  computed:{
+    hover_fields:{
+      get(){
+        return this.$store.state.tools.hover_fields
+      },
+      set(value){
+        this.$store.commit('tools/change_hover', value)
+      }
+      
     }
   },
   data() {
@@ -61,7 +77,24 @@ export default {
         colXl:12,
       };
       this.field_n += 1;
+      
       return element;
+    },
+    dragenter(){
+      console.log('dragenter')
+    },
+    dragover(){
+      console.log('dragover')
+    },
+    dragleave(){
+      console.log('dragleave')
+    },
+    hoverCallback(){
+      
+      this.hover_fields = !this.hover_fields
+      // this.$store.commit('tools/change_hover', !this.hover_fields)
+      // this.hover_fields =!this.hover_fields
+      console.log(this.hover_fields)
     }
   }
 }

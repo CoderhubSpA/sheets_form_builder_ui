@@ -1,7 +1,12 @@
 <template>
   <div class="form-group">
-    <draggable class="card-deck" :list="sections[idxSection].fields" group="Fields" @change="onChange">
+    <draggable class="card-deck" 
+    :list="fields" group="Fields" @change="onChange" @dragleave.native="dragleave">
       <transition-group tag="b-row" class="sections">
+        <b-col  v-if="$store.state.tools.hover_fields" key="drop" cols="12">
+          <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
+        </b-col>
+
       <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
         :cols = "view =='xl' ? (field.colXl ? field.colXl : 12) : 
                 (view == 'md' ? (field.colMd ? field.colMd : 12): 
@@ -31,8 +36,12 @@
           </div>
             
         </div>
+        <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary" v-if="$store.state.tools.hover_fields" key="drop"> Suelta el campo acá</div>
       </b-col>
+      
+
       </transition-group>
+
     </draggable>
   </div>
 </template>
@@ -102,18 +111,25 @@ export default {
         console.log("add");
         event.added.element.idxRow = this.idxRow;
         event.added.element.idxSection = this.idxSection;
+        this.openFieldConfig(event.added.element);
       } else if (event.moved) {
         console.log("move");
+
       } else if (event.deleted) {
         console.log("delete");
       }
     },
     openFieldConfig(newField) {
-      this.$store.state.form.current_section_config = null
-      this.$store.state.form.current_form_config = null
-      this.$store.state.form.current_row_config = null
-      this.$store.state.form.current_field_config = newField
-    }
+      this.$store.state.form.current_section_config = null;
+      this.$store.state.form.current_form_config = null;
+      this.$store.state.form.current_row_config = null;
+      this.$store.state.form.current_field_config = newField;
+    },
+    dragleave(event){
+      console.log('dragleave');
+      this.$store.commit('tools/change_hover', false);
+  
+    },
   }
 };
 </script>
@@ -153,4 +169,6 @@ export default {
   width: 2rem; 
   height:2rem;
 }
+
+
 </style>

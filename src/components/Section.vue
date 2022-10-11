@@ -42,7 +42,10 @@
                     <b-form-row class="p-3 border-solid bg-light rounded container" v-bind="section.seccion"
                     @click.self="openSectionConfig(section)"
                     >
-                      <Field :idxSection="index" :idxRow="idxRow"></Field>
+                    
+                    
+
+                      <Field :idxSection="index" :idxRow="idxRow"/>
                     </b-form-row>
                     
                   </div>
@@ -102,10 +105,13 @@ export default {
     methods: {
       addSection () {
         let section = this.newSection();
+        
         section.idxRow = this.idxRow;
         this.sections.push(section);
+        this.openSectionConfig(section)
       },
       newSection(){
+        
         return {
           index: this.sections.length,
           name: "",

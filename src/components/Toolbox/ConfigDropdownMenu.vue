@@ -64,7 +64,7 @@
             <br>
             <label for="section-config-image">Agregar imagen: </label>
             <b-form-file v-model="currentSection.image"  id="section-config-image"
-            @change="handleImage(currentSection)" accept="image/jpeg, image/png, image/gif" plain></b-form-file>
+            @input="handleImage(currentSection)" accept="image/jpeg, image/png, image/gif" plain></b-form-file>
             
             <b-form-row class="py-1 w-100">
               <b-button v-b-modal.modal-1 variant="primary">Ver imagen</b-button>
@@ -198,7 +198,6 @@ export default {
   },
   data() {
     return {
-      pondObject: null, 
     }
   },
   methods:{
