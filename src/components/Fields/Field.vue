@@ -3,9 +3,10 @@
     <draggable class="card-deck" :list="sections[idxSection].fields" group="Fields" @change="onChange">
       <transition-group tag="b-row" class="sections">
       <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
-        :sm="field.colSm ? field.colSm : 12" 
-        :md="field.colMd ? field.colMd : 12"
-        :xl="field.colXl ? field.colXl : 12"
+        :cols = "view =='xl' ? (field.colXl ? field.colXl : 12) : 
+                (view == 'md' ? (field.colMd ? field.colMd : 12): 
+                field.colSm ? field.colSm : 12) "
+        
         v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
@@ -37,6 +38,7 @@
 </template>
     
 <script>
+import { viewport } from '@popperjs/core';
 import draggable from 'vuedraggable'
 
 export default {
@@ -64,6 +66,9 @@ export default {
     },
     fields() {
       return this.$store.state.form.form.rows[this.idxRow].sections[this.idxSection].fields;
+    },
+    view(){
+      return this.$store.state.form.current_view
     }
   },
   data: () => ({

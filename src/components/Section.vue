@@ -9,10 +9,10 @@
           ghost-class="moving-section">
           <transition-group name="fade" tag="b-row" class="sections">
 
-                <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`" 
-                      :sm="sections[index].colSm ? sections[index].colSm : 12" 
-                      :md="sections[index].colMd ? sections[index].colMd : 12"
-                      :xl="sections[index].colXl ? sections[index].colXl : 12"
+                <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`"
+                      :cols = "view =='xl' ? (sections[index].colXl ? sections[index].colXl : 12) : 
+                              (view == 'md' ? (sections[index].colMd ? sections[index].colMd : 12): 
+                              sections[index].colSm ? sections[index].colSm : 12) "
                       class="cursor-move my-1"
                       >
                       <div 
@@ -90,7 +90,11 @@ export default {
     {
       sections(){
         return this.$store.state.form.form.rows[this.idxRow].sections
+      },
+      view(){
+        return this.$store.state.form.current_view
       }
+
     },
     data: () => ({
     }),
