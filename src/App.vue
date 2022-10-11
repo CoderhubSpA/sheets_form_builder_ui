@@ -17,7 +17,17 @@ import NavbarComponent from './components/Navbar.vue';
 
 export default {
     name: "App",
-    components: { FormComponent, ToolboxComponent, NavbarComponent }
+    components: { FormComponent, ToolboxComponent, NavbarComponent },
+    data: () => ({
+    }),
+    mounted: function() {
+      this.$store.dispatch('api/api_config');
+      this.$store.dispatch('api/fetch_rows_config');
+      this.$store.dispatch('api/fetch_section_config');
+      this.$store.dispatch('api/fetch_fields');
+    },
+    methods: {
+    },
 }
 
 </script>

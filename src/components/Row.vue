@@ -90,9 +90,15 @@ export default {
         )
       },
       newRow(){
+        let config_values = {};
+        this.$store.state.api.rows_config.forEach(config => {
+          config_values[config.id] = config.format === "TEXT" ? "": []
+        });
+        
         return {
           name:"",
-          sections:[]
+          sections:[],
+          config_values: config_values,
         }
       },
       deleteRow (idx) {
@@ -103,7 +109,7 @@ export default {
       updateFields(index){
         this.rows[index].sections.forEach((section) => {
           section.fields.forEach(field => {
-            this.$store.state.tools.fields.push(field);
+            this.$store.state.api.fields.push(field);
           })
         })
       },

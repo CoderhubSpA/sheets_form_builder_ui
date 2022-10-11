@@ -18,7 +18,7 @@
             <div style="text-align: left !important; margin-bottom: 5px;"
 
             >
-              <i>{{field.field_type_text}}</i>
+              <!--<i>{{field.field_type_text}}</i>-->
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
@@ -83,9 +83,6 @@ export default {
   data: () => ({
   }),
   methods: {
-    addField() {
-      this.fields.push(this.newField());
-    },
     deleteField(index) {
       if (this.$store.state.form.current_field_config?.index == this.fields[index].index) {
         this.$store.state.form.current_field_config = null;
@@ -94,16 +91,7 @@ export default {
       this.fields.splice(index, 1);
     },
     updateFields(index){
-      this.$store.state.tools.fields.push(this.fields[index]);
-    },
-    newField() {
-      return {
-        index: this.fields.length,
-        name: "",
-        idxRow: -1,
-        idxSection: -1,
-        description:"",
-      };
+      this.$store.state.api.fields.push(this.fields[index]);
     },
     onChange(event) {
       console.log("change", event)
