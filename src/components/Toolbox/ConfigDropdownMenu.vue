@@ -52,13 +52,13 @@
             <br>
             <label for="section-config-col-sm">col sm: </label>
             <!-- <b-input v-model="currentSection.colSm" id="section-config-col-sm" type="number"/> -->
-            <custom-slider min="1" max="12" step="1" id="section-config-col-sm" v-model="currentSection.colSm" class="slider"/>
+            <custom-slider min="1" max="12" step="1" id="section-config-col-sm" v-model="currentSection.colSm"/>
             <label for="section-config-col-md">col md: </label>
             <!-- <b-input v-model="currentSection.colMd" id="section-config-col-md" type="number"/> -->
             <custom-slider min="1" max="12" step="1" id="section-config-col-md" v-model="currentSection.colMd"/>
             <label for="section-config-col-xl">col xl: </label>
             <!-- <b-input v-model="currentSection.colXl" id="section-config-col-xl" type="number"/> -->
-            <custom-slider class="slider" min="1" max="12" step="1" id="section-config-col-xl" v-model="currentSection.colXl"/>
+            <custom-slider min="1" max="12" step="1" id="section-config-col-xl" v-model="currentSection.colXl"/>
             <label for="section-config-description">Descripción: </label>
             <b-form-textarea size="lg" v-model="currentSection.description" id="section-config-description"/>
             <br>
@@ -90,11 +90,14 @@
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
             <br>
             <label for="field-config-col-sm">col sm: </label>
-            <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colSm" id="field-config-col-sm"/>
+            <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
             <label for="field-config-col-md">col md: </label>
-            <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colMd" id="field-config-col-md"/>
+            <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
             <label for="field-config-col-xl">col xl: </label>
-            <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colXl" id="field-config-col-xl"/>
+            <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
             <br>
             <label for="field-config-description">Descripción</label>
             <div>
