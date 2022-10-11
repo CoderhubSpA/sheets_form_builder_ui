@@ -1,5 +1,5 @@
 <template>
-    <b-container class="container" style="overflow-y: auto;" @click.self="openFormConfig(form)">
+    <b-container :class="$store.state.form.current_form_config===form ? 'onclick-form rounded p-3' : 'border rounded p-3'" style="overflow-y: auto;" @click.self="openFormConfig(form)">
         <b-form-row class= "row justify-content-center mx-auto"> 
             <b-col :xl="view =='xl' ? 12 : 
                         (view =='md' ? 8 : 5)"
@@ -58,5 +58,9 @@ export default {
 </script>
 
 <style>
-
+.onclick-form {
+    border-style: solid; 
+    border-width: medium;
+    border-color: #008A94;
+}
 </style>
