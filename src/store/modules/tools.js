@@ -21,6 +21,7 @@ const state = {
         {name: 'Guardar y Refrescar', action:'Guardar y Refrescar'},
     ],
     hover_fields:false,
+    actual_tab:'config',
 }
 const mutations = {
     SET_CONFIG(state, newConfig){

@@ -1,29 +1,25 @@
 <template>
 <b-container class="flex-shrink-0 p-3" id="tool-box">
-  <div class="container">
-    <div class="row justify-content-md-around">
-      <b-button class="btn col-3" @click="viewXl" :variant = "view =='xl' ? 'success' : 'dark'">
-        <v-icon class="custom-icon" name="laptop"></v-icon>
-      </b-button>
-      <b-button class="btn col-3" @click="viewMd" :variant = "view =='md' ? 'success' : 'dark'">
-        <v-icon class="custom-icon" name="tablet"></v-icon>
-      </b-button>
-      <b-button class="btn col-3" @click="viewSm" :variant = "view =='sm' ? 'success' : 'dark'">
-        <v-icon class="custom-icon" name="mobile"></v-icon>
-      </b-button>
+  <b-nav pills style="padding-bottom: 10px;">
+    <b-nav-item class="col-6 center" @click="tabFields" :active = "tab =='fields'">
+      <h3>Campos</h3>
+    </b-nav-item>
+    <b-nav-item class="col-6 center" @click="tabConfig" :active = "tab =='config'">
+      <h3>Configuración</h3>
+    </b-nav-item>
+  </b-nav>
+  <div class="ps-0" id="tab">
+    <div v-if="tab == 'fields'">
+      <fields
+      :menu_name="'Campos'"
+      :menu_id="'panelsStayOpen-collapseOne'"/>
+    </div>
+    <div v-else-if="tab == 'config'">
+      <config
+      :menu_name="'Configuración'"
+      :menu_id="'panelsStayOpen-collapseTwo'"/>
     </div>
   </div>
-  <ul class="list-unstyled ps-0">
-    <fields
-      :menu_name="'Campos'"
-      :menu_id="'panelsStayOpen-collapseOne'"></fields>
-    <config
-      :menu_name="'Configuración'"
-      :menu_id="'panelsStayOpen-collapseTwo'"></config>
-  </ul>
-  <b-button variant="primary" class="button-save-form" style="position: relative; margin: 0 25% 5% 25%;">
-    Guardar Formulario
-  </b-button>
 </b-container>
 </template>
 
@@ -41,20 +37,17 @@ export default {
     config,
   }, 
   computed:{
-      view(){
-          return this.$store.state.form.current_view
+      tab(){
+          return this.$store.state.tools.actual_tab
       }
   },
   methods: {
-    viewXl(){
-      this.$store.state.form.current_view = "xl";
+    tabFields(){
+      this.$store.state.tools.actual_tab = "fields";
     },
-    viewMd(){
-      this.$store.state.form.current_view = "md";
+    tabConfig(){
+      this.$store.state.tools.actual_tab = "config";
     },
-    viewSm(){
-      this.$store.state.form.current_view = "sm";
-    }
   }
 }
 
@@ -74,13 +67,22 @@ export default {
 
   width: 25%;
   max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
 
-  display: flex;
   flex-wrap: wrap;
-  align-content: space-between;
+}
+
+#tab {
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  color: var(--bs-nav-pills-link-active-color);
+  background-color: #008A94;
+}
+
+.nav-link {
+  color: var(--bs-body-color);
 }
 
 .button-save-form {
