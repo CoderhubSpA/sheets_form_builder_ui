@@ -24,7 +24,7 @@ export default {
       this.$store.dispatch('api/api_config');
       this.$store.dispatch('api/fetch_rows_config');
       this.$store.dispatch('api/fetch_section_config');
-      this.$store.dispatch('api/fetch_fields');
+      //this.$store.dispatch('api/fetch_fields');
     },
     methods: {
     },
