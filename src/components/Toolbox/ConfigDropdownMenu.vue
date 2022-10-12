@@ -144,7 +144,12 @@
                 v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
                 :placeholder="'Ingresa ' + element.name">
               </b-form-input>
-
+              <div
+              v-else-if="element.name=='Columna'"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+              >
+                {{ $store.state.api.fields_config_values[currentField.id][element.id].name }}
+              </div>
               <select
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
@@ -153,6 +158,7 @@
               >
                 <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
                   :value="option"
+                  :key="'option-'+option.id"
                 >
                   {{ option.name }}
                 </option>
