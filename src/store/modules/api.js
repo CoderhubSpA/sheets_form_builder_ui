@@ -4,7 +4,7 @@ const state = {
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
-  form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
+  //form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
   configuration_id: 'form',
   rows_id: 'form_row',
   sections_id: 'form_section',
@@ -78,21 +78,20 @@ const mutations = {
     return state.config
   },
   FETCH_FIELDS(state) {
+    // First, we need to get the possible fields, so we need the entity type
+    let entity_config = state.config.find((config => config.name === "Tipo de Entidad"));
+    let entity_type = state.config_values[entity_config.id];
+    axios.get(state.base_url + state.info_url + entity_type.id)
+    .then(response => {
+      state.fields = response.data.content.columns;
+    });
+
+    // Also, we need to get their configurations
     axios.get(
       state.base_url + state.info_url + state.fields_id
     )
     .then(response => {
       let columns = response.data.content.columns;
-
-      // First, we need to get the possible fields, so we search for the column "Columna"
-      let field_columna = columns.find(col => col.name == "Columna");
-      let all_possible_fields = response.data.content.entities_fk[field_columna.entity_type_fk];
-      // Filter the fields that are from other forms
-      all_possible_fields = all_possible_fields.filter(
-        field => (field.form_id == state.form_id) && (field.form_id != null)
-      );
-      state.fields = all_possible_fields;
-      
       // All fields share the configuration columns, so we load that shared information
       state.fields_config = columns;
       // and for selectors and those configuration of that kind, we load their options
