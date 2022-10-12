@@ -32,14 +32,6 @@ const state = {
       "options": [],
     }
   },
-  fields_config_values: {
-    // stores, for each field, its config's values
-    "id-field": {
-      "id-config": {
-        "values": []
-      }
-    }
-  }
 }
 
 const mutations = {
@@ -132,15 +124,6 @@ const mutations = {
             }
           }
         }
-      });
-      
-      // Finally, we prepare the store for keep the values for each configuration of each field
-      state.fields.forEach(field => {
-        state.fields_config_values[field.id] = {}
-
-        state.fields_config.forEach(config => {
-          state.fields_config_values[field.id][config.id] = config.format === "TEXT" ? "": [];
-        });
       });
     })
   },
