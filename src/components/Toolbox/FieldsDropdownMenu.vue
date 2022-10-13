@@ -7,8 +7,8 @@
     <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
     <b-collapse visible :id="menu_id">
       <div>
-        <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields" :clone="cloneAction">
-          <Campo v-for="(element, index) in $store.state.api.fields" :key="element.name" :text="element.name">
+        <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields_entity" :clone="cloneAction">
+          <Campo v-for="(element, index) in $store.state.api.fields_entity" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name">
           </Campo>
         </draggable>
       </div>
@@ -56,7 +56,8 @@ export default {
   },
   data() {
     return {
-      field_n: 0
+      field_n: 0,
+      fields:[]
     }
   },
   methods: {
