@@ -6,7 +6,7 @@
            >
     <div>
       <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields" :clone="cloneAction">
-        <Campo v-for="(element, index) in $store.state.api.fields" :key="element.name" :text="element.name">
+        <Campo v-for="(element, index) in $store.state.api.fields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name">
         </Campo>
       </draggable>
     </div>
@@ -53,7 +53,8 @@ export default {
   },
   data() {
     return {
-      field_n: 0
+      field_n: 0,
+      fields:[]
     }
   },
   methods: {
@@ -70,6 +71,18 @@ export default {
         colMd:12,
         colXl:12,
       };
+      
+      if (!item.config_values)
+      {
+        // Add the json to store the configuration values of this item
+        let config_values = {};
+        this.$store.state.api.fields_config.forEach(config => {
+          config_values[config.id] =
+            config.name === "Columna" ? item :
+            config.format === "TEXT" ? "": [];
+        });
+        element["config_values"] = config_values;
+      }
       
       this.field_n += 1;
       return {...element, ...item};

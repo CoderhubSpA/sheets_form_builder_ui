@@ -4,7 +4,7 @@
       <div v-if="currentForm">
         <h4>Formulario:</h4>
         <h5>"{{form.name}}"</h5>
-        <div v-for="element in $store.state.api.config" :key="element.name" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.config" v-if="element.show_in_create_form==2" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
           <!-- v-if else depending on element.format -->
           <b-form-checkbox v-if="element.format=='SiNo'"
@@ -18,6 +18,15 @@
             v-model="$store.state.api.config_values[element.id]"
           >
           </b-form-input>
+          <div v-else-if="element.name=='Tipo de Entidad'">
+            <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
+            v-model="$store.state.api.config_values[element.id]" @change="showOptions($store.state.api.config_values[element.id].id)">
+              <option v-for="option in $store.state.api.config_select[element.id].options" 
+              :value="option"
+              :key="option.id"
+            >{{option.name}}</option>
+            </select>
+          </div>
           <div v-else-if="element.format=='SELECTOR'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
             v-model="$store.state.api.config_values[element.id]">
@@ -131,26 +140,26 @@
           <b-form-checkbox
           v-if="element.format=='SiNo'"
             :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-            v-model="$store.state.api.fields_config_values[currentField.id][element.id]">
+            v-model="currentField.config_values[element.id]">
           </b-form-checkbox>
 
               <b-form-input
               v-else-if="element.format=='TEXT'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+                v-model="currentField.config_values[element.id]"
                 :placeholder="'Ingresa ' + element.name">
               </b-form-input>
               <div
               v-else-if="element.name=='Columna'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
               >
-                {{ $store.state.api.fields_config_values[currentField.id][element.id].name }}
+                {{ currentField.config_values[element.id].name }}
               </div>
               <select
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+                v-model="currentField.config_values[element.id]"
               >
                 <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
                   :value="option"
@@ -192,6 +201,7 @@
 <script>
 import draggable from 'vuedraggable';
 import multiselect from 'vue-multiselect';
+import axios from 'axios';
 
 
 export default {
@@ -243,6 +253,13 @@ export default {
     handleImage(obj){
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
+    showOptions(entity_id){
+      axios.get(this.$store.state.api.base_url + this.$store.state.api.info_url + entity_id
+      )
+      .then(response => {
+        this.$store.state.api.fields = response.data.content.columns;
+      })
+    }
   }
 }
 </script>
