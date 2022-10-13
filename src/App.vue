@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid">
+  <div>
     <NavbarComponent/>
-    <div id="app" style="min-height: 600px; height: 90vh;" class="d-flex flex-row">
+    <div id="app" style="min-height: 600px; height: 89vh; margin-top: 1vh;" class="d-flex flex-row container-fluid">
       <ToolboxComponent></ToolboxComponent>
       <FormComponent/>
     </div>
