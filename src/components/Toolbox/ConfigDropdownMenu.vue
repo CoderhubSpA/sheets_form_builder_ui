@@ -22,10 +22,19 @@
                 v-model="$store.state.api.config_values[element.id]"
               > 
               </b-form-input>
+              <div v-else-if="element.name=='Tipo de Entidad'">
+                <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
+                v-model="$store.state.api.config_values[element.id]" @change="showOptions($store.state.api.config_values[element.id].id)">
+                  <option v-for="option in $store.state.api.config_select[element.id].options" 
+                  :value="option"
+                  :key="option.id"
+                >{{option.name}}</option>
+                </select>
+              </div>
               <div v-else-if="element.format=='SELECTOR'">
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
                 v-model="$store.state.api.config_values[element.id]"
-                @change="showOptions($store.state.api.config_values[element.id].id)">
+                >
                   <option v-for="option in $store.state.api.config_select[element.id].options" 
                   :value="option"
                   :key="option.id"
