@@ -1,12 +1,11 @@
 <template>
   <div 
-    
     @mouseover="hover_fields=true"
-    @mouseleave="hover_fields=false"
-           >
+    @mouseleave="hover_fields=false">
     <div>
-      <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields" :clone="cloneAction">
-        <Campo v-for="(element, index) in $store.state.api.fields" :key="element.name" :text="element.name">
+      <b-input v-model="search" id="section-config-name" type="text" placeholder="Busca un campo aquí..."/>
+      <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="getFields" :clone="cloneAction">
+        <Campo v-for="(element, index) in getFields" :key="element.name" :text="element.name">
         </Campo>
       </draggable>
     </div>
@@ -17,6 +16,8 @@
 import draggable from 'vuedraggable';
 import multiselect from 'vue-multiselect';
 import Campo from './CampoComponent.vue';
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default {
   name: 'FieldsDropdownMenu',
@@ -47,13 +48,27 @@ export default {
       },
       set(value){
         this.$store.commit('tools/change_hover', value)
+      },
+    },      
+    getFields(){
+      let fields = this.$store.state.api.fields
+      let search = this.removeAccents(this.search).toUpperCase();
+      if(this.search.length != 0){
+        let result = []
+        for(let i=0; i < fields.length; i++){
+          if(this.removeAccents(fields[i].name.toUpperCase()).includes(search))
+            result.push(fields[i])
+        }
+        return result
       }
-      
+      return fields
     }
+
   },
   data() {
     return {
-      field_n: 0
+      field_n: 0,
+      search: "",
     }
   },
   methods: {
@@ -77,6 +92,9 @@ export default {
     hoverCallback(){
       this.hover_fields = !this.hover_fields
     },
+    removeAccents(str){
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+} 
   }
 }
 </script>
