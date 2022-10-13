@@ -8,7 +8,7 @@
           <div v-if="currentForm">
             <h4>Formulario:</h4>
             <h5>"{{form.name}}"</h5>
-            <div v-for="element in $store.state.api.config" :key="element.name" style="padding: 0.5em">
+            <div v-for="element in $store.state.api.config" v-if="element.show_in_create_form==2" :key="element.name" style="padding: 0.5em">
               <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
               <!-- v-if else depending on element.format -->
               <b-form-checkbox v-if="element.format=='SiNo'"
@@ -20,16 +20,18 @@
                 :id="'menu-'+menu_id+'-element-'+element.name"
                 :placeholder="'Ingresa '+element.name"
                 v-model="$store.state.api.config_values[element.id]"
-              >
+              > 
               </b-form-input>
               <div v-else-if="element.format=='SELECTOR'">
                 <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-                v-model="$store.state.api.config_values[element.id]">
+                v-model="$store.state.api.config_values[element.id]"
+                @change="showOptions($store.state.api.config_values[element.id].id)">
                   <option v-for="option in $store.state.api.config_select[element.id].options" 
                   :value="option"
                   :key="option.id"
                 >{{option.name}}</option>
                 </select>
+
               </div>
               <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
                 <multiselect
@@ -47,9 +49,10 @@
                   :deselect-label="''">
                 </multiselect>
               </div>
+              <!--
               <b-list-group-item v-else>
                 {{ element }}
-              </b-list-group-item>
+              </b-list-group-item> -->
               
               
             </div>
@@ -99,7 +102,7 @@
             <label for="section-config-name">Nombre sección: </label>
             <b-input v-model="currentSection.name" id="section-config-name" type="text" placeholder="Nombre Sección"/>
             <br>
-            <label for="section-config-col-sm">col sm: </label>
+            <label for="section-config-col-sm">col sm: </label> 
             <!-- <b-input v-model="currentSection.colSm" id="section-config-col-sm" type="number"/> -->
             <custom-slider min="1" max="12" step="1" id="section-config-col-sm" v-model="currentSection.colSm"/>
             <label for="section-config-col-md">col md: </label>
@@ -130,7 +133,7 @@
             <div v-for="element in $store.state.api.fields_config" :key="element.id" style="padding: 0.5em">
               <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
                 {{ element.name }}
-              </label>
+              </label> 
               
               <b-form-checkbox
               v-if="element.format=='SiNo'"
@@ -183,7 +186,7 @@
             <br>
 
           </div>
-        </b-list-group>
+        </b-list-group> 
       </div>
 
     </b-collapse>
@@ -193,6 +196,7 @@
 <script>
 import draggable from 'vuedraggable';
 import multiselect from 'vue-multiselect';
+import axios from 'axios';
 
 
 export default {
@@ -244,6 +248,13 @@ export default {
     handleImage(obj){
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
+    showOptions(entity_id){
+      axios.get(this.$store.state.api.base_url + this.$store.state.api.info_url + entity_id
+      )
+      .then(response => {
+        this.$store.state.api.fields_entity = response.data.content.columns;
+      })
+    }
   }
 }
 </script>
