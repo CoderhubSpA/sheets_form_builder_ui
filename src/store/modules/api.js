@@ -9,7 +9,6 @@ const state = {
   rows_id: 'form_row',
   sections_id: 'form_section',
   fields_id: 'form_field',
-  fields_entity: [],
   config: [],
   config_select: {},
   config_values: {},

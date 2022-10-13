@@ -141,7 +141,7 @@ export default {
       },
       updateFields(index){
         this.sections[index].fields.forEach(field => {
-          this.$store.state.api.fields_entity.push(field);
+          this.$store.state.api.fields.push(field);
         });
 
       },

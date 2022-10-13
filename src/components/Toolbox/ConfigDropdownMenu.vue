@@ -261,7 +261,7 @@ export default {
       axios.get(this.$store.state.api.base_url + this.$store.state.api.info_url + entity_id
       )
       .then(response => {
-        this.$store.state.api.fields_entity = response.data.content.columns;
+        this.$store.state.api.fields = response.data.content.columns;
       })
     }
   }
