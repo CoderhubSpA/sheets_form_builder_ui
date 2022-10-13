@@ -91,7 +91,7 @@ export default {
       this.fields.splice(index, 1);
     },
     updateFields(index){
-      this.$store.state.api.fields.push(this.fields[index]);
+      this.$store.state.api.fields_entity.push(this.fields[index]);
     },
     onChange(event) {
       if (event.added) {
