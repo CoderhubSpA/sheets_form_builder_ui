@@ -134,49 +134,55 @@
             v-model="$store.state.api.fields_config_values[currentField.id][element.id]">
           </b-form-checkbox>
 
-          <b-form-input
-          v-else-if="element.format=='TEXT'"
-            :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-            v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
-            :placeholder="'Ingresa ' + element.name">
-          </b-form-input>
-
-          <select
-          v-else-if="element.format=='SELECTOR'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-            v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
-          >
-            <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
-              :value="option"
-            >
-              {{ option.name }}
-            </option>
-          </select>
-          <b-list-group-item v-else>
-            {{ element }}
-          </b-list-group-item>
-        </div>
-        <!--
-        <label for="field-config-required">Requerido</label>
-        <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
-        -->
-        <br>
-        <label for="field-config-col-sm">col sm: </label>
-        <custom-slider min="1" max="12" step="1" v-model="currentField.colSm" id="field-config-col-sm"/>
-        <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
-        <label for="field-config-col-md">col md: </label>
-        <custom-slider min="1" max="12" step="1" v-model="currentField.colMd" id="field-config-col-md"/>
-        <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
-        <label for="field-config-col-xl">col xl: </label>
-        <custom-slider min="1" max="12" step="1" v-model="currentField.colXl" id="field-config-col-xl"/>
-        <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
-        <br>
-        <label for="field-config-description">Descripción</label>
-        <div>
-          <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
-        </div>
-        <br>
+              <b-form-input
+              v-else-if="element.format=='TEXT'"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+                :placeholder="'Ingresa ' + element.name">
+              </b-form-input>
+              <div
+              v-else-if="element.name=='Columna'"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+              >
+                {{ $store.state.api.fields_config_values[currentField.id][element.id].name }}
+              </div>
+              <select
+              v-else-if="element.format=='SELECTOR'"
+                class="form-select"
+                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
+              >
+                <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
+                  :value="option"
+                  :key="'option-'+option.id"
+                >
+                  {{ option.name }}
+                </option>
+              </select>
+              <b-list-group-item v-else>
+                {{ element }}
+              </b-list-group-item>
+            </div>
+            <!--
+            <label for="field-config-required">Requerido</label>
+            <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
+            -->
+            <br>
+            <label for="field-config-col-sm">col sm: </label>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colSm" id="field-config-col-sm"/>
+            <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
+            <label for="field-config-col-md">col md: </label>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colMd" id="field-config-col-md"/>
+            <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
+            <label for="field-config-col-xl">col xl: </label>
+            <custom-slider min="1" max="12" step="1" v-model="currentField.colXl" id="field-config-col-xl"/>
+            <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
+            <br>
+            <label for="field-config-description">Descripción</label>
+            <div>
+              <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
+            </div>
+            <br>
 
       </div>
     </b-list-group>
