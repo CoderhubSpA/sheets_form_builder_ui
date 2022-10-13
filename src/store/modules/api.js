@@ -4,7 +4,7 @@ const state = {
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
-  form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
+  //form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
   configuration_id: 'form',
   rows_id: 'form_row',
   sections_id: 'form_section',
@@ -32,14 +32,6 @@ const state = {
       "options": [],
     }
   },
-  fields_config_values: {
-    // stores, for each field, its config's values
-    "id-field": {
-      "id-config": {
-        "values": []
-      }
-    }
-  }
 }
 
 const mutations = {
@@ -85,22 +77,15 @@ const mutations = {
     });
     return state.config
   },
-  FETCH_FIELDS(state) {
+  FETCH_FIELDS_CONFIG(state) {
+    // We don't need to get the possible fields, that's will be done when the user selects an entity for its form
+
+    // But we do need to get their configurations
     axios.get(
       state.base_url + state.info_url + state.fields_id
     )
     .then(response => {
       let columns = response.data.content.columns;
-
-      // First, we need to get the possible fields, so we search for the column "Columna"
-      let field_columna = columns.find(col => col.name == "Columna");
-      let all_possible_fields = response.data.content.entities_fk[field_columna.entity_type_fk];
-      // Filter the fields that are from other forms
-      all_possible_fields = all_possible_fields.filter(
-        field => (field.form_id == state.form_id) && (field.form_id != null)
-      );
-      state.fields = all_possible_fields;
-      
       // All fields share the configuration columns, so we load that shared information
       state.fields_config = columns;
       // and for selectors and those configuration of that kind, we load their options
@@ -132,15 +117,6 @@ const mutations = {
             }
           }
         }
-      });
-      
-      // Finally, we prepare the store for keep the values for each configuration of each field
-      state.fields.forEach(field => {
-        state.fields_config_values[field.id] = {}
-
-        state.fields_config.forEach(config => {
-          state.fields_config_values[field.id][config.id] = config.format === "TEXT" ? "": [];
-        });
       });
     })
   },
@@ -240,8 +216,8 @@ const actions = {
   fetch_section_config(context) {
     context.commit('FETCH_SECTIONS_CONFIG');
   },
-  fetch_fields(context) {
-    context.commit('FETCH_FIELDS');
+  fetch_fields_config(context) {
+    context.commit('FETCH_FIELDS_CONFIG');
   },
   update_value_config_select(context, payload){
     context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)

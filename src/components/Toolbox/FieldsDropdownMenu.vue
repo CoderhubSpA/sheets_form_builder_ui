@@ -75,6 +75,16 @@ export default {
         colXl:12,
       };
       
+      if (!item.config_values)
+      {
+        // Add the json to store the configuration values of this item
+        let config_values = {};
+        this.$store.state.api.fields_config.forEach(config => {
+          config_values[config.id] = config.format === "TEXT" ? "": []
+        });
+        element["config_values"] = config_values;
+      }
+      
       this.field_n += 1;
       return {...element, ...item};
     },
