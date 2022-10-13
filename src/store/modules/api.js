@@ -9,6 +9,7 @@ const state = {
   rows_id: 'form_row',
   sections_id: 'form_section',
   fields_id: 'form_field',
+  fields_entity: [],
   config: [],
   config_select: {},
   config_values: {},
@@ -50,7 +51,7 @@ const mutations = {
     .then(response => {
       let columns = response.data.content.columns;
       state.config = columns;
-      
+
       state.config.forEach(config => {
         let values = config.format === "TEXT" ? "": [];
 
