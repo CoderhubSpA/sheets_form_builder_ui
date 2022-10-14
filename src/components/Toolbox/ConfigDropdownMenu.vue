@@ -20,7 +20,7 @@
           </b-form-input>
           <div v-else-if="element.name=='Tipo de Entidad'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-            v-model="$store.state.api.config_values[element.id]" @change="showOptions($store.state.api.config_values[element.id].id)">
+            v-model="$store.state.api.config_values[element.id]" @change="showFields($store.state.api.config_values[element.id].id)">
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
@@ -79,6 +79,8 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
           ></b-form-checkbox>
+
+          
 
           <b-form-input
           v-else-if="element.format=='TEXT'"
@@ -313,12 +315,8 @@ export default {
     handleImage(obj){
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
-    showOptions(entity_id){
-      axios.get(this.$store.state.api.base_url + this.$store.state.api.info_url + entity_id
-      )
-      .then(response => {
-        this.$store.state.api.fields = response.data.content.columns;
-      })
+    showFields(entity_id){
+      this.$store.dispatch('api/get_fields', entity_id);
     }
   }
 }
