@@ -1,19 +1,19 @@
 <template>
   <div>
-    <b-navbar  style="background-color: #4D8D92">
+    <b-navbar  type="dark" variant="dark">
         <b-navbar-nav style="margin-left: 2vh;">
-          <b-button class="btn m-1" @click="viewXl" :variant = "view =='xl' ? 'success' : 'dark'">
+          <b-button class="btn m-1" @click="viewXl" :variant = "view =='xl' ? 'secondary' : 'dark'">
               <v-icon class="custom-icon" name="laptop"></v-icon>
           </b-button>
-          <b-button class="btn m-1" @click="viewMd" :variant = "view =='md' ? 'success' : 'dark'">
+          <b-button class="btn m-1" @click="viewMd" :variant = "view =='md' ? 'secondary' : 'dark'">
               <v-icon class="custom-icon" name="tablet"></v-icon>
           </b-button>
-          <b-button class="btn m-1" @click="viewSm" :variant = "view =='sm' ? 'success' : 'dark'">
+          <b-button class="btn m-1" @click="viewSm" :variant = "view =='sm' ? 'secondary' : 'dark'">
               <v-icon class="custom-icon" name="mobile"></v-icon>
           </b-button>
         </b-navbar-nav>
         <b-navbar-nav class="justify-content-end" style="margin-right: 3vh;">
-          <b-button class="btn btn-success">Guardar</b-button>
+          <b-button class="btn btn-success text-white">Guardar</b-button>
         </b-navbar-nav>
     </b-navbar>
   </div>

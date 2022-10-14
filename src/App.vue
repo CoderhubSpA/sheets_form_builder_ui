@@ -1,13 +1,36 @@
 <template>
   <div>
     <NavbarComponent/>
-    <div id="app" style="min-height: 600px; height: 89vh; margin-top: 1vh;" class="d-flex flex-row container-fluid">
+    <div id="app" style="min-height: 600px; height: 91vh;" class="d-flex flex-row">
       <ToolboxComponent></ToolboxComponent>
       <FormComponent/>
     </div>
   </div>
 </template>
 
+<style lang="scss">
+  $primary: #00bac7;
+  $secondary: #008a94;
+  $success: #13b2be;
+  $info: #00d1e1;
+  $warning: #f9f962;
+  $danger: #fd4040;
+  $dark: #03676e;
+  $light: #e1f3f3;
+  $body-bg: #ffffff;
+  
+  @import "bootstrap";
+
+*::-webkit-scrollbar {
+  width: 1vh;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #03676e;
+  border-radius: 20px;
+  
+}
+</style>
 <script>
 
 // import Row from './components/Row.vue';

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row>
-        <b-row class="row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+        <b-row class="row-cols-1">
         <draggable
           :list="sections"
           @change="onChange"
@@ -54,10 +54,10 @@
             </draggable>
             <!-- pa debuguear -->
             <!-- {{sections}} -->
-            <div class="p-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+            <div class="pt-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
               <div class="container text-center">
                 <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
-                  <v-icon name="plus" scale="1.5"/>
+                  <v-icon name="plus" scale="1.25"/>
                 </button>
                 <p>Añadir Sección</p>
               </div>

@@ -7,7 +7,7 @@
           <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
         </b-col>
 
-      <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
+      <b-col style="margin-bottom: 15px; background-color: gainsboro; border-radius: 5px; padding: 8px;" 
         :cols = "view =='xl' ? (field.colXl ? field.colXl : 12) : 
                 (view == 'md' ? (field.colMd ? field.colMd : 12): 
                 field.colSm ? field.colSm : 12) "
