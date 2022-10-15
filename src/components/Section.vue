@@ -100,6 +100,12 @@ export default {
 
     },
     data: () => ({
+      formatTypes: [
+        {name: 'TEXT', value: ""},
+        {name: 'NUMBER', value: null},
+        {name: 'SELECTOR', value: []},
+        {name: 'SiNo', value: null}
+      ]
     }),
   
     methods: {
@@ -110,10 +116,25 @@ export default {
         this.sections.push(section);
         this.openSectionConfig(section)
       },
+      selectFormat(format, name){
+        let res = null;
+        this.formatTypes.forEach(element =>{
+          if (format === element.name){
+            console.log("primer if")
+            if (name === 'col_sm' || name === 'col_md' || name === 'col_xl'){
+              res = "12"
+            }
+            else {
+              res = element.value
+            }
+          }
+        })
+        return res;
+      },
       newSection(){
         let config_values = {};
         this.$store.state.api.sections_config.forEach(config => {
-          config_values[config.id] = config.format === "TEXT" ? "": []
+          config_values[config.id] =  this.selectFormat(config.format, config.name)
         })
 
         return {
