@@ -8,7 +8,7 @@
       <div v-if="currentForm">
         <h4>Formulario:</h4>
         <h5>"{{form.name}}"</h5>
-              <div v-for="element in $store.state.api.config" v-if="element.show_in_create_form==2" :key="element.name" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
           <!-- v-if else depending on element.format -->
           <b-form-checkbox v-if="element.format=='SiNo'"
@@ -73,7 +73,7 @@
       <div v-else-if="currentRow">
         <h4>Fila {{currentRow.name}}</h4>
         <br>
-        <div v-for="element in $store.state.api.rows_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -107,6 +107,8 @@
 
           <b-form-input
           v-else-if="element.format=='NUMBER'"
+            type="number"
+            min="0"
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
           ></b-form-input>
@@ -121,7 +123,7 @@
       <div v-else-if="currentSection">
         <h4>Sección {{currentSection.index+1}}</h4>
         <br>
-              <div v-for="element in $store.state.api.sections_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -175,6 +177,8 @@
 
           <b-form-input
           v-else-if="element.format=='NUMBER'"
+            type="number"
+            min="0"
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           ></b-form-input>
@@ -204,7 +208,7 @@
       <div v-else-if="currentField">
         <h4>{{ currentField.name }}</h4>
         <br>
-              <div v-for="element in $store.state.api.fields_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -242,6 +246,8 @@
               </select>
               <b-form-input
           v-else-if="element.format=='NUMBER'"
+            type="number"
+            min="0"
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentField.config_values[element.id]"
           ></b-form-input>
