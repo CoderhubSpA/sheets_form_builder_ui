@@ -222,6 +222,63 @@ const actions = {
   update_value_config_select(context, payload){
     context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)
   },
+  post_form(context) {
+    /**
+     * Checks that all required configurations are valid.
+     * Then starts sending in cascade the form configuration, the rows, the sections and the fields
+     */
+    let state = context.state;
+    let fill_data = (configurations, values) => {
+      let data_values = {};
+      configurations.forEach(config => {
+        let value = values[config.id];
+        if ((value || value === 0) && // check it has a truthy value, but counting 0 as valid
+          (!Array.isArray(value) || (value.length > 0))) // and that is not an empty array
+        {
+          data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
+        } else if (config.required_in_create_form) {
+          unfilled_required_values += 1;
+        }
+      })
+      return data_values;
+    };
+
+
+    // Parse form configuration
+    let unfilled_required_values = 0;
+
+    let form_config_values = fill_data(state.config, state.config_values);
+    
+    
+    // Parse form rows while checking for unfilled required values
+    let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
+    
+    let rows_data = [];
+    rows.forEach(row => {
+      let row_data = fill_data(state.rows_config, row.config_values);
+      rows_data.push(row_data);
+
+      let row_sections_data = [];
+      row.sections.forEach(section => {
+        let section_data = fill_data(state.sections_config, section.config_values);
+        row_sections_data.push(section_data);
+
+        let row_section_fields_data = [];
+        section.fields.forEach(field => {
+          let field_data = fill_data(state.fields_config, field.config_values);
+          row_section_fields_data.push(field_data);
+        })
+      })
+      
+    })
+    console.log(rows_data);
+    
+    
+    // TODO: It should show a modal letting the user know that there're required configurations that are not filled
+    if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
+
+
+  }
 }
 
 export default {
