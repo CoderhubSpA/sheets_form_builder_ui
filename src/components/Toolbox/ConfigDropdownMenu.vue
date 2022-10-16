@@ -114,7 +114,7 @@
             class="form-select"
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
-            @change="showMe(currentRow.config_values[element.id])"
+            @change="updateFormId(currentRow.config_values[element.id])"
           >
             <option v-for="option in $store.state.api.rows_config_select[element.id].options"
               :value="option"
@@ -407,8 +407,9 @@ export default {
     updateData(entity_id){
       this.$store.dispatch('api/update_value_config_select', entity_id);
     },
-    showMe(entity){
-      this.currentRow.sections.forEach(section => 
+    updateFormId(entity){
+      this.$store.state.form.form.rows[this.currentRow.index].form_id = entity
+      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
       section.form_id = entity
       )
     }
