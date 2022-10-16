@@ -20,7 +20,7 @@
           <b-form-input v-else-if="element.col_name=='name'"
             :id="'nameInserted'"
             :placeholder="currentForm.name"
-            disabled
+            v-model="currentForm.name"
           >
           </b-form-input>
 
@@ -40,6 +40,7 @@
             >{{option.name}}</option>
             </select>
           </div>
+
           <div v-else-if="element.format=='SELECTOR'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
             v-model="$store.state.api.config_values[element.id]">
@@ -80,7 +81,7 @@
       </div>
       
       <div v-else-if="currentRow">
-        <h4>Fila {{currentRow.name}}</h4>
+        <h4>Fila {{ currentRow.name }}</h4>
         <br>
         <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -93,6 +94,13 @@
             v-model="currentRow.config_values[element.id]"
           ></b-form-checkbox>
 
+          <b-form-input v-else-if="element.col_name=='name'"
+            :id="'menu-'+menu_id+'-element-'+element.name"
+            :placeholder="currentRow.name"
+            v-model.lazy="currentRow.name"
+          >
+          </b-form-input>
+
           
 
           <b-form-input
@@ -100,6 +108,7 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
           ></b-form-input>
+
 
           <select
           v-else-if="element.format=='SELECTOR'"
@@ -376,7 +385,7 @@ export default {
     },
     updateData(entity_id){
       this.$store.dispatch('api/update_value_config_select', entity_id);
-    }
+    },
   }
 }
 </script>
