@@ -98,6 +98,8 @@ export default {
           name:"",
           sections:[],
           config_values: config_values,
+          form_id: "",
+          index: this.rows.length
         }
       },
       deleteRow (idx) {
