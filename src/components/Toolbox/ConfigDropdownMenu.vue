@@ -82,11 +82,11 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           ></b-form-input>
-
+          
           <custom-slider
           v-else-if="element.col_name=='col_sm'"
           min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
-
+          
           <custom-slider
           v-else-if="element.col_name=='col_md'"
           min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>

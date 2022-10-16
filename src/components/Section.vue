@@ -120,7 +120,6 @@ export default {
         let res = null;
         this.formatTypes.forEach(element =>{
           if (format === element.name){
-            console.log("primer if")
             if (name === 'col_sm' || name === 'col_md' || name === 'col_xl'){
               res = "12"
             }
@@ -141,9 +140,9 @@ export default {
           index: this.sections.length,
           name: "",
           description:"",
-          colSm:12,
-          colMd:12,
-          colXl:12,
+          colSm:"12",
+          colMd:"12",
+          colXl:"12",
           image:'',
           fields: [],
           idxRow: -1,

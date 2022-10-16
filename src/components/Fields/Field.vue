@@ -15,14 +15,22 @@
         v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
+            <div class="column">
+              <div class="area">
+                <button type="button" class="remove" style="display: inline;" v-if="field.show" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">×</button>
+              </div>
+              <div class="area">
+                <button type="button" class="config" style="display: inline;" v-if="field.show" @click="openFieldConfig(field)"><v-icon class="d-inline-block mb-1" name="cog"/></button>
+              </div>
+            </div>
             <div style="text-align: left !important; margin-bottom: 5px;"
 
             >
               <!--<i>{{field.field_type_text}}</i>-->
-              <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
+              <!-- <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
-              </button>
+              </button> -->
               <b-modal :id="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                 <template #default="{ close }">
                   <div class="container row justify-content-end">
@@ -49,6 +57,7 @@
 <script>
 import { viewport } from '@popperjs/core';
 import draggable from 'vuedraggable'
+
 
 export default {
   name: "Field",
@@ -150,5 +159,33 @@ export default {
   height:2rem;
 }
 
+.area {
+  position: relative;
+}
+.remove {
+display: none;
+position: absolute;
+top: -26px;
+right: -18px;
+border-radius: 10em;
+padding: 4px 7px 5px;
+text-decoration: none;
+font: 700 18px/16px sans-serif;
+background: rgb(250, 10, 10);
+border: 2px solid rgb(255, 255, 255);
+color: #FFF;
+}
+
+.config {
+display: none;
+position: absolute;
+top: -26.5px;
+right: 13px;
+border-radius: 10em;
+padding: 0px 5px 1px;
+background: #079a90;
+border: 2px solid rgb(255, 255, 255);
+color: #FFF;
+}
 
 </style>
