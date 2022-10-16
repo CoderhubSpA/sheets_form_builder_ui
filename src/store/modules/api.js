@@ -277,6 +277,36 @@ const actions = {
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
 
+    axios.get(state.base_url + state.info_url + state.configuration_id)
+    .then(response => response.data.content.entity_type.id)
+    .then(config_id => {
+      /**
+       * Use the config_id with the form configurations and values to generate the json to push
+       */
+
+      let content = {};
+      content[config_id] = [form_config_values];
+      return content;
+    })
+    .then(content => {
+      /**
+       * Post the form configuration
+       */
+      console.log(content);
+      
+      return axios.post(state.base_url + 'entity', content);      
+    })
+    .then(response => {
+      /**
+       * Add the inserted_id in all the rows and post it
+       */
+      let form_id = response.data.content.inserted_id;
+      console.log(response);
+      console.log(form_id);
+      // TODO: Complete
+      // return axios.post(state.base_url + 'entity')
+    })
+    .catch(e => console.log(e));
 
   }
 }
