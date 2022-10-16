@@ -147,6 +147,7 @@ export default {
           image:'',
           fields: [],
           idxRow: -1,
+          form_id: {},
           config_values: config_values, // here we store the values for the sections_config
         }
       },
@@ -180,6 +181,9 @@ export default {
         this.$store.state.form.current_row_config = null
         this.$store.state.form.current_field_config = null
         this.$store.state.form.current_section_config = section
+      },
+      setForm(section,id){
+        section.form_id = id
       }
   }
 };
