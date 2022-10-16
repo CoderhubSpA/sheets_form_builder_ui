@@ -97,7 +97,7 @@
           <b-form-input v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.name"
             :placeholder="currentRow.name"
-            v-model.lazy="currentRow.name"
+            v-model="currentRow.name"
           >
           </b-form-input>
 
@@ -108,6 +108,20 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
           ></b-form-input>
+
+          <select
+          v-else-if="element.col_name=='form_id'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentRow.config_values[element.id]"
+            @change="showMe(currentRow.config_values[element.id])"
+          >
+            <option v-for="option in $store.state.api.rows_config_select[element.id].options"
+              :value="option"
+              :key="option.id">
+              {{ option.name }}
+            </option>
+          </select>
 
 
           <select
@@ -151,6 +165,13 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           ></b-form-checkbox>
+
+          <label
+          v-else-if="element.col_name=='form_id'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+          > {{currentSection.form_id.name}}
+          </label>
 
           <b-input
           v-else-if="element.col_name=='name'"
@@ -386,6 +407,11 @@ export default {
     updateData(entity_id){
       this.$store.dispatch('api/update_value_config_select', entity_id);
     },
+    showMe(entity){
+      this.currentRow.sections.forEach(section => 
+      section.form_id = entity
+      )
+    }
   }
 }
 </script>
