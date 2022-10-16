@@ -16,12 +16,21 @@
             v-model="$store.state.api.config_values[element.id]"
           >
           </b-form-checkbox>
+
+          <b-form-input v-else-if="element.col_name=='name'"
+            :id="'nameInserted'"
+            :placeholder="currentForm.name"
+            disabled
+          >
+          </b-form-input>
+
           <b-form-input v-else-if="element.format=='TEXT'"
             :id="'menu-'+menu_id+'-element-'+element.name"
             :placeholder="'Ingresa '+element.name"
             v-model="$store.state.api.config_values[element.id]"
           >
           </b-form-input>
+
           <div v-else-if="element.name=='Tipo de Entidad'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
             v-model="$store.state.api.config_values[element.id]" @change="showFields($store.state.api.config_values[element.id].id)">
@@ -225,6 +234,33 @@
                   v-model="$store.state.api.fields_config_values[currentField.id][element.id]"
                 :placeholder="'Ingresa ' + element.name">
               </b-form-input>
+
+              <custom-slider
+              v-else-if="element.col_name=='col_sm'"
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colSm"/>
+              <custom-slider
+              v-else-if="element.col_name=='col_md'"
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colMd"/>
+
+              <custom-slider
+              v-else-if="element.col_name=='col_xl'"
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colXl"/>
+
+              <b-form-input
+              v-else-if="element.format=='NUMBER'"
+                type="number"
+                min="0"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                v-model="currentField.config_values[element.id]"
+              ></b-form-input>
+
+              <b-form-input
+              v-else-if="element.format=='URL'"
+                type="url"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                v-model="currentField.config_values[element.id]"
+              ></b-form-input>
+
               <div
               v-else-if="element.name=='Columna'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
@@ -259,15 +295,12 @@
             <label for="field-config-required">Requerido</label>
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
             -->
-            <br>
             <label for="field-config-col-sm">col sm: </label>
-            <custom-slider min="1" max="12" step="1" v-model="currentField.colSm" id="field-config-col-sm"/>
             <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
             <label for="field-config-col-md">col md: </label>
-            <custom-slider min="1" max="12" step="1" v-model="currentField.colMd" id="field-config-col-md"/>
             <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
             <label for="field-config-col-xl">col xl: </label>
-            <custom-slider min="1" max="12" step="1" v-model="currentField.colXl" id="field-config-col-xl"/>
+
             <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
             <br>
             <label for="field-config-description">Descripción</label>
@@ -340,6 +373,9 @@ export default {
     },
     showFields(entity_id){
       this.$store.dispatch('api/get_fields', entity_id);
+    },
+    updateData(entity_id){
+      this.$store.dispatch('api/update_value_config_select', entity_id);
     }
   }
 }
