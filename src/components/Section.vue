@@ -126,10 +126,9 @@ export default {
       },
       addSection () {
         let section = this.newSection();
-        
         section.idxRow = this.idxRow;
         this.sections.push(section);
-        this.openSectionConfig(section)
+        this.openSectionConfig(section);
       },
       newSection(){
         let config_values = {};
@@ -147,7 +146,7 @@ export default {
           image:'',
           fields: [],
           idxRow: -1,
-          form_id: {},
+          form_id: this.$store.state.form.form.rows[this.idxRow].form_id,
           config_values: config_values, // here we store the values for the sections_config
         }
       },
