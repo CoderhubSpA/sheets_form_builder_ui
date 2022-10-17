@@ -318,12 +318,54 @@ const actions = {
       return axios.get(state.base_url + state.info_url + state.rows_id)
       .then(response => response.data.content.entity_type.id)
       .then(rows_config_id => {
-        // The API doesn't return the inserted_id of all elements, so while we can send all the rows, we shouldn't.
-        // But for now, let's save them all without retrieving the inserted_id
+        // The API doesn't return the inserted_id of all elements, so while we can send all the rows, 
+        // we shouldn't because we need all of the inserted_id
+        /*
         let content = {};
         content[rows_config_id] = rows_data;
-        console.log(content);
-        return axios.post(state.base_url + 'entity', content);
+        */
+        for (let i_row = 0; i_row < rows_data.length; i_row++)
+        {
+          let row_data = rows_data[i_row];
+
+          let content = {};
+          content[rows_config_id] = [row_data];
+          console.log(content);
+          axios.post(state.base_url + 'entity', content)
+          .then(response => {
+            let row_id = response.data.content.inserted_id;
+            console.log("inserted row_id "+row_id);
+
+            all_sections_data[i_row].forEach(section_data => {
+              // Associate the section with the created row and form
+              section_data[
+                state.sections_config.find(config => config.name == 'Fila del formulario').id
+              ] = row_id;
+              section_data[
+                state.sections_config.find(config => config.name == 'Formulario').id
+              ] = form_id;
+            });
+            axios.get(state.base_url + state.info_url + state.sections_id)
+            .then(response => response.data.content.entity_type.id)
+            .then(sections_config_id => {
+              for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
+              {
+                let section_data = all_sections_data[i_row][i_section];
+  
+                let content = {};
+                content[sections_config_id] = [section_data];
+                axios.post(state.base_url + 'entity', content)
+                .then(response => {
+                  let section_id = response.data.content.inserted_id;
+                  console.log("inserted section_id" + section_id);
+                  console.log(response);
+                })
+              }
+            })
+            
+          })
+        }
+        // return axios.post(state.base_url + 'entity', content);
       })
     })
     .then(response => {
