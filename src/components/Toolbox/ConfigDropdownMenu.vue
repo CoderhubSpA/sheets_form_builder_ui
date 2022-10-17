@@ -1,7 +1,6 @@
 <template>
     <div>
-  
-      <b-button v-b-toggle="menu_id" class="btn btn-toggle align-items-center rounded collapsed menu-button">{{ menu_name }}</b-button>
+
       <b-collapse visible :id="menu_id">
   <div>
     <b-list-group style="padding: 1em">
@@ -98,6 +97,7 @@
             :id="'menu-'+menu_id+'-element-'+element.name"
             :placeholder="currentRow.name"
             v-model="currentRow.name"
+            @change="updateRowName(currentRow.name)"
           >
           </b-form-input>
 
@@ -171,6 +171,13 @@
             class="form-select"
             :id="'menu-'+menu_id+'-element-'+element.id"
           > {{currentSection.form_id.name}}
+          </label>
+
+          <label
+          v-else-if="element.col_name=='form_row_id'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+          > {{currentSection.form_row_id}}
           </label>
 
           <b-input
@@ -390,7 +397,7 @@ export default {
     },
     currentConfig(){
       return this.$store.state.form.current_config;
-    }
+    },
 
   },
   data() {
@@ -404,13 +411,16 @@ export default {
     showFields(entity_id){
       this.$store.dispatch('api/get_fields', entity_id);
     },
-    updateData(entity_id){
-      this.$store.dispatch('api/update_value_config_select', entity_id);
-    },
     updateFormId(entity){
       this.$store.state.form.form.rows[this.currentRow.index].form_id = entity
       this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
       section.form_id = entity
+      )
+    },
+    updateRowName(element){
+      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
+      section.form_row_id = element,
+      console.log(element)
       )
     }
   }
