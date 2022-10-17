@@ -290,19 +290,12 @@ const actions = {
     .then(response => response.data.content.entity_type.id)
     .then(config_id => {
       /**
-       * Use the config_id with the form configurations and values to generate the json to push
+       * POST request using the config_id with the values in a JSON that the API supports.
        */
 
       let content = {};
       content[config_id] = [form_config_values];
-      return content;
-    })
-    .then(content => {
-      /**
-       * Post the form configuration
-       */
       console.log(content);
-      
       return axios.post(state.base_url + 'entity', content);      
     })
     .then(response => {
@@ -310,10 +303,31 @@ const actions = {
        * Add the inserted_id in all the rows and post it
        */
       let form_id = response.data.content.inserted_id;
+
+      // find the 'Formulario' configuration
+      let row_form_config = state.rows_config.find(config => config.name === 'Formulario').id;
+      rows_data.forEach(row_data => {
+        // Associate the row with the created form
+        row_data[row_form_config] = form_id;
+      })
+
       console.log(response);
       console.log(form_id);
       // TODO: Complete
       // return axios.post(state.base_url + 'entity')
+      return axios.get(state.base_url + state.info_url + state.rows_id)
+      .then(response => response.data.content.entity_type.id)
+      .then(rows_config_id => {
+        // The API doesn't return the inserted_id of all elements, so while we can send all the rows, we shouldn't.
+        // But for now, let's save them all without retrieving the inserted_id
+        let content = {};
+        content[rows_config_id] = rows_data;
+        console.log(content);
+        return axios.post(state.base_url + 'entity', content);
+      })
+    })
+    .then(response => {
+      console.log(response);
     })
     .catch(e => console.log(e));
 
