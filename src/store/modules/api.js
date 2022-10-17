@@ -203,6 +203,12 @@ const mutations = {
 
   UPDATE_VALUE_CONFIG_SELECT(state, payload){
     state.config_values[payload.id] = payload.values
+  },
+  
+  GET_FIELDS(state, entity_id){
+    axios.get(state.base_url + state.info_url + entity_id)
+    .then(response => 
+      state.fields = response.data.content.columns)
   }
 }
 
@@ -222,7 +228,11 @@ const actions = {
   update_value_config_select(context, payload){
     context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)
   },
+  get_fields(context, payload){
+    context.commit('GET_FIELDS', payload);
+  }
 }
+
 
 export default {
   namespaced: true,

@@ -20,7 +20,7 @@
           </b-form-input>
           <div v-else-if="element.name=='Tipo de Entidad'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-            v-model="$store.state.api.config_values[element.id]" @change="showOptions($store.state.api.config_values[element.id].id)">
+            v-model="$store.state.api.config_values[element.id]" @change="showFields($store.state.api.config_values[element.id].id)">
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
@@ -52,6 +52,12 @@
               :deselect-label="''">
             </multiselect>
           </div>
+
+          <b-form-input
+          v-else-if="element.format=='NUMBER'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentForm.config_values[element.id]"
+          ></b-form-input>
           <b-list-group-item v-else>
             {{ element }}
           </b-list-group-item>
@@ -61,12 +67,57 @@
       </div>
       
       <div v-else-if="currentRow">
+        <h4>Fila {{currentRow.name}}</h4>
+        <br>
+        <div v-for="element in $store.state.api.rows_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
+          <label :for="'menu-'+menu_id+'-element-'+element.id">
+            {{ element.name }}
+          </label>
+
+          <b-form-checkbox
+          v-if="element.format=='SiNo'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentRow.config_values[element.id]"
+          ></b-form-checkbox>
+
+          
+
+          <b-form-input
+          v-else-if="element.format=='TEXT'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentRow.config_values[element.id]"
+          ></b-form-input>
+
+          <select
+          v-else-if="element.format=='SELECTOR'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentRow.config_values[element.id]"
+          >
+            <option v-for="option in $store.state.api.rows_config_select[element.id].options"
+              :value="option"
+              :key="option.id">
+              {{ option.name }}
+            </option>
+          </select>
+
+          <b-form-input
+          v-else-if="element.format=='NUMBER'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentRow.config_values[element.id]"
+          ></b-form-input>
+          <b-list-group-item
+          v-else>
+            {{ element }}
+          </b-list-group-item>
+          
+        </div>
       
       </div>
       <div v-else-if="currentSection">
         <h4>Sección {{currentSection.index+1}}</h4>
         <br>
-        <div v-for="element in $store.state.api.sections_config" :key="element.id" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.sections_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -95,6 +146,12 @@
               {{ option.name }}
             </option>
           </select>
+
+          <b-form-input
+          v-else-if="element.format=='NUMBER'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentSection.config_values[element.id]"
+          ></b-form-input>
 
           <b-list-group-item
           v-else>
@@ -132,7 +189,7 @@
       <div v-else-if="currentField">
         <h4>{{ currentField.name }}</h4>
         <br>
-        <div v-for="element in $store.state.api.fields_config" :key="element.id" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.fields_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -168,6 +225,11 @@
                   {{ option.name }}
                 </option>
               </select>
+              <b-form-input
+          v-else-if="element.format=='NUMBER'"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentField.config_values[element.id]"
+          ></b-form-input>
               <b-list-group-item v-else>
                 {{ element }}
               </b-list-group-item>
@@ -253,12 +315,8 @@ export default {
     handleImage(obj){
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
-    showOptions(entity_id){
-      axios.get(this.$store.state.api.base_url + this.$store.state.api.info_url + entity_id
-      )
-      .then(response => {
-        this.$store.state.api.fields = response.data.content.columns;
-      })
+    showFields(entity_id){
+      this.$store.dispatch('api/get_fields', entity_id);
     }
   }
 }
