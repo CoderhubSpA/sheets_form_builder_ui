@@ -2,7 +2,7 @@
   <div class="form-group">
     <draggable class="card-deck" :list="fields" group="Fields" @change="onChange" @dragleave.native="dragleave">
       <transition-group tag="b-row" class="sections">
-        <b-col v-if="$store.state.tools.hover_fields" key="drop" cols="12">
+        <b-col v-if="$store.state.tools.hover_fields" key="drop-above" cols="12">
           <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
         </b-col>
         <b-col :cols="view =='xl' ? (field.colXl ? field.colXl : 12) : 
@@ -39,7 +39,7 @@
         </b-col>
         <b-col
           v-if="$store.state.tools.hover_fields && this.$store.state.form.form.rows[idxRow].sections[idxSection].fields.length > 0"
-          key="drop" cols="12">
+          key="drop-below" cols="12">
           <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
         </b-col>
       </transition-group>
