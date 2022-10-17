@@ -288,9 +288,18 @@ const actions = {
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
 
-    axios.get(state.base_url + state.info_url + state.configuration_id)
-    .then(response => response.data.content.entity_type.id)
-    .then(config_id => {
+    let config_id, rows_config_id, sections_config_id, fields_config_id;
+      
+    Promise.all([
+      axios.get(state.base_url + state.info_url + state.configuration_id)
+        .then(response => config_id = response.data.content.entity_type.id),
+      axios.get(state.base_url + state.info_url + state.rows_id)
+        .then(response => rows_config_id = response.data.content.entity_type.id),
+      axios.get(state.base_url + state.info_url + state.sections_id)
+        .then(response => sections_config_id = response.data.content.entity_type.id),
+      axios.get(state.base_url + state.info_url + state.fields_id)
+        .then(response => fields_config_id = response.data.content.entity_type.id)])
+    .then(() => {
       /**
        * POST request using the config_id with the values in a JSON that the API supports.
        */
@@ -313,60 +322,50 @@ const actions = {
         row_data[row_form_config] = form_id;
       })
 
-      console.log(response);
-      console.log(form_id);
-      return axios.get(state.base_url + state.info_url + state.rows_id)
-      .then(response => response.data.content.entity_type.id)
-      .then(rows_config_id => {
-        // The API doesn't return the inserted_id of all elements, so while we can send all the rows, 
-        // we shouldn't because we need all of the inserted_id
-        /*
+      console.log("inserted form_id " + form_id);
+      // The API doesn't return the inserted_id of all elements, so while we can send all the rows, 
+      // we shouldn't because we need all of the inserted_id
+      /*
+      let content = {};
+      content[rows_config_id] = rows_data;
+      */
+      for (let i_row = 0; i_row < rows_data.length; i_row++)
+      {
+        let row_data = rows_data[i_row];
+
         let content = {};
-        content[rows_config_id] = rows_data;
-        */
-        for (let i_row = 0; i_row < rows_data.length; i_row++)
-        {
-          let row_data = rows_data[i_row];
+        content[rows_config_id] = [row_data];
+        console.log(content);
+        axios.post(state.base_url + 'entity', content)
+        .then(response => {
+          let row_id = response.data.content.inserted_id;
+          console.log("inserted row_id "+row_id);
 
-          let content = {};
-          content[rows_config_id] = [row_data];
-          console.log(content);
-          axios.post(state.base_url + 'entity', content)
-          .then(response => {
-            let row_id = response.data.content.inserted_id;
-            console.log("inserted row_id "+row_id);
+          all_sections_data[i_row].forEach(section_data => {
+            // Associate the section with the created row and form
+            section_data[
+              state.sections_config.find(config => config.name == 'Fila del formulario').id
+            ] = row_id;
+            section_data[
+              state.sections_config.find(config => config.name == 'Formulario').id
+            ] = form_id;
+          });
 
-            all_sections_data[i_row].forEach(section_data => {
-              // Associate the section with the created row and form
-              section_data[
-                state.sections_config.find(config => config.name == 'Fila del formulario').id
-              ] = row_id;
-              section_data[
-                state.sections_config.find(config => config.name == 'Formulario').id
-              ] = form_id;
-            });
-            axios.get(state.base_url + state.info_url + state.sections_id)
-            .then(response => response.data.content.entity_type.id)
-            .then(sections_config_id => {
-              for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
-              {
-                let section_data = all_sections_data[i_row][i_section];
-  
-                let content = {};
-                content[sections_config_id] = [section_data];
-                axios.post(state.base_url + 'entity', content)
-                .then(response => {
-                  let section_id = response.data.content.inserted_id;
-                  console.log("inserted section_id" + section_id);
-                  console.log(response);
-                })
-              }
+          for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
+          {
+            let section_data = all_sections_data[i_row][i_section];
+
+            let content = {};
+            content[sections_config_id] = [section_data];
+            axios.post(state.base_url + 'entity', content)
+            .then(response => {
+              let section_id = response.data.content.inserted_id;
+              console.log("inserted section_id" + section_id);
             })
-            
-          })
-        }
-        // return axios.post(state.base_url + 'entity', content);
-      })
+          }
+        })
+      }
+      // return axios.post(state.base_url + 'entity', content);
     })
     .then(response => {
       console.log(response);
