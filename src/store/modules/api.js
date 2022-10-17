@@ -269,16 +269,18 @@ const actions = {
       rows_data.push(fill_data(state.rows_config, row.config_values));
 
       let sections_data = [];
+      let sections_fields_data = [];
       row.sections.forEach(section => {
         sections_data.push(fill_data(state.sections_config, section.config_values));
-
+        
         let fields_data = [];
         section.fields.forEach(field => {
           fields_data.push(fill_data(state.fields_config, field.config_values));
         })
-        all_fields_data.push(fields_data);
+        sections_fields_data.push(fields_data);
       })
       all_sections_data.push(sections_data);
+      all_fields_data.push(sections_fields_data);
       
     })
     console.log(rows_data);
@@ -361,6 +363,29 @@ const actions = {
             .then(response => {
               let section_id = response.data.content.inserted_id;
               console.log("inserted section_id" + section_id);
+
+              all_fields_data[i_row][i_section].forEach(field_data => {
+                field_data[
+                  state.fields_config.find(config => config.name == 'Sección formulario').id
+                ] = section_id;
+                field_data[
+
+                  state.fields_config.find(config => config.name == 'Formulario').id
+                ] = form_id;
+              });
+
+              for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
+              {
+                let field_data = all_fields_data[i_row][i_section][i_field];
+
+                let content = {};
+                content[fields_config_id] = [field_data];
+                axios.post(state.base_url + 'entity', content)
+                .then(response => {
+                  let field_id = response.data.content.inserted_id;
+                  console.log("inserted field_id " + field_id);
+                })
+              }
             })
           }
         })
