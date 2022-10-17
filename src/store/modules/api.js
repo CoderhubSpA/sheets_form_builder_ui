@@ -263,25 +263,27 @@ const actions = {
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
     
     let rows_data = [];
+    let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
+    let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
     rows.forEach(row => {
-      let row_data = fill_data(state.rows_config, row.config_values);
-      rows_data.push(row_data);
+      rows_data.push(fill_data(state.rows_config, row.config_values));
 
-      let row_sections_data = [];
+      let sections_data = [];
       row.sections.forEach(section => {
-        let section_data = fill_data(state.sections_config, section.config_values);
-        row_sections_data.push(section_data);
+        sections_data.push(fill_data(state.sections_config, section.config_values));
 
-        let row_section_fields_data = [];
+        let fields_data = [];
         section.fields.forEach(field => {
-          let field_data = fill_data(state.fields_config, field.config_values);
-          row_section_fields_data.push(field_data);
+          fields_data.push(fill_data(state.fields_config, field.config_values));
         })
+        all_fields_data.push(fields_data);
       })
+      all_sections_data.push(sections_data);
       
     })
     console.log(rows_data);
-    
+    console.log(all_sections_data);
+    console.log(all_fields_data);
     
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
@@ -313,8 +315,6 @@ const actions = {
 
       console.log(response);
       console.log(form_id);
-      // TODO: Complete
-      // return axios.post(state.base_url + 'entity')
       return axios.get(state.base_url + state.info_url + state.rows_id)
       .then(response => response.data.content.entity_type.id)
       .then(rows_config_id => {
