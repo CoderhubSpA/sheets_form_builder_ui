@@ -2,8 +2,8 @@
   <div>
     <b-list-group style="padding: 1em">
       <div v-if="currentForm">
-        <h4>Formulario:</h4>
-        <h5>"{{form.name}}"</h5>
+        <h5>Formulario:</h5>
+        <h6>"{{form.name}}"</h6>
         <div v-for="element in $store.state.api.config" v-if="element.show_in_create_form==2" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
           <!-- v-if else depending on element.format -->
@@ -115,7 +115,7 @@
       
       </div>
       <div v-else-if="currentSection">
-        <h4>Sección {{currentSection.index+1}}</h4>
+        <h5>Sección {{currentSection.index+1}}</h5>
         <br>
         <div v-for="element in $store.state.api.sections_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -187,7 +187,7 @@
       </div>
 
       <div v-else-if="currentField">
-        <h4>{{ currentField.name }}</h4>
+        <h5>{{ currentField.name }}</h5>
         <br>
         <div v-for="element in $store.state.api.fields_config" v-if="element.show_in_create_form==2" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">

@@ -2,7 +2,7 @@
   <div id="row" class="container">
     <form>
       <div class="form-row" >
-        <div class="row row-cols-1 row-cols-lg-1 g-2 g-lg-3">
+        <div class="row  row-cols-1 row-cols">
           <div class="col">
             <draggable 
               :list="rows" 
@@ -37,10 +37,10 @@
             </div>
           </transition-group>
           </draggable>
-            <div class="p-3 border-dotted bg-light rounded" >
+            <div class="pt-3 border-dotted bg-light rounded" >
               <div class="container text-center">
                 <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow">
-                  <v-icon name="plus" scale="2"/>
+                  <v-icon name="plus" scale="1.75"/>
                 </button>
                 <p>Añadir Fila</p>
               </div>

@@ -1,8 +1,9 @@
 <template>
 <div class="campo col-6">
-  <div class="card">
+  <div class="card text-center">
     <div class="card-body" style="padding:0.25em 0.5em;">
-      <div class="card-text">{{ text }}</div>
+      <v-icon dense name="file"></v-icon>
+      <div class="card-title">{{ text }}</div>
     </div>
   </div>
 </div>
@@ -31,5 +32,10 @@ export default {
 
   padding: 5px 10px;
   cursor: pointer;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto; 
 }
 </style>

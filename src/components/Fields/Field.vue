@@ -10,7 +10,7 @@
         field.colSm ? field.colSm : 12) " v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index"
           :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
           <div class="flex" @mouseover="field.show=true" @mouseleave="field.show = false"
-            style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;">
+            style="margin-bottom: 15px; background-color: gainsboro; border-radius: 5px; padding: 8px;">
             <div class="form-group col-12">
               <div style="text-align: left !important; margin-bottom: 5px;">
                 <div v-if="field.show">
