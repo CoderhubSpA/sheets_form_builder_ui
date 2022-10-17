@@ -163,29 +163,29 @@ export default {
   position: relative;
 }
 .remove {
-display: none;
-position: absolute;
-top: -26px;
-right: -18px;
-border-radius: 10em;
-padding: 4px 7px 5px;
-text-decoration: none;
-font: 700 18px/16px sans-serif;
-background: rgb(250, 10, 10);
-border: 2px solid rgb(255, 255, 255);
-color: #FFF;
+  display: none;
+  position: absolute;
+  top: -26px;
+  right: -18px;
+  border-radius: 10em;
+  padding: 4px 7px 5px;
+  text-decoration: none;
+  font: 700 18px/16px sans-serif;
+  background: rgb(250, 10, 10);
+  border: 2px solid rgb(255, 255, 255);
+  color: #FFF;
 }
 
 .config {
-display: none;
-position: absolute;
-top: -26.5px;
-right: 13px;
-border-radius: 10em;
-padding: 0px 5px 1px;
-background: #079a90;
-border: 2px solid rgb(255, 255, 255);
-color: #FFF;
+  display: none;
+  position: absolute;
+  top: -26.5px;
+  right: 13px;
+  border-radius: 10em;
+  padding: 0px 5px 1px;
+  background: #079a90;
+  border: 2px solid rgb(255, 255, 255);
+  color: #FFF;
 }
 
 </style>
