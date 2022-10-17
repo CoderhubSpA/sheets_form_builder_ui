@@ -283,9 +283,6 @@ const actions = {
       all_fields_data.push(sections_fields_data);
       
     })
-    console.log(rows_data);
-    console.log(all_sections_data);
-    console.log(all_fields_data);
     
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
@@ -308,7 +305,6 @@ const actions = {
 
       let content = {};
       content[config_id] = [form_config_values];
-      console.log(content);
       return axios.post(state.base_url + 'entity', content);      
     })
     .then(response => {
@@ -337,7 +333,6 @@ const actions = {
 
         let content = {};
         content[rows_config_id] = [row_data];
-        console.log(content);
         axios.post(state.base_url + 'entity', content)
         .then(response => {
           let row_id = response.data.content.inserted_id;
@@ -390,7 +385,6 @@ const actions = {
           }
         })
       }
-      // return axios.post(state.base_url + 'entity', content);
     })
     .then(response => {
       console.log(response);
