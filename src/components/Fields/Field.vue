@@ -6,7 +6,7 @@
     @dragend.native="draggingField=false"
     @dragover.prevent
     @drop="draggingField=false"
-    ghost-class="ghost"
+    :ghost-class="draggingField? 'ghost':''" 
     >
       <transition-group tag="b-row" class="sections">
         <b-col :cols="view =='xl' ? (field.colXl ? field.colXl : 12) : 
