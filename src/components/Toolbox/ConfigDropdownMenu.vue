@@ -80,7 +80,7 @@
       </div>
       
       <div v-else-if="currentRow">
-        <h4>Fila {{ currentRow.name }}</h4>
+        <h4>Fila: {{ currentRow.name }}</h4>
         <br>
         <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -153,7 +153,7 @@
       
       </div>
       <div v-else-if="currentSection">
-        <h5>Sección {{currentSection.index+1}}</h5>
+        <h5>Sección: {{currentSection.name}}</h5>
         <br>
               <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
