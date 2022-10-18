@@ -1,14 +1,18 @@
 <template>
   <div class="form-group">
-    <draggable class="card-deck" :list="fields" group="Fields" @change="onChange" @dragleave.native="dragleave">
+    <draggable class="card-deck" 
+    draggable=".field-item"
+    :list="fields" group="Fields" @change="onChange" 
+    @dragend.native="draggingField=false"
+    @dragover.prevent
+    @drop="draggingField=false"
+    ghost-class="ghost"
+    >
       <transition-group tag="b-row" class="sections">
-        <b-col v-if="$store.state.tools.hover_fields" key="drop-above" cols="12">
-          <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
-        </b-col>
         <b-col :cols="view =='xl' ? (field.colXl ? field.colXl : 12) : 
         (view == 'md' ? (field.colMd ? field.colMd : 12): 
         field.colSm ? field.colSm : 12) " v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index"
-          :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
+          :id="`section-${idxSection}-field-${fieldIdx}`" class="field-item">
           <div class="flex" @mouseover="field.show=true" @mouseleave="field.show = false"
             style="margin-bottom: 15px; background-color: gainsboro; border-radius: 5px; padding: 8px;">
             <div class="form-group col-12">
@@ -37,19 +41,21 @@
           </div>
 
         </b-col>
-        <b-col
-          v-if="$store.state.tools.hover_fields && this.$store.state.form.form.rows[idxRow].sections[idxSection].fields.length > 0"
-          key="drop-below" cols="12">
-          <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
-        </b-col>
-      </transition-group>
+      <b-col 
+      v-if="draggingField"
+      key="drop" cols="12"
+      @dragover="dragoverDropZone" @dragleave="dragleaveDropZone">
+        <div class="p-3 my-2 border-dotted rounded text-center text-secondary" :class="{'drop-zone':overDropZone}"> Suelta el campo acá</div>
+      </b-col>
 
+      </transition-group>
     </draggable>
+    
   </div>
 </template>
     
 <script>
-import { viewport } from '@popperjs/core';
+
 import draggable from 'vuedraggable'
 
 export default {
@@ -80,9 +86,20 @@ export default {
     },
     view() {
       return this.$store.state.form.current_view
+    },
+    draggingField:{
+      get(){
+        return this.$store.state.tools.hover_fields
+      },
+      set(value){
+        this.$store.commit('tools/change_hover', value)
+      }
+      
     }
   },
+  
   data: () => ({
+    overDropZone:false,
   }),
   methods: {
     deleteField(index) {
@@ -97,6 +114,8 @@ export default {
     },
     onChange(event) {
       if (event.added) {
+        this.draggingField = false
+        this.overDropZone = false
         event.added.element.idxRow = this.idxRow;
         event.added.element.idxSection = this.idxSection;
         this.openFieldConfig(event.added.element);
@@ -111,6 +130,20 @@ export default {
     dragleave() {
       this.$store.commit('tools/change_hover', false);
     },
+    dragleaveDropZone(){
+      this.overDropZone = false
+      // console.log("dragleave")
+    },
+    dragstart() {
+      // console.log("dragstart")
+    },
+    dragend() {
+      console.log("dragend")
+    },
+    dragoverDropZone(){
+      this.overDropZone = true
+      // console.log("dragover")
+    }
   }
 };
 </script>
@@ -152,4 +185,13 @@ export default {
   width: 2rem;
   height: 2rem;
 }
+
+.ghost{
+    display:none;
+}
+
+.drop-zone{
+  background-color: #85dbe1;
+}
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <b-row class="d-flex justify-content-center">
         <b-row class="row-cols-1">
         <draggable
           :list="sections"
@@ -17,7 +17,7 @@
                       >
                       <div 
                      class="p-3 rounded panel-resizable"
-                     :style="$store.state.form.current_section_config?.index===section.index? 
+                     :style="$store.state.form.current_section_config===section? 
                                   'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;':
                                   'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'"
                      @click.self="openSectionConfig(section)"

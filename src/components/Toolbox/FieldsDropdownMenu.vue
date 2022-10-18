@@ -1,13 +1,15 @@
 <template>
-  <div 
-    @mouseover="hover_fields=true"
-    @mouseleave="hover_fields=false">
+  <div>
     <div>
       <b-input v-model="search" id="section-config-name" type="text" placeholder="Busca un campo aquí..."/>
-      <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="getFields" :clone="cloneAction">
+      <draggable 
+      @dragstart.native="hover_fields=true" 
+      @dragend.native="hover_fields=false"
+      class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="getFields" :clone="cloneAction">
         <Campo v-for="(element, index) in getFields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name">
         </Campo>
       </draggable>
+
     </div>
   </div>
 </template>
@@ -112,7 +114,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   .btn-toggle {
     width: 100%;
@@ -147,4 +149,16 @@ export default {
   .menu-button{
     font-size: 20pt !important;
   }
+  .drop-zone {
+  background-color: #eee;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+  .drag-el {
+    background-color: #fff;
+    margin-bottom: 10px;
+    
+    padding: 5px;
+  }
+
 </style>
