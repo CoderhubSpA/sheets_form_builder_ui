@@ -13,39 +13,39 @@
 
       <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
         :cols = "view =='xl' ? (field.colXl ? field.colXl : 12) : 
-                (view == 'md' ? (field.colMd ? field.colMd : 12): 
+        (view == 'md' ? (field.colMd ? field.colMd : 12): 
                 field.colSm ? field.colSm : 12) "
         
         v-for="(field, fieldIdx) in sections[idxSection].fields" :key="fieldIdx" :id="`section-${idxSection}-field-${fieldIdx}`" class="field-item"
         
         >
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
-          <div class="form-group col-12">
+            <div class="form-group col-12">
             <div style="text-align: left !important; margin-bottom: 5px;"
 
             >
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
-              </button>
+                  </button>
               <b-modal :id="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`" centered hide-header @ok="deleteField(fieldIdx)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
-                <template #default="{ close }">
-                  <div class="container row justify-content-end">
+                  <template #default="{ close }">
+                    <div class="container row justify-content-end">
                     <b-button class="btn btn-close"  @click="close()"> </b-button>
                     <h5 class="text-center" >¿Está seguro que desea eliminar este campo?</h5>
-                  </div>
-                </template>
-              </b-modal>         
-            </div>
+                    </div>
+                  </template>
+                </b-modal>
+              </div>
             <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo"/>
-          </div>
+            </div>
             
-        </div>
-      
-      </b-col>
+          </div>
+
+        </b-col>
       <b-col  v-if="draggingField" key="drop" cols="12"   @dragover="dragoverDropZone" @dragenter="dragenterDropZone" @dragleave="dragleaveDropZone">
           <div class="p-3 my-2 border-dotted rounded text-center text-secondary" :class="{'drop-zone':overDropZone}"> Suelta el campo acá</div>
-      </b-col>
+        </b-col>
 
       </transition-group>
     </draggable>
@@ -149,7 +149,6 @@ export default {
 </script>
   
 <style>
-
 .btn-circle.btn-lg {
   width: 55px;
   height: 55px;
@@ -160,7 +159,10 @@ export default {
   background: #008A94;
 }
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
   background-color: #008A94 !important;
 }
 
@@ -168,7 +170,7 @@ export default {
   color: black;
 }
 
-.border-dotted{
+.border-dotted {
   border-style: dotted;
   border-color: #BDBBBB;
 }
@@ -179,8 +181,8 @@ export default {
   text-align: right;
 }
 
-.close-rounded{
-  width: 2rem; 
+.close-rounded {
+  width: 2rem;
   height:2rem;
 }
 
