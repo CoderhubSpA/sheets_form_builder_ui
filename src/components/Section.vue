@@ -100,20 +100,40 @@ export default {
 
     },
     data: () => ({
+      formatTypes: [
+        {name: 'TEXT', value: ""},
+        {name: 'NUMBER', value: null},
+        {name: 'SELECTOR', value: []},
+        {name: 'SiNo', value: null}
+      ]
     }),
   
     methods: {
+      selectFormat(format, name){
+        let res = null;
+        this.formatTypes.forEach(element =>{
+          if (format === element.name){
+            console.log("primer if")
+            if (name === 'col_sm' || name === 'col_md' || name === 'col_xl'){
+              res = "12"
+            }
+            else {
+              res = element.value
+            }
+          }
+        })
+        return res;
+      },
       addSection () {
         let section = this.newSection();
-        
         section.idxRow = this.idxRow;
         this.sections.push(section);
-        this.openSectionConfig(section)
+        this.openSectionConfig(section);
       },
       newSection(){
         let config_values = {};
         this.$store.state.api.sections_config.forEach(config => {
-          config_values[config.id] = config.format === "TEXT" ? "": []
+          config_values[config.id] =  this.selectFormat(config.format, config.name)
         })
 
         return {
@@ -126,6 +146,7 @@ export default {
           image:'',
           fields: [],
           idxRow: -1,
+          form_id: this.$store.state.form.form.rows[this.idxRow].form_id,
           config_values: config_values, // here we store the values for the sections_config
         }
       },
@@ -159,6 +180,9 @@ export default {
         this.$store.state.form.current_row_config = null
         this.$store.state.form.current_field_config = null
         this.$store.state.form.current_section_config = section
+      },
+      setForm(section,id){
+        section.form_id = id
       }
   }
 };
