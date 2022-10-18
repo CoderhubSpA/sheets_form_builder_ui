@@ -1,14 +1,14 @@
 <template>
-  <div 
-    
-    @mouseover="hover_fields=true"
-    @mouseleave="hover_fields=false"
-           >
+  <div>
     <div>
-      <draggable class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull: true, put: false}" :list="$store.state.api.fields" :clone="cloneAction">
+      <draggable 
+      @dragstart.native="hover_fields=true" 
+      @dragend.native="hover_fields=false"
+      class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="$store.state.api.fields" :clone="cloneAction">
         <Campo v-for="(element, index) in $store.state.api.fields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name">
         </Campo>
       </draggable>
+
     </div>
   </div>
 </template>
@@ -49,12 +49,17 @@ export default {
         this.$store.commit('tools/change_hover', value)
       }
       
+    }, 
+    fields:{
+      get(){
+        return this.$store.state.api.fields
+      }
     }
+
   },
   data() {
     return {
-      field_n: 0,
-      fields:[]
+      field_n: 0
     }
   },
   methods: {
@@ -89,12 +94,13 @@ export default {
     },
     hoverCallback(){
       this.hover_fields = !this.hover_fields
-    },
+    }
+
   }
 }
 </script>
 
-<style>
+<style scoped>
 
   .btn-toggle {
     width: 100%;
@@ -129,4 +135,16 @@ export default {
   .menu-button{
     font-size: 20pt !important;
   }
+  .drop-zone {
+  background-color: #eee;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+  .drag-el {
+    background-color: #fff;
+    margin-bottom: 10px;
+    
+    padding: 5px;
+  }
+
 </style>

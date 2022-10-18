@@ -1,24 +1,29 @@
 <template>
   <div class="form-group">
     <draggable class="card-deck" 
-    :list="fields" group="Fields" @change="onChange" @dragleave.native="dragleave">
+    draggable=".field-item"
+    :list="fields" group="Fields" @change="onChange" 
+    @dragend.native="draggingField=false"
+    @dragover.prevent
+    @drop="draggingField=false"
+    ghost-class="ghost"
+    >
       <transition-group tag="b-row" class="sections">
-        <b-col  v-if="$store.state.tools.hover_fields" key="drop" cols="12">
-          <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary"> Suelta el campo acá</div>
-        </b-col>
+
 
       <b-col style="margin-bottom: 15px; background-color: lightgray; border-radius: 5px; padding: 8px;" 
         :cols = "view =='xl' ? (field.colXl ? field.colXl : 12) : 
                 (view == 'md' ? (field.colMd ? field.colMd : 12): 
                 field.colSm ? field.colSm : 12) "
         
-        v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index" :id="`section-${idxSection}-field-${fieldIdx}`" class="form-group">
+        v-for="(field, fieldIdx) in sections[idxSection].fields" :key="fieldIdx" :id="`section-${idxSection}-field-${fieldIdx}`" class="field-item"
+        
+        >
         <div class="flex"  @mouseover="field.show=true" @mouseleave="field.show = false">
           <div class="form-group col-12">
             <div style="text-align: left !important; margin-bottom: 5px;"
 
             >
-              <!--<i>{{field.field_type_text}}</i>-->
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-danger p-2" v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${fieldIdx}`">x</button> 
               <button type="button" v-if="field.show" style="float:right" class="close-rounded badge border border-light bg-info p-2" @click="openFieldConfig(field)">
                 <v-icon class="d-inline-block ml-2 mb-1" :dark="true" name="cog"/>
@@ -36,18 +41,20 @@
           </div>
             
         </div>
-        <div class="p-3 my-2 border-dotted bg-light rounded text-center text-secondary" v-if="$store.state.tools.hover_fields" key="drop"> Suelta el campo acá</div>
-      </b-col>
       
+      </b-col>
+      <b-col  v-if="draggingField" key="drop" cols="12"   @dragover="dragoverDropZone" @dragenter="dragenterDropZone" @dragleave="dragleaveDropZone">
+          <div class="p-3 my-2 border-dotted rounded text-center text-secondary" :class="{'drop-zone':overDropZone}"> Suelta el campo acá</div>
+      </b-col>
 
       </transition-group>
-
     </draggable>
+    
   </div>
 </template>
     
 <script>
-import { viewport } from '@popperjs/core';
+
 import draggable from 'vuedraggable'
 
 export default {
@@ -78,9 +85,20 @@ export default {
     },
     view(){
       return this.$store.state.form.current_view
+    },
+    draggingField:{
+      get(){
+        return this.$store.state.tools.hover_fields
+      },
+      set(value){
+        this.$store.commit('tools/change_hover', value)
+      }
+      
     }
   },
+  
   data: () => ({
+    overDropZone:false,
   }),
   methods: {
     deleteField(index) {
@@ -95,6 +113,8 @@ export default {
     },
     onChange(event) {
       if (event.added) {
+        this.draggingField = false
+        this.overDropZone = false
         event.added.element.idxRow = this.idxRow;
         event.added.element.idxSection = this.idxSection;
         this.openFieldConfig(event.added.element);
@@ -106,10 +126,24 @@ export default {
       this.$store.state.form.current_row_config = null;
       this.$store.state.form.current_field_config = newField;
     },
-    dragleave() {
-      this.$store.commit('tools/change_hover', false);
-  
+    dragenterDropZone() {
+
+      // console.log("dragenter")
     },
+    dragleaveDropZone(){
+      this.overDropZone = false
+      // console.log("dragleave")
+    },
+    dragstart() {
+      // console.log("dragstart")
+    },
+    dragend() {
+      console.log("dragend")
+    },
+    dragoverDropZone(){
+      this.overDropZone = true
+      // console.log("dragover")
+    }
   }
 };
 </script>
@@ -150,5 +184,12 @@ export default {
   height:2rem;
 }
 
+.ghost{
+    display:none;
+}
+
+.drop-zone{
+  background-color: #85dbe1;
+}
 
 </style>
