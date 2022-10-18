@@ -166,19 +166,18 @@
             v-model="currentSection.config_values[element.id]"
           ></b-form-checkbox>
 
-          <label
-          v-else-if="element.col_name=='form_id'"
+          <select 
+            v-else-if="element.col_name=='form_id'"
             class="form-select"
             :id="'menu-'+menu_id+'-element-'+element.id"
-          > {{currentSection.form_id.name}}
-          </label>
-
-          <label
-          v-else-if="element.col_name=='form_row_id'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-          > {{currentSection.form_row_id}}
-          </label>
+            v-model="currentSection.config_values[element.id]"
+          > 
+          <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(ops => ops.name==currentSection.form_id.name)"
+              :value="option"
+              :key="option.id">
+              {{ option.name }}
+            </option>
+        </select>
 
           <b-input
           v-else-if="element.col_name=='name'"
@@ -265,6 +264,19 @@
                   v-model="currentField.config_values[element.id]">
           </b-form-checkbox>
 
+          <select 
+            v-else-if="element.col_name=='form_id'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentField.config_values[element.id]"
+          > 
+          <option v-for="option in $store.state.api.fields_config_select[element.id].options"
+              :value="option"
+              :key="option.id">
+              {{ option.name }}
+            </option>
+        </select>
+
               <b-form-input
               v-else-if="element.format=='TEXT'"
                 :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
@@ -317,13 +329,7 @@
                   {{ option.name }}
                 </option>
               </select>
-              <b-form-input
-          v-else-if="element.format=='NUMBER'"
-            type="number"
-            min="0"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentField.config_values[element.id]"
-          ></b-form-input>
+
               <b-list-group-item v-else>
                 {{ element }}
               </b-list-group-item>
@@ -413,14 +419,14 @@ export default {
     },
     updateFormId(entity){
       this.$store.state.form.form.rows[this.currentRow.index].form_id = entity
-      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
+      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => {
       section.form_id = entity
+      }
       )
     },
     updateRowName(element){
       this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
-      section.form_row_id = element,
-      console.log(element)
+      section.form_row_id = element
       )
     }
   }
