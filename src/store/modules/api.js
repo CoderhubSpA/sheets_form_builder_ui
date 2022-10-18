@@ -237,7 +237,7 @@ const actions = {
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
      */
     let state = context.state;
-    let fill_data = (configurations, values) => {
+    let fill_data = (configurations, values, ignore_required_array) => {
       let data_values = {};
       configurations.forEach(config => {
         let value = values[config.id];
@@ -245,7 +245,7 @@ const actions = {
           (!Array.isArray(value) || (value.length > 0))) // and that is not an empty array
         {
           data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
-        } else if (config.required_in_create_form) {
+        } else if (config.required_in_create_form && !ignore_required_array.includes(config.id)) {
           unfilled_required_values += 1;
         }
       })
@@ -256,8 +256,8 @@ const actions = {
     // Parse form configuration
     let unfilled_required_values = 0;
 
-    let form_config_values = fill_data(state.config, state.config_values);
-    
+    let form_config_values = fill_data(
+      state.config, state.config_values, []);
     
     // Parse form rows while checking for unfilled required values
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
@@ -266,16 +266,30 @@ const actions = {
     let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
     let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
     rows.forEach(row => {
-      rows_data.push(fill_data(state.rows_config, row.config_values));
+      rows_data.push(fill_data(state.rows_config, row.config_values, [state.rows_config.find(config => config.name === 'Formulario').id]));
 
       let sections_data = [];
       let sections_fields_data = [];
       row.sections.forEach(section => {
-        sections_data.push(fill_data(state.sections_config, section.config_values));
+        sections_data.push(
+          fill_data(
+            state.sections_config, section.config_values, [
+              state.sections_config.find(config => config.name === 'Formulario').id,
+              state.sections_config.find(config => config.name === 'Fila del formulario').id
+            ]
+          )
+        );
         
         let fields_data = [];
         section.fields.forEach(field => {
-          fields_data.push(fill_data(state.fields_config, field.config_values));
+          fields_data.push(
+            fill_data(
+              state.fields_config, field.config_values, [
+                state.fields_config.find(config => config.name === 'Formulario').id,
+                state.fields_config.find(config => config.name === 'Sección formulario').id
+              ]
+            )
+          );
         })
         sections_fields_data.push(fields_data);
       })
@@ -286,7 +300,7 @@ const actions = {
     
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
-
+    
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
     Promise.all([
