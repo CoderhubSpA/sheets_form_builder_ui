@@ -13,7 +13,7 @@
           </b-button>
         </b-navbar-nav>
         <b-navbar-nav class="justify-content-end" style="margin-right: 3vh;">
-          <b-button class="btn btn-success text-white">Guardar</b-button>
+          <b-button class="btn btn-success text-white" @click="$store.dispatch('api/post_form')">Guardar</b-button>
         </b-navbar-nav>
     </b-navbar>
   </div>
