@@ -11,7 +11,9 @@
               <transition-group>
                 <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
                   <form @click.self="openRowConfig(row)">
-                    <div class="form-group col-md-4 flex">
+                    <div :class="view =='xl' ? 'form-group col-md-4 flex' : 
+                              (view == 'md' ? 'form-group col-md-6 flex': 
+                              'form-group col-md-8 flex')" >
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
                       <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
@@ -39,10 +41,16 @@
           </draggable>
             <div class="pt-3 border-dotted bg-light rounded" >
               <div class="container text-center">
-                <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow">
+                <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow" v-if="view=='xl'">
                   <v-icon name="plus" scale="1.75"/>
                 </button>
-                <p>Añadir Fila</p>
+                <button type="button"  class="btn btn-primary btn-circle btn-lg" @click="addRow" v-if="view=='md'">
+                  <v-icon name="plus" scale="1.45"/>
+                </button>
+                <button type="button"  class="btn btn-primary btn-circle btn-md" @click="addRow" v-if="view=='sm'">
+                  <v-icon name="plus" scale="1.25"/>
+                </button>
+                <p :class="view=='xl'? 'normalText': (view=='md'? 'mediumText' : 'smallText' )">Añadir Fila</p>
               </div>
             </div>
           </div>
@@ -72,6 +80,9 @@ export default {
     {
       rows(){
         return this.$store.state.form.form.rows
+      },
+      view(){
+        return this.$store.state.form.current_view
       }
     },
     data: () => ({
@@ -132,8 +143,38 @@ export default {
   border-radius: 35px;
   font-size: 12px;
   text-align: center;
-  background: #008A94;
 }
+
+.btn-circle.btn-lg {
+  width: 58px;
+  height: 58px;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.normalText{
+  font-size: 16px;
+}
+
+.mediumText{
+  font-size: 14px;
+}
+
+.smallText{
+  font-size: 12px;
+}
+
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   background-color: #008A94 !important;

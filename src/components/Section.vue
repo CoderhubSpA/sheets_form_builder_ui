@@ -56,10 +56,16 @@
             <!-- {{sections}} -->
             <div class="pt-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
               <div class="container text-center">
-                <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
+                <button type="button"  class="btn-primary btn btn-circle btn-lg" @click="addSection" v-if="view=='xl'">
+                  <v-icon name="plus" scale="1.45"/>
+                </button>
+                <button type="button"  class="btn-primary btn btn-circle btn-md" @click="addSection" v-if="view=='md'">
                   <v-icon name="plus" scale="1.25"/>
                 </button>
-                <p>Añadir Sección</p>
+                <button type="button"  class="btn-primary btn btn-circle btn-sm" @click="addSection" v-if="view=='sm'">
+                  <v-icon name="plus" scale="1"/>
+                </button>
+                <p :class="view=='xl'? 'normalText': (view=='md'? 'mediumText' : 'smallText' )">Añadir Sección</p>
               </div>
             </div>
         </b-row>
@@ -191,13 +197,42 @@ export default {
 <style>
 
 .btn-circle.btn-lg {
-  width: 55px;
-  height: 55px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 12px;
+  width: 58px;
+  height: 58px;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
   text-align: center;
-  background: #008A94;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.btn-circle.btn-sm {
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  border-radius: 20px;
+  font-size: 8px;
+  text-align: center;
+}
+
+.normalText{
+  font-size: 15px;
+}
+
+.mediumText{
+  font-size: 13px;
+}
+
+.smallText{
+  font-size: 11px;
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
