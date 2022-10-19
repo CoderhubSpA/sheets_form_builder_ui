@@ -423,7 +423,7 @@ export default {
       )
     },
     hiddenConfig(element){
-      let columns_hidden = [ 'Formulario', 'Fila del formulario', 'Sección formulario', 'Formato del campo', 'Alternativas', 'Entidad del form']
+      let columns_hidden = [ 'Formulario', 'Fila del formulario', 'Sección formulario', 'Formato del campo', 'Alternativas', 'Entidad del form', 'Sección siguiente default', 'Mostrar solo por el campo', 'Mostrar solo si el campo posee valor']
       return !(columns_hidden.includes(element.name))
     }
   }
