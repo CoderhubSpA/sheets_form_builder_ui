@@ -151,32 +151,6 @@
             v-model="currentSection.config_values[element.id]"
           ></b-form-checkbox>
 
-          <select 
-            v-else-if="element.col_name=='default_next_form_section'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentSection.config_values[element.id]"
-          > 
-          <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(op => op.show_in_create_form==2)"
-              :value="option"
-              :key="option">
-              {{ option }}
-            </option>
-        </select>
-
-          <select 
-            v-else-if="element.col_name=='show_by_field_id'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentSection.config_values[element.id]"
-          > 
-          <option v-for="option in currentSection.fields"
-              :value="option"
-              :key="option.id">
-              {{ option.name }}
-            </option>
-        </select>
-
           <b-input
           v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.id"
