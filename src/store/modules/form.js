@@ -1,6 +1,6 @@
 const state = {
     form:{
-        name:"Cargando configuraciones...",
+        name:"Formulario",
         rows:[],
         config_values: {},
     },
@@ -12,7 +12,6 @@ const state = {
 }
 const mutations = {
     loadForm(state, payload) {
-        state.form.name = payload.name;
         state.form.rows = payload.rows;
         state.form.config_values = payload.config_values;
     },
@@ -39,7 +38,6 @@ const actions = {
         })
 
         context.commit('loadForm', {
-            'name': "Nombre Formulario",
             'rows': [],
             'config_values': config_values,
         });

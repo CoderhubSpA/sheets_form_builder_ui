@@ -6,14 +6,14 @@
                     :md="view =='xl' || view == 'md' ? 12 : 8" 
                     :sm="12"
                     class=" border rounded p-3" @click.self="openFormConfig(form)">
-                <b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
-                    @keyup.enter="editingName = false"/>
-                <div class="h4 d-inline-block" v-else>{{form.name}}</div>
-                <v-icon class="d-inline-block ml-2 mb-1"
+                <!--<b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
+                    @keyup.enter="editingName = false"/>-->
+                <div class="h4 d-inline-block">{{ form.name }}</div>
+                <!--<v-icon class="d-inline-block ml-2 mb-1"
                     :name="editingName? 'check': 'pencil-alt'"
                     @click="editingName=!editingName"
                     style="cursor: pointer"   
-                />
+                />-->
                 <div class="m-2 y-2">
                     <Row/>
                 </div>
