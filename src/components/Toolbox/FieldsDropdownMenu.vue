@@ -64,6 +64,9 @@ export default {
         return result
       }
       return fields
+    },
+    formatTypes() {
+      return this.$store.state.tools.format_types;
     }
 
   },
@@ -81,12 +84,7 @@ export default {
         index: this.field_n,
         idxRow: -1,
         idxSection: -1,
-        // TODO: remove the following keys and refactor the project to use the fields in item
-        description: "", 
         show:false,
-        colSm:12,
-        colMd:12,
-        colXl:12,
       };
       
       if (!item.config_values)
@@ -96,7 +94,7 @@ export default {
         this.$store.state.api.fields_config.forEach(config => {
           config_values[config.id] =
             config.name === "Columna" ? item :
-            config.format === "TEXT" ? "": [];
+            this.selectFormat(config.format, config.name)
         });
         element["config_values"] = config_values;
       }
@@ -109,7 +107,17 @@ export default {
     },
     removeAccents(str){
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-} 
+    },
+    selectFormat(format, name) {
+      if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+        return "12";
+      }
+      let type = this.formatTypes.find(element => element.name === format);
+      if (type)
+        return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    },
   }
 }
 </script>

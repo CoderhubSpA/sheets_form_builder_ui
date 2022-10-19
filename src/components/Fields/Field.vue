@@ -9,9 +9,9 @@
     :ghost-class="draggingField? 'ghost':''" 
     >
       <transition-group tag="b-row" class="sections">
-        <b-col :cols="view =='xl' ? (field.colXl ? field.colXl : 12) : 
-        (view == 'md' ? (field.colMd ? field.colMd : 12): 
-        field.colSm ? field.colSm : 12) " v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index"
+        <b-col :cols="view =='xl' ? (getColXl(field)  ? getColXl(field) : 12) : 
+        (view == 'md' ? (getColMd(field) ? getColMd(field) : 12): 
+        getColSm(field) ? getColSm(field) : 12) " v-for="(field, fieldIdx) in sections[idxSection].fields" :key="field.index"
           :id="`section-${idxSection}-field-${fieldIdx}`" class="field-item">
           <div class="flex" @mouseover="field.show=true" @mouseleave="field.show = false"
             style="margin-bottom: 15px; background-color: gainsboro; border-radius: 5px; padding: 8px;">
@@ -96,7 +96,6 @@ export default {
       set(value){
         this.$store.commit('tools/change_hover', value)
       }
-      
     }
   },
   
@@ -104,6 +103,21 @@ export default {
     overDropZone:false,
   }),
   methods: {
+    getColXl(field) {
+      return field.config_values[
+          this.$store.state.api.fields_config.find(config => config.name === 'col_xl').id
+        ];
+    },
+    getColMd(field) {
+      return field.config_values[
+          this.$store.state.api.fields_config.find(config => config.name === 'col_md').id
+        ];
+    },
+    getColSm(field) {
+      return field.config_values[
+          this.$store.state.api.fields_config.find(config => config.name === 'col_sm').id
+        ];
+    },
     deleteField(index) {
       if (this.$store.state.form.current_field_config?.index == this.fields[index].index) {
         this.$store.state.form.current_field_config = null;

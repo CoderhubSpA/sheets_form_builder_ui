@@ -11,7 +11,6 @@ const state = {
   fields_id: 'form_field',
   config: [],
   config_select: {},
-  config_values: {},
   rows_config: [],
   rows_config_select: {},
   actions: [],
@@ -35,8 +34,8 @@ const state = {
 }
 
 const mutations = {
-  API_CONFIG(state){
-    axios.get(
+  FETCH_FORM_CONFIG(state){
+    return axios.get(
       state.base_url + state.info_url + state.configuration_id
     )
     .then(response => {
@@ -44,7 +43,6 @@ const mutations = {
       state.config = columns;
 
       state.config.forEach(config => {
-        let values = config.format === "TEXT" ? "": [];
 
         if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
         {
@@ -71,11 +69,8 @@ const mutations = {
             state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
           }
         }
-
-        state.config_values[config.id] = values;
       });
     });
-    return state.config
   },
   FETCH_FIELDS_CONFIG(state) {
     // We don't need to get the possible fields, that's will be done when the user selects an entity for its form
@@ -200,10 +195,6 @@ const mutations = {
 
     })
   },
-
-  UPDATE_VALUE_CONFIG_SELECT(state, payload){
-    state.config_values[payload.id] = payload.values
-  },
   
   GET_FIELDS(state, entity_id){
     axios.get(state.base_url + state.info_url + entity_id)
@@ -213,8 +204,8 @@ const mutations = {
 }
 
 const actions = {
-  api_config(context){
-    context.commit('API_CONFIG')
+  fetch_form_config(context){
+    return context.commit('FETCH_FORM_CONFIG');
   },
   fetch_rows_config(context) {
     context.commit('FETCH_ROWS_CONFIG');
@@ -224,9 +215,6 @@ const actions = {
   },
   fetch_fields_config(context) {
     context.commit('FETCH_FIELDS_CONFIG');
-  },
-  update_value_config_select(context, payload){
-    context.commit('UPDATE_VALUE_CONFIG_SELECT', payload)
   },
   get_fields(context, payload){
     context.commit('GET_FIELDS', payload);
@@ -252,12 +240,10 @@ const actions = {
       return data_values;
     };
 
-
     // Parse form configuration
     let unfilled_required_values = 0;
-
     let form_config_values = fill_data(
-      state.config, state.config_values, []);
+      state.config, context.rootState.form.form.config_values, []);
     
     // Parse form rows while checking for unfilled required values
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
