@@ -302,7 +302,7 @@
               <textarea
               v-else-if="element.col_name=='description'"
                 :id="'menu-'+menu_id+'-element-'+element.id"
-                class="col-12" placeholder="Ingrese sdfsdfsdla descripción del campo"
+                class="col-12" placeholder="Ingrese descripción del campo"
                 v-model="currentField.config_values[element.id]"></textarea>
 
               <b-form-input

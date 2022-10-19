@@ -2,7 +2,7 @@
   <div>
     <NavbarComponent/>
     <div id="app" style="min-height: 600px; height: 91vh;" class="d-flex flex-row">
-      <ToolboxComponent></ToolboxComponent>
+      <ToolboxComponent/>
       <FormComponent/>
     </div>
   </div>

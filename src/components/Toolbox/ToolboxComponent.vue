@@ -1,5 +1,5 @@
 <template>
-<b-container class="flex-shrink-0 p-3 bg-light" id="tool-box" >
+<div class="flex-shrink-0 p-3 bg-light" id="tool-box" >
   <b-nav card-header tabs style="padding-bottom: 10px;">
     <b-nav-item class="col-6 center" @click="tabFields" :active = "tab =='fields'">
       <h5>Campos</h5>
@@ -20,7 +20,7 @@
       :menu_id="'panelsStayOpen-collapseTwo'"/>
     </div>
   </div>
-</b-container>
+</div>
 </template>
 
 <script>
