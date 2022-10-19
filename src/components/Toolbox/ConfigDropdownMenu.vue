@@ -6,7 +6,7 @@
     <b-list-group style="padding: 1em">
       <div v-if="currentForm">
         <h5>Formulario:</h5>
-        <h6>"{{form.name}}"</h6>
+        <h6>"{{currentFormName}}"</h6>
         <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
           <!-- v-if else depending on element.format -->
@@ -15,13 +15,6 @@
             v-model="$store.state.form.form.config_values[element.id]"
           >
           </b-form-checkbox>
-
-          <b-form-input v-else-if="element.col_name=='name'"
-            :id="'nameInserted'"
-            :placeholder="currentForm.name"
-            v-model="currentForm.name"
-          >
-          </b-form-input>
 
           <b-form-input v-else-if="element.format=='TEXT'"
             :id="'menu-'+menu_id+'-element-'+element.name"
@@ -450,6 +443,11 @@ export default {
         this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id
       ];
     },
+    currentFormName() {
+      return this.currentForm.config_values[
+        this.$store.state.api.config.find(config => config.name === 'Nombre').id
+      ]
+    }
   },
   data() {
     return {
