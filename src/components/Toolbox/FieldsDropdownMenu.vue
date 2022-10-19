@@ -81,12 +81,7 @@ export default {
         index: this.field_n,
         idxRow: -1,
         idxSection: -1,
-        // TODO: remove the following keys and refactor the project to use the fields in item
-        description: "", 
         show:false,
-        colSm:12,
-        colMd:12,
-        colXl:12,
       };
       
       if (!item.config_values)
@@ -96,6 +91,9 @@ export default {
         this.$store.state.api.fields_config.forEach(config => {
           config_values[config.id] =
             config.name === "Columna" ? item :
+            config.name === "col_sm" ? 12 :
+            config.name === "col_md" ? 12 :
+            config.name === "col_xl" ? 12 :
             config.format === "TEXT" ? "": [];
         });
         element["config_values"] = config_values;

@@ -271,16 +271,18 @@
       </div>
 
       <div v-else-if="currentField">
-        <h5>{{ currentField.name }}</h5>
+        <h5>
+          {{ currentFieldName }}
+        </h5>
         <br>
               <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
-          <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
+          <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
           
           <b-form-checkbox
           v-if="element.format=='SiNo'"
-            :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+            :id="'menu-'+menu_id+'-element-'+element.id"
                   v-model="currentField.config_values[element.id]">
           </b-form-checkbox>
 
@@ -299,21 +301,28 @@
 
               <b-form-input
               v-else-if="element.format=='TEXT'"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                :id="'menu-'+menu_id+'-element-'+element.id"
                   v-model="currentField.config_values[element.id]"
                 :placeholder="'Ingresa ' + element.name">
               </b-form-input>
 
               <custom-slider
               v-else-if="element.col_name=='col_sm'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colSm"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
               <custom-slider
               v-else-if="element.col_name=='col_md'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colMd"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
 
               <custom-slider
               v-else-if="element.col_name=='col_xl'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colXl"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
+
+              <textarea
+              v-else-if="element.col_name=='description'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                class="col-12" placeholder="Ingrese sdfsdfsdla descripción del campo"
+                v-model="currentField.config_values[element.id]"></textarea>
+              
 
               <b-form-input
               v-else-if="element.format=='NUMBER'"
@@ -332,7 +341,7 @@
 
               <div
               v-else-if="element.name=='Columna'"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                :id="'menu-'+menu_id+'-element-'+element.id"
               >
                   {{ currentField.config_values[element.id].name }}
               </div>
@@ -340,7 +349,7 @@
               <select
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                :id="'menu-'+menu_id+'-element-'+element.id"
                   v-model="currentField.config_values[element.id]"
               >
                 <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
@@ -360,12 +369,12 @@
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
             -->
             <label for="field-config-col-sm">col sm: </label>
-            <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
+            <!-- <b-input v-model="currentFieldColSm" id="field-config-col-sm" type="number"/> -->
             <label for="field-config-col-md">col md: </label>
-            <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
+            <!-- <b-input v-model="currentFieldColMd" id="field-config-col-md" type="number"/> -->
             <label for="field-config-col-xl">col xl: </label>
 
-            <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
+            <!-- <b-input v-model="currentFieldColXl" id="field-config-col-xl" type="number"/>
             <br>
             <label for="field-config-description">Descripción</label>
             <div>
@@ -426,6 +435,11 @@ export default {
       return this.$store.state.form.current_config;
     },
 
+    currentFieldName() {
+      return this.currentField.config_values[
+        this.$store.state.api.fields_config.find(config => config.name === 'Columna').id
+      ].name;
+    },
   },
   data() {
     return {
