@@ -29,7 +29,7 @@
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
-            >{{option.name}}</option>
+            >{{element.col_name_fk ? option[element.col_name_fk] : option.name}}</option>
             </select>
           </div>
 
@@ -39,7 +39,9 @@
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
-            >{{option.name}}</option>
+            >{{
+                element.col_name_fk ? option[element.col_name_fk] : option.name
+              }}</option>
             </select>
           </div>
           <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
@@ -112,7 +114,7 @@
             <option v-for="option in $store.state.api.rows_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
           </select>
 
@@ -126,7 +128,7 @@
             <option v-for="option in $store.state.api.rows_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
           </select>
 
@@ -168,7 +170,7 @@
           <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(ops => ops.name==currentSection.form_id.name)"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
         </select>
 
@@ -229,7 +231,7 @@
             <option v-for="option in $store.state.api.sections_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
           </select>
 
@@ -288,7 +290,7 @@
           <option v-for="option in $store.state.api.fields_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
         </select>
 
@@ -349,7 +351,7 @@
                   :value="option"
                   :key="'option-'+option.id"
                 >
-                  {{ option.name }}
+                  {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
                 </option>
               </select>
 
