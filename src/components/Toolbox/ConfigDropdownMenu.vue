@@ -7,7 +7,7 @@
       <div v-if="currentForm">
         <h5>Formulario:</h5>
         <h6>"{{form.name}}"</h6>
-        <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.config.filter(element =>  element.show_in_create_form==2 )" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
           <!-- v-if else depending on element.format -->
           <b-form-checkbox v-if="element.format=='SiNo'"
@@ -82,7 +82,7 @@
       <div v-else-if="currentRow">
         <h4>Fila: {{ currentRow.name }}</h4>
         <br>
-        <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -108,21 +108,6 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentRow.config_values[element.id]"
           ></b-form-input>
-
-          <select
-          v-else-if="element.col_name=='form_id'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentRow.config_values[element.id]"
-            @change="updateFormId(currentRow.config_values[element.id])"
-          >
-            <option v-for="option in $store.state.api.rows_config_select[element.id].options"
-              :value="option"
-              :key="option.id">
-              {{ option.name }}
-            </option>
-          </select>
-
 
           <select
           v-else-if="element.format=='SELECTOR'"
@@ -155,7 +140,7 @@
       <div v-else-if="currentSection">
         <h5>Sección: {{currentSection.name}}</h5>
         <br>
-              <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -167,12 +152,25 @@
           ></b-form-checkbox>
 
           <select 
-            v-else-if="element.col_name=='form_id'"
+            v-else-if="element.col_name=='default_next_form_section'"
             class="form-select"
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           > 
-          <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(ops => ops.name==currentSection.form_id.name)"
+          <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(op => op.show_in_create_form==2)"
+              :value="option"
+              :key="option">
+              {{ option }}
+            </option>
+        </select>
+
+          <select 
+            v-else-if="element.col_name=='show_by_field_id'"
+            class="form-select"
+            :id="'menu-'+menu_id+'-element-'+element.id"
+            v-model="currentSection.config_values[element.id]"
+          > 
+          <option v-for="option in currentSection.fields"
               :value="option"
               :key="option.id">
               {{ option.name }}
@@ -233,7 +231,7 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           >
-            <option v-for="option in $store.state.api.sections_config_select[element.id].options"
+            <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(op => op.show_in_create_form==2)"
               :value="option"
               :key="option.id">
               {{ option.name }}
@@ -273,7 +271,7 @@
       <div v-else-if="currentField">
         <h5>{{ currentField.name }}</h5>
         <br>
-              <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
             {{ element.name }}
           </label>
@@ -358,14 +356,14 @@
             <!--
             <label for="field-config-required">Requerido</label>
             <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
-            -->
+            
             <label for="field-config-col-sm">col sm: </label>
-            <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
+             <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> 
             <label for="field-config-col-md">col md: </label>
-            <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
+             <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> 
             <label for="field-config-col-xl">col xl: </label>
 
-            <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
+             <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/>
             <br>
             <label for="field-config-description">Descripción</label>
             <div>
@@ -449,6 +447,10 @@ export default {
       this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
       section.form_row_id = element
       )
+    },
+    hiddenConfig(element){
+      let columns_hidden = [ 'Formulario', 'Fila del formulario', 'Sección formulario', 'Formato del campo', 'Alternativas', 'Entidad del form']
+      return !(columns_hidden.includes(element.name))
     }
   }
 }
