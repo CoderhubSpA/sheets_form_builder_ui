@@ -299,13 +299,6 @@
             </option>
         </select>
 
-              <b-form-input
-              v-else-if="element.format=='TEXT'"
-                :id="'menu-'+menu_id+'-element-'+element.id"
-                  v-model="currentField.config_values[element.id]"
-                :placeholder="'Ingresa ' + element.name">
-              </b-form-input>
-
               <custom-slider
               v-else-if="element.col_name=='col_sm'"
               min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
@@ -322,6 +315,13 @@
                 :id="'menu-'+menu_id+'-element-'+element.id"
                 class="col-12" placeholder="Ingrese sdfsdfsdla descripción del campo"
                 v-model="currentField.config_values[element.id]"></textarea>
+
+              <b-form-input
+              v-else-if="element.format=='TEXT'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                  v-model="currentField.config_values[element.id]"
+                :placeholder="'Ingresa ' + element.name">
+              </b-form-input>
               
 
               <b-form-input
