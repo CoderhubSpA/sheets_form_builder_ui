@@ -9,14 +9,14 @@
 </template>
 
 <style lang="scss">
-  $primary: #00bac7;
-  $secondary: #008a94;
-  $success: #13b2be;
-  $info: #00d1e1;
-  $warning: #f9f962;
-  $danger: #fd4040;
-  $dark: #03676e;
-  $light: #e1f3f3;
+  $primary: #344a5f;
+  $secondary: #6b849c;
+  $success: #47617b;
+  $info: #4b85bf;
+  $warning: #eeee6c;
+  $danger: #ef5f5f;
+  $dark: #21394f;
+  $light:#eeeef5;
   $body-bg: #ffffff;
   
   @import "bootstrap";
