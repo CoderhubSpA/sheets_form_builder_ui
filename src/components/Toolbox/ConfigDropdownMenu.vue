@@ -153,7 +153,7 @@
       
       </div>
       <div v-else-if="currentSection">
-        <h5>Sección: {{currentSection.name}}</h5>
+        <h5>Sección: {{currentSectionName}}</h5>
         <br>
               <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -182,23 +182,23 @@
           <b-input
           v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.id"
-             v-model="currentSection.name" type="text" placeholder="Nombre Sección"/>
+             v-model="currentSection.config_values[element.id]" type="text" placeholder="Nombre Sección"/>
 
         <b-form-textarea 
         v-else-if="element.col_name=='description'"
-        size="lg" v-model="currentSection.description" :id="'menu-'+menu_id+'-element-'+element.id"/>
+        size="lg" v-model="currentSection.config_values[element.id]" :id="'menu-'+menu_id+'-element-'+element.id"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_sm'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colSm"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_md'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colMd"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_xl'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colXl"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
 
           <b-form-input
@@ -439,6 +439,11 @@ export default {
       return this.currentField.config_values[
         this.$store.state.api.fields_config.find(config => config.name === 'Columna').id
       ].name;
+    },
+    currentSectionName() {
+      return this.currentSection.config_values[
+        this.$store.state.api.sections_config.find(config => config.name === 'Título de la sección').id
+      ];
     },
   },
   data() {
