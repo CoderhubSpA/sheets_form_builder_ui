@@ -75,12 +75,12 @@ export default {
       },
       rowNameConfigId() {
         return this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id;
+      },
+      formatTypes() {
+        return this.$store.state.tools.format_types;
       }
     },
     data: () => ({
-      // rows: [
-        
-      // ]
     }),
     mounted(){
     },
@@ -91,10 +91,20 @@ export default {
            this.newRow()
         )
       },
+      selectFormat(format, name){
+        if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+          return "12";
+        }
+        let type = this.formatTypes.find(element => element.name === format);
+        if (type)
+          return type.value;
+        console.log("No se encontró el formato" + format);
+        return "";
+      },
       newRow(){
         let config_values = {};
         this.$store.state.api.rows_config.forEach(config => {
-          config_values[config.id] = config.format === "TEXT" ? "": []
+          config_values[config.id] = this.selectFormat(config.format, config.name)
         });
         
         return {

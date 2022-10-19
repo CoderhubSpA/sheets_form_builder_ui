@@ -98,15 +98,13 @@ export default {
       sectionNameConfigId() {
         return this.$store.state.api.sections_config.find(config => config.name === 'Título de la sección').id;
       },
+      formatTypes() {
+        return this.$store.state.tools.format_types;
+      }
 
     },
     data: () => ({
-      formatTypes: [
-        {name: 'TEXT', value: ""},
-        {name: 'NUMBER', value: null},
-        {name: 'SELECTOR', value: []},
-        {name: 'SiNo', value: null}
-      ]
+      
     }),
   
     methods: {
@@ -125,20 +123,15 @@ export default {
             this.$store.state.api.sections_config.find(config => config.name === 'col_sm').id
           ];
       },
-      selectFormat(format, name){
-        let res = null;
-        this.formatTypes.forEach(element =>{
-          if (format === element.name){
-            console.log("primer if")
-            if (name === 'col_sm' || name === 'col_md' || name === 'col_xl'){
-              res = "12"
-            }
-            else {
-              res = element.value
-            }
-          }
-        })
-        return res;
+      selectFormat(format, name) {
+        if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+          return "12";
+        }
+        let type = this.formatTypes.find(element => element.name === format);
+        if (type)
+          return type.value;
+        console.log("No se encontró el formato" + format);
+        return "";
       },
       addSection () {
         let section = this.newSection();
@@ -154,7 +147,7 @@ export default {
 
         return {
           index: this.sections.length,
-          image: '',
+          image: [],
           fields: [],
           idxRow: -1,
           form_id: this.$store.state.form.form.rows[this.idxRow].form_id,

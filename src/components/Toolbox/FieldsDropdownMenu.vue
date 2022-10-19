@@ -64,6 +64,9 @@ export default {
         return result
       }
       return fields
+    },
+    formatTypes() {
+      return this.$store.state.tools.format_types;
     }
 
   },
@@ -91,10 +94,7 @@ export default {
         this.$store.state.api.fields_config.forEach(config => {
           config_values[config.id] =
             config.name === "Columna" ? item :
-            config.name === "col_sm" ? 12 :
-            config.name === "col_md" ? 12 :
-            config.name === "col_xl" ? 12 :
-            config.format === "TEXT" ? "": [];
+            this.selectFormat(config.format, config.name)
         });
         element["config_values"] = config_values;
       }
@@ -107,7 +107,17 @@ export default {
     },
     removeAccents(str){
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-} 
+    },
+    selectFormat(format, name) {
+      if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+        return "12";
+      }
+      let type = this.formatTypes.find(element => element.name === format);
+      if (type)
+        return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    },
   }
 }
 </script>
