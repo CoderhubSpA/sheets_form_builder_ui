@@ -9,7 +9,10 @@
               :animation="200"
               ghost-class="moving-section">
               <transition-group>
-                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
+                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move"
+                :style="$store.state.form.current_row_config===row? 
+                                  'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;':
+                                  ''">
                   <form @click.self="openRowConfig(row)">
                     <div :class="view =='xl' ? 'form-group col-md-4 flex' : 
                               (view == 'md' ? 'form-group col-md-6 flex': 
