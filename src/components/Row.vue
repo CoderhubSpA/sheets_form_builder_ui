@@ -14,7 +14,7 @@
                     <div class="form-group col-md-4 flex">
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
-                      <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
+                      <b-input v-model="row.config_values[rowNameConfigId]" type="text" class="form-control" placeholder="Nombre Fila"/>
                       <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" > 
                         <v-icon class="custom-icon" name="trash"></v-icon>
                       </button>
@@ -72,6 +72,9 @@ export default {
     {
       rows(){
         return this.$store.state.form.form.rows
+      },
+      rowNameConfigId() {
+        return this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id;
       }
     },
     data: () => ({
@@ -95,7 +98,6 @@ export default {
         });
         
         return {
-          name:"",
           sections:[],
           config_values: config_values,
           form_id: "",

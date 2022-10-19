@@ -80,7 +80,7 @@
       </div>
       
       <div v-else-if="currentRow">
-        <h4>Fila: {{ currentRow.name }}</h4>
+        <h4>Fila: {{ currentRowName }}</h4>
         <br>
         <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
@@ -95,9 +95,9 @@
 
           <b-form-input v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.name"
-            :placeholder="currentRow.name"
-            v-model="currentRow.name"
-            @change="updateRowName(currentRow.name)"
+            :placeholder="currentRow.config_values[element.id]"
+            v-model="currentRow.config_values[element.id]"
+            @change="updateRowName(currentRow.config_values[element.id])"
           >
           </b-form-input>
 
@@ -443,6 +443,11 @@ export default {
     currentSectionName() {
       return this.currentSection.config_values[
         this.$store.state.api.sections_config.find(config => config.name === 'Título de la sección').id
+      ];
+    },
+    currentRowName() {
+      return this.currentRow.config_values[
+        this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id
       ];
     },
   },
