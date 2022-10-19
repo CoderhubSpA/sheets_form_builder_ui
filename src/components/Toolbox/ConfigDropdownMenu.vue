@@ -7,8 +7,15 @@
       <div v-if="currentForm">
         <h5>Formulario:</h5>
         <h6>"{{form.name}}"</h6>
-        <div v-for="element in $store.state.api.config.filter(element =>  element.show_in_create_form==2 )" :key="element.name" style="padding: 0.5em">
-          <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
+        <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
+          <label :for="'menu-'+menu_id+'-element-'+element.name">
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
+          </label>
           <!-- v-if else depending on element.format -->
           <b-form-checkbox v-if="element.format=='SiNo'"
             :id="'menu-'+menu_id+'-element-'+element.name"
@@ -84,7 +91,12 @@
         <br>
         <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
 
           <b-form-checkbox
@@ -142,7 +154,12 @@
         <br>
               <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
 
           <b-form-checkbox
@@ -247,7 +264,12 @@
         <br>
               <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
           
           <b-form-checkbox
