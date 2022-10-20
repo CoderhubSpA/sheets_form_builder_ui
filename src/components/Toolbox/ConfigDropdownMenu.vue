@@ -190,18 +190,6 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           ></b-form-input>
-          
-          <custom-slider
-          v-else-if="element.col_name=='col_sm'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
-          
-          <custom-slider
-          v-else-if="element.col_name=='col_md'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
-
-          <custom-slider
-          v-else-if="element.col_name=='col_xl'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
           <b-form-input
           v-else-if="element.format=='NUMBER'"
@@ -353,24 +341,6 @@
                 {{ element }}
               </b-list-group-item>
             </div>
-            <!--
-            <label for="field-config-required">Requerido</label>
-            <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
-            
-            <label for="field-config-col-sm">col sm: </label>
-            <!-- <b-input v-model="currentFieldColSm" id="field-config-col-sm" type="number"/> -->
-            <label for="field-config-col-md">col md: </label>
-            <!-- <b-input v-model="currentFieldColMd" id="field-config-col-md" type="number"/> -->
-            <label for="field-config-col-xl">col xl: </label>
-
-            <!-- <b-input v-model="currentFieldColXl" id="field-config-col-xl" type="number"/>
-            <br>
-            <label for="field-config-description">Descripción</label>
-            <div>
-              <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
-            </div>
-            <br> -->
-
       </div>
     </b-list-group>
   </div>
@@ -477,4 +447,10 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css">
+</style>
+<style>
+
+.slider {
+  margin-top: 1em !important; margin-bottom: 0 !important;
+}
 </style>
