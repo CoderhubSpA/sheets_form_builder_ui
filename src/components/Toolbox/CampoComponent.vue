@@ -1,6 +1,6 @@
 <template>
 <div class="campo col-6">
-  <div class="card text-center">
+  <div class="card text-center h-100">
     <div class="card-body" style="padding:0.25em 0.5em;">
       <v-icon dense name="file"></v-icon>
       <div class="card-title">{{ text }}</div>
