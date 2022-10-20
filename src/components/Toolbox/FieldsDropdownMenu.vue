@@ -6,7 +6,7 @@
       @dragstart.native="hover_fields=true" 
       @dragend.native="hover_fields=false"
       class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="getFields" :clone="cloneAction">
-        <Campo v-for="(element, index) in getFields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name">
+        <Campo v-for="(element, index) in getFields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name" :format="element.format">
         </Campo>
       </draggable>
 
