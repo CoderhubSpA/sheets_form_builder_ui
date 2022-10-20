@@ -228,6 +228,7 @@ const actions = {
     let state = context.state;
 
     let fill_data = (configurations, values, ignore_required_array) => {
+      // parses and generates a json with all valid values
       let data_values = {};
       configurations.forEach(config => {
         let value = values[config.id];
@@ -241,6 +242,12 @@ const actions = {
       })
       return data_values;
     };
+    let autofill_order = (elements, order_id) => {
+      // fills the config_values
+      elements.forEach((element, index) => {
+        element.config_values[order_id] = index;
+      })
+    };
 
     // Parse form configuration
     let unfilled_required_values = 0;
@@ -249,13 +256,17 @@ const actions = {
     
     // Parse form rows while checking for unfilled required values
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
-    
+    autofill_order(rows, state.rows_config.find(config => config.name === 'Orden').id);
+
     let rows_data = [];
     let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
     let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
     rows.forEach(row => {
+      
       rows_data.push(fill_data(state.rows_config, row.config_values, [state.rows_config.find(config => config.name === 'Formulario').id]));
-
+      
+      
+      autofill_order(row.sections, state.sections_config.find(config => config.name === 'Orden').id);
       let sections_data = [];
       let sections_fields_data = [];
       row.sections.forEach(section => {
@@ -268,6 +279,7 @@ const actions = {
           )
         );
         
+        autofill_order(section.fields, state.fields_config.find(config => config.name === 'Orden').id);
         let fields_data = [];
         section.fields.forEach(field => {
           fields_data.push(
