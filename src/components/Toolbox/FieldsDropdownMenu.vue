@@ -5,8 +5,8 @@
       <draggable 
       @dragstart.native="hover_fields=true" 
       @dragend.native="hover_fields=false"
-      class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="getFields" :clone="cloneAction">
-        <Campo v-for="(element, index) in getFields" v-if="element.show_in_create_form==2" :key="element.name" :text="element.name" :format="element.format">
+      class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="fields" :clone="cloneAction">
+        <Campo v-for="(element, index) in fields" v-if="element.show_in_create_form==2 && checkName(element.name)" :key="element.name" :text="element.name" :format="element.format">
         </Campo>
       </draggable>
 
@@ -51,19 +51,9 @@ export default {
       set(value){
         this.$store.commit('tools/change_hover', value)
       },
-    },      
-    getFields(){
-      let fields = this.$store.state.api.fields
-      let search = this.removeAccents(this.search).toUpperCase();
-      if(this.search.length != 0){
-        let result = []
-        for(let i=0; i < fields.length; i++){
-          if(this.removeAccents(fields[i].name.toUpperCase()).includes(search))
-            result.push(fields[i])
-        }
-        return result
-      }
-      return fields
+    },
+    fields(){
+      return this.$store.state.api.fields
     },
     formatTypes() {
       return this.$store.state.tools.format_types;
@@ -73,7 +63,6 @@ export default {
   data() {
     return {
       field_n: 0,
-      fields:[],
       search: "",
     }
   },
@@ -107,6 +96,10 @@ export default {
     },
     removeAccents(str){
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    },
+    checkName(name){
+      let search = this.removeAccents(this.search).toUpperCase()
+      return this.removeAccents(name.toUpperCase()).includes(search)
     },
     selectFormat(format, name) {
       if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
