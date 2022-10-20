@@ -13,8 +13,13 @@
           </b-button>
         </b-navbar-nav>
         <b-navbar-nav class="justify-content-end" style="margin-right: 3vh;">
-          <div v-if="$store.state.api.status_msg.length > 0">
-            <b-spinner variant="info" style="margin-right: 2em">
+          <div style="margin-right: 1em">
+            <a v-if="$store.state.api.status_form_url" class="text-white" style="margin-top: 2px"
+              :href="$store.state.api.status_form_url"
+            >
+              Ver formulario generado
+            </a>
+            <b-spinner v-if="$store.state.api.status_msg.length > 0" variant="info" style="margin-right: 1em">
             </b-spinner>
           </div>
           <b-button class="btn btn-success text-white" @click="$store.dispatch('api/post_form')">Guardar</b-button>

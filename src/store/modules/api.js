@@ -2,6 +2,7 @@ import axios from "axios";
 
 const state = {
   status_msg: '',
+  status_form_url: '',
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
@@ -302,6 +303,7 @@ const actions = {
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
     
     state.status_msg = 'Guardando';
+    state.status_form_url = '';
 
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
@@ -402,7 +404,10 @@ const actions = {
                 );
               }
               Promise.all(fields_post_requests)
-              .then(() => {state.status_msg = '';});
+              .then(() => {
+                state.status_msg = '';
+                state.status_form_url = 'https://formbuilderui.appstart.cl/internal_form/'+form_id;
+              });
             })
           }
         })
