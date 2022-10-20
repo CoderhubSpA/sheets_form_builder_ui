@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const state = {
+  status_msg: '',
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
@@ -225,7 +226,9 @@ const actions = {
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
      */
     let state = context.state;
+
     let fill_data = (configurations, values, ignore_required_array) => {
+      // parses and generates a json with all valid values
       let data_values = {};
       configurations.forEach(config => {
         let value = values[config.id];
@@ -239,6 +242,12 @@ const actions = {
       })
       return data_values;
     };
+    let autofill_order = (elements, order_id) => {
+      // fills the config_values
+      elements.forEach((element, index) => {
+        element.config_values[order_id] = index;
+      })
+    };
 
     // Parse form configuration
     let unfilled_required_values = 0;
@@ -247,13 +256,17 @@ const actions = {
     
     // Parse form rows while checking for unfilled required values
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
-    
+    autofill_order(rows, state.rows_config.find(config => config.name === 'Orden').id);
+
     let rows_data = [];
     let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
     let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
     rows.forEach(row => {
+      
       rows_data.push(fill_data(state.rows_config, row.config_values, [state.rows_config.find(config => config.name === 'Formulario').id]));
-
+      
+      
+      autofill_order(row.sections, state.sections_config.find(config => config.name === 'Orden').id);
       let sections_data = [];
       let sections_fields_data = [];
       row.sections.forEach(section => {
@@ -266,6 +279,7 @@ const actions = {
           )
         );
         
+        autofill_order(section.fields, state.fields_config.find(config => config.name === 'Orden').id);
         let fields_data = [];
         section.fields.forEach(field => {
           fields_data.push(
@@ -287,6 +301,8 @@ const actions = {
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
     
+    state.status_msg = 'Guardando';
+
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
     Promise.all([
@@ -368,6 +384,8 @@ const actions = {
                   state.fields_config.find(config => config.name == 'Formulario').id
                 ] = form_id;
               });
+              
+              let fields_post_requests = [];
 
               for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
               {
@@ -375,12 +393,16 @@ const actions = {
 
                 let content = {};
                 content[fields_config_id] = [field_data];
-                axios.post(state.base_url + 'entity', content)
-                .then(response => {
-                  let field_id = response.data.content.inserted_id;
-                  console.log("inserted field_id " + field_id);
-                })
+                fields_post_requests.push(
+                  axios.post(state.base_url + 'entity', content)
+                  .then(response => {
+                    let field_id = response.data.content.inserted_id;
+                    console.log("inserted field_id " + field_id);
+                  })
+                );
               }
+              Promise.all(fields_post_requests)
+              .then(() => {state.status_msg = '';});
             })
           }
         })
