@@ -2,10 +2,10 @@
 <div class="flex-shrink-0 p-3 bg-light" id="tool-box" >
   <b-nav card-header tabs style="padding-bottom: 10px;">
     <b-nav-item class="col-6 center" @click="tabFields" :active = "tab =='fields'">
-      <h5>Campos</h5>
+      <h5><v-icon dense name="list"></v-icon> Campos</h5>
     </b-nav-item>
     <b-nav-item class="col-6 center" @click="tabConfig" :active = "tab =='config'">
-      <h5>Configuración</h5>
+      <h5><v-icon dense name="cog"></v-icon> Configuración</h5>
     </b-nav-item>
   </b-nav>
   <div class="ps-0" id="tab">
