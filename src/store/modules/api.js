@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const state = {
+  status_msg: '',
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
@@ -225,6 +226,7 @@ const actions = {
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
      */
     let state = context.state;
+
     let fill_data = (configurations, values, ignore_required_array) => {
       let data_values = {};
       configurations.forEach(config => {
@@ -287,6 +289,8 @@ const actions = {
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
     
+    state.status_msg = 'Guardando';
+
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
     Promise.all([
@@ -368,6 +372,8 @@ const actions = {
                   state.fields_config.find(config => config.name == 'Formulario').id
                 ] = form_id;
               });
+              
+              let fields_post_requests = [];
 
               for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
               {
@@ -375,12 +381,16 @@ const actions = {
 
                 let content = {};
                 content[fields_config_id] = [field_data];
-                axios.post(state.base_url + 'entity', content)
-                .then(response => {
-                  let field_id = response.data.content.inserted_id;
-                  console.log("inserted field_id " + field_id);
-                })
+                fields_post_requests.push(
+                  axios.post(state.base_url + 'entity', content)
+                  .then(response => {
+                    let field_id = response.data.content.inserted_id;
+                    console.log("inserted field_id " + field_id);
+                  })
+                );
               }
+              Promise.all(fields_post_requests)
+              .then(() => {state.status_msg = '';});
             })
           }
         })

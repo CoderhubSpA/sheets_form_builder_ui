@@ -13,6 +13,10 @@
           </b-button>
         </b-navbar-nav>
         <b-navbar-nav class="justify-content-end" style="margin-right: 3vh;">
+          <div v-if="$store.state.api.status_msg.length > 0">
+            <b-spinner variant="info" style="margin-right: 2em">
+            </b-spinner>
+          </div>
           <b-button class="btn btn-success text-white" @click="$store.dispatch('api/post_form')">Guardar</b-button>
         </b-navbar-nav>
     </b-navbar>
