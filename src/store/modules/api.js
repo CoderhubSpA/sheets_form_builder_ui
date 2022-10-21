@@ -48,8 +48,8 @@ const state = {
   rows_id: 'form_row',
   sections_id: 'form_section',
   fields_id: 'form_field',
-  config: [],
-  config_select: {},
+  form_config: [],
+  form_config_select: {},
   rows_config: [],
   rows_config_select: {},
   actions: [],
@@ -89,10 +89,10 @@ const getters = {
 
 const mutations = {
   SET_FORM_CONFIG(state, config) {
-    state.config = config;
+    state.form_config = config;
   },
   SET_FORM_CONFIG_SELECT_OPTIONS(state, config_select_options) {
-    state.config_select = config_select_options;
+    state.form_config_select = config_select_options;
   },
   SET_ROWS_CONFIG(state, config) {
     state.rows_config = config;
@@ -197,7 +197,7 @@ const actions = {
     // Parse form configuration
     let unfilled_required_values = 0;
     let form_config_values = fill_data(
-      state.config, context.rootState.form.form.config_values, []);
+      state.form_config, context.rootState.form.form.config_values, []);
     
     // Parse form rows while checking for unfilled required values
     let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values

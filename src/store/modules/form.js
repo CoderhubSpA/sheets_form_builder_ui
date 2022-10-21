@@ -31,7 +31,7 @@ const actions = {
         let api_state = context.rootState.api;
         let config_values = {};
         
-        api_state.config.forEach(config => {
+        api_state.form_config.forEach(config => {
             config_values[config.id] = 
                 config.format === "TEXT" ? "" :
                 [];
