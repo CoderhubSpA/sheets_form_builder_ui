@@ -1,5 +1,43 @@
 import axios from "axios";
 
+// Helpers
+function retrieveConfigurationsOptions(configurations, entities_fk) {
+  let config_select = {};
+
+  configurations.forEach(config => {
+
+    let options = [];
+
+    if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
+    {
+      let json_options = JSON.parse(config.options);
+      for (let key in json_options)
+      {
+        options.push({
+          'id': key,
+          'name': json_options[key],
+        });
+      }
+      config_select[config.id] = {
+        'options': options,
+      }
+    } else {
+      const options_fk = config.entity_type_fk;
+      config_select[config.id] = {
+        'options': entities_fk[options_fk],
+      }
+
+      if (!config_select[config.id].options)
+      {
+        config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+      }
+    }
+  });
+
+  return config_select;
+}
+
+
 const state = {
   status_msg: '',
   base_url: 'http://127.0.0.1:8081/',
@@ -34,191 +72,98 @@ const state = {
   },
 }
 
+const getters = {
+  formConfigURL (state) {
+    return state.base_url + state.info_url + state.configuration_id;
+  },
+  rowsConfigURL (state) {
+    return state.base_url + state.info_url + state.rows_id;
+  },
+  sectionsConfigURL (state) {
+    return state.base_url + state.info_url + state.sections_id;
+  },
+  fieldsConfigURL (state) {
+    return state.base_url + state.info_url + state.fields_id;
+  }
+}
+
 const mutations = {
-  FETCH_FORM_CONFIG(state){
-    return axios.get(
-      state.base_url + state.info_url + state.configuration_id
-    )
-    .then(response => {
-      let columns = response.data.content.columns;
-      state.config = columns;
-
-      state.config.forEach(config => {
-
-        if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key],
-            });
-          }
-          state.config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk],
-          }
-
-          if (!state.config_select[config.id].options)
-          {
-            state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-          }
-        }
-      });
-    });
+  SET_FORM_CONFIG(state, config) {
+    state.config = config;
   },
-  FETCH_FIELDS_CONFIG(state) {
-    // We don't need to get the possible fields, that's will be done when the user selects an entity for its form
-
-    // But we do need to get their configurations
-    axios.get(
-      state.base_url + state.info_url + state.fields_id
-    )
-    .then(response => {
-      let columns = response.data.content.columns;
-      // All fields share the configuration columns, so we load that shared information
-      state.fields_config = columns;
-      // and for selectors and those configuration of that kind, we load their options
-      state.fields_config.forEach(config => {
-        const options_fk = config.entity_type_fk;
-        if (!options_fk)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              "id": key,
-              "name": json_options[key]
-            })
-          }
-          state.fields_config_select[config.id] = {
-            'options': options
-          };
-        } else {
-          if (!response.data.content.entities_fk[options_fk])
-          {
-            state.fields_config_select[config.id] = {
-              'options': [{'id': 'ff', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-            }
-          } else {
-            state.fields_config_select[config.id] = {
-              'options': response.data.content.entities_fk[options_fk]
-            }
-          }
-        }
-      });
-    })
+  SET_FORM_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.config_select = config_select_options;
   },
-
-  FETCH_ROWS_CONFIG() {
-    axios.get(
-      state.base_url + state.info_url + state.rows_id
-    )
-    .then(response => {
-      state.rows_config = response.data.content.columns;
-
-      state.rows_config.forEach(config => {
-        if (!config.entity_type_fk)
-        {
-          // The options are in config.options, or there aren't any options (it may not be a selector)
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key]
-            })
-          }
-          state.rows_config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.rows_config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk]
-          }
-
-          if (!state.rows_config_select[config.id].options)
-          {
-            state.rows_config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-          }
-        }
-      });
-      
-    });
+  SET_ROWS_CONFIG(state, config) {
+    state.rows_config = config;
   },
-
-  FETCH_SECTIONS_CONFIG(state) {
-    axios.get(
-      state.base_url + state.info_url + state.sections_id
-    )
-    .then(response => {
-      state.sections_config = response.data.content.columns;
-
-      state.sections_config.forEach(config => {
-        if (!config.entity_type_fk)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key],
-            })
-          }
-          state.sections_config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.sections_config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk]
-          }
-
-          if (!state.sections_config_select[config.id].options)
-          {
-            state.sections_config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}];
-          }
-        }
-      });
-      
-      // the values, state.sections_config_values[section.id][config.id], will have to be prepared when creating a section
-      
-
-    })
+  SET_ROWS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.rows_config_select = config_select_options;
   },
-  
-  GET_FIELDS(state, entity_id){
-    axios.get(state.base_url + state.info_url + entity_id)
-    .then(response => 
-      state.fields = response.data.content.columns)
+  SET_SECTIONS_CONFIG(state, config) {
+    state.sections_config = config;
+  },
+  SET_SECTIONS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.sections_config_select = config_select_options;
+  },
+  SET_FIELDS_CONFIG(state, config) {
+    state.fields_config = config;
+  },
+  SET_FIELDS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.fields_config_select = config_select_options;
+  },
+  SET_FIELDS(state, fields){
+    state.fields = fields;
   }
 }
 
 const actions = {
-  fetch_form_config(context){
-    return context.commit('FETCH_FORM_CONFIG');
+  fetchFormConfig(context){
+    return axios.get(
+      context.getters.formConfigURL
+      // context.state.base_url + context.state.info_url + context.state.configuration_id
+    )
+    .then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_FORM_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk)
+      context.commit('SET_FORM_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  fetch_rows_config(context) {
-    context.commit('FETCH_ROWS_CONFIG');
+  fetchRowsConfig(context) {
+    return axios.get(
+      context.getters.rowsConfigURL
+    )
+    .then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_ROWS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_ROWS_CONFIG_SELECT_OPTIONS', config_select);      
+    });
   },
-  fetch_section_config(context) {
-    context.commit('FETCH_SECTIONS_CONFIG');
+  fetchSectionConfig(context) {
+    return axios.get(
+      context.getters.sectionsConfigURL
+    ).then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_SECTIONS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_SECTIONS_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  fetch_fields_config(context) {
-    context.commit('FETCH_FIELDS_CONFIG');
+  fetchFieldsConfig(context) {
+    return axios.get(
+      context.getters.fieldsConfigURL
+    ).then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_FIELDS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_FIELDS_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  get_fields(context, payload){
-    context.commit('GET_FIELDS', payload);
+  fetchFields(context, entity_id){
+    return axios.get(state.base_url + state.info_url + entity_id)
+    .then(response => context.commit('SET_FIELDS', response.data.content.columns))
   },
   post_form(context) {
     /**
@@ -420,6 +365,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 };

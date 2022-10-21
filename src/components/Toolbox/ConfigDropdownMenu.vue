@@ -424,7 +424,7 @@ export default {
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
     showFields(entity_id){
-      this.$store.dispatch('api/get_fields', entity_id);
+      this.$store.dispatch('api/fetchFields', entity_id);
     },
     updateFormId(entity){
       this.$store.state.form.form.rows[this.currentRow.index].form_id = entity

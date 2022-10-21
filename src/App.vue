@@ -44,13 +44,15 @@ export default {
     data: () => ({
     }),
     created: function() {
-      this.$store.dispatch('api/fetch_form_config');
+
     },
     mounted: function() {
-      this.$store.dispatch('form/new_form')  // This needs the execution of fetch_form_config to be completed
-      this.$store.dispatch('api/fetch_rows_config');
-      this.$store.dispatch('api/fetch_section_config');
-      this.$store.dispatch('api/fetch_fields_config');
+      this.$store.dispatch('api/fetchFormConfig').then(() => {
+        this.$store.dispatch('form/new_form');
+      });
+      this.$store.dispatch('api/fetchRowsConfig');
+      this.$store.dispatch('api/fetchSectionConfig');
+      this.$store.dispatch('api/fetchFieldsConfig');
     },
     methods: {
     },
