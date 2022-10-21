@@ -1,6 +1,5 @@
 <template>
   <div id="row" class="container">
-    <form>
       <div class="form-row" >
         <div class="row  row-cols-1 row-cols">
           <div class="col">
@@ -14,7 +13,7 @@
                                   'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;':
                                   ''"
                                   @click.self="openRowConfig(row)">
-                  <form @click.self="openRowConfig(row)">
+                  <div @click.self="openRowConfig(row)">
                     <div :class="view =='xl' ? 'form-group col-md-4 flex' : 
                               (view == 'md' ? 'form-group col-md-6 flex': 
                               'form-group col-md-8 flex')" >
@@ -33,7 +32,7 @@
                         </template>
                       </b-modal>
                     </div>
-                  </form>
+                  </div>
                   <br>
                   <div class="p-3 border-solid bg-light rounded container" v-bind="row">
                   <Section :idxRow="index"></Section>
@@ -60,7 +59,6 @@
           </div>
         </div>
       </div>
-    </form>
   </div>
 </template>
 
