@@ -43,11 +43,10 @@ const state = {
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
-  //form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
-  configuration_id: 'form',
-  rows_id: 'form_row',
-  sections_id: 'form_section',
-  fields_id: 'form_field',
+  form_entity_name: 'form',
+  row_entity_name: 'form_row',
+  section_entity_name: 'form_section',
+  field_entity_name: 'form_field',
   form_config: [],
   form_config_select: {},
   rows_config: [],
@@ -74,16 +73,16 @@ const state = {
 
 const getters = {
   formConfigURL (state) {
-    return state.base_url + state.info_url + state.configuration_id;
+    return state.base_url + state.info_url + state.form_entity_name;
   },
   rowsConfigURL (state) {
-    return state.base_url + state.info_url + state.rows_id;
+    return state.base_url + state.info_url + state.row_entity_name;
   },
   sectionsConfigURL (state) {
-    return state.base_url + state.info_url + state.sections_id;
+    return state.base_url + state.info_url + state.section_entity_name;
   },
   fieldsConfigURL (state) {
-    return state.base_url + state.info_url + state.fields_id;
+    return state.base_url + state.info_url + state.field_entity_name;
   }
 }
 
@@ -121,7 +120,6 @@ const actions = {
   fetchFormConfig(context){
     return axios.get(
       context.getters.formConfigURL
-      // context.state.base_url + context.state.info_url + context.state.configuration_id
     )
     .then(response => {
       let config_columns = response.data.content.columns;
@@ -251,13 +249,13 @@ const actions = {
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
     Promise.all([
-      axios.get(state.base_url + state.info_url + state.configuration_id)
+      axios.get(context.getters.formConfigURL)
         .then(response => config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.rows_id)
+      axios.get(context.getters.rowsConfigURL)
         .then(response => rows_config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.sections_id)
+      axios.get(context.getters.sectionsConfigURL)
         .then(response => sections_config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.fields_id)
+      axios.get(context.getters.fieldsConfigURL)
         .then(response => fields_config_id = response.data.content.entity_type.id)])
     .then(() => {
       /**
