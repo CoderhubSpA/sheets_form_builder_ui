@@ -54,12 +54,12 @@
           <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
             <multiselect
               :type="element.format"
-              v-model="$store.state.api.actions" 
+              v-model="$store.state.form.form.config_values[element.id]" 
               :options="$store.state.api.form_config_select[element.id].options" 
               :multiple="true" :close-on-select="false" 
               :clear-on-select="false" 
               :preserve-search="true" 
-              placeholder="Seleccione acciones" 
+              :placeholder="'Elige '+element.name" 
               label="name" 
               track-by="id"
               :select-label="''"

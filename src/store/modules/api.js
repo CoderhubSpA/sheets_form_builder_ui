@@ -51,8 +51,6 @@ const state = {
   form_config_select: {},
   rows_config: [],
   rows_config_select: {},
-  actions: [],
-  sections: [],
   sections_config: [],  // shared config, the values are stored in each section separated
   sections_config_select: {}, // for each config, it's select options
   fields: [
