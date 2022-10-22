@@ -1,14 +1,16 @@
 <template>
-    <div :class="$store.state.form.current_form_config===form ? 'onclick-form rounded' : 'border rounded'" style="overflow-y: auto; width:100%">
+    <div v-if="$store.state.form.form.is_loaded"
+        :class="$store.state.form.current_form_config===form ? 'onclick-form rounded' : 'border rounded'"
+        style="overflow-y: auto; width:100%">
         <b-form-row class= "row justify-content-center mx-auto"> 
             <b-col :xl="view =='xl' ? 12 : 
                         (view =='md' ? 8 : 5)"
                     :md="view =='xl' || view == 'md' ? 12 : 8" 
                     :sm="12"
                     class=" border rounded p-3" @click.self="openFormConfig(form)">
-                <!--<b-input v-model="form.name" v-if="editingName" class="text-left w-50 d-inline-block"
+                <!--<b-input v-model="currentFormName" v-if="editingName" class="text-left w-50 d-inline-block"
                     @keyup.enter="editingName = false"/>-->
-                <div class="h4 d-inline-block">{{ form.name }}</div>
+                <div class="h4 d-inline-block">{{ currentFormName }}</div>
                 <!--<v-icon class="d-inline-block ml-2 mb-1"
                     :name="editingName? 'check': 'pencil-alt'"
                     @click="editingName=!editingName"
@@ -38,6 +40,11 @@ export default {
         }, 
         view(){
             return this.$store.state.form.current_view 
+        },
+        currentFormName() {
+            return this.$store.state.form.form.config_values[
+                this.$store.state.api.form_config.find(config => config.name === 'Nombre').id
+            ]
         }
     },
     data(){

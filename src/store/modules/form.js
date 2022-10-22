@@ -1,6 +1,6 @@
 const state = {
     form:{
-        name:"Formulario",
+        is_loaded: false,
         rows:[],
         config_values: {},
     },
@@ -14,6 +14,7 @@ const mutations = {
     loadForm(state, payload) {
         state.form.rows = payload.rows;
         state.form.config_values = payload.config_values;
+        state.form.is_loaded = true;
     },
     addSection(state, payload){
         state.form.rows[payload.row_idx].sections.push(payload.section)
@@ -33,6 +34,7 @@ const actions = {
         
         api_state.form_config.forEach(config => {
             config_values[config.id] = 
+                config.name === "Nombre" ? "Nuevo Formulario" :
                 config.format === "TEXT" ? "" :
                 [];
         })
