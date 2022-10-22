@@ -250,8 +250,6 @@ const actions = {
     
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
-    console.log("Finishes");
-    console.log(form_config_values);
     
     state.status_msg = 'Guardando';
 
@@ -295,13 +293,15 @@ const actions = {
       let content = {};
       content[rows_config_id] = rows_data;
       */
+      let row_requests = [];
       for (let i_row = 0; i_row < rows_data.length; i_row++)
       {
         let row_data = rows_data[i_row];
 
         let content = {};
         content[rows_config_id] = [row_data];
-        axios.post(state.base_url + 'entity', content)
+
+        row_requests.push(axios.post(state.base_url + 'entity', content)
         .then(response => {
           let row_id = response.data.content.inserted_id;
           console.log("inserted row_id "+row_id);
@@ -316,13 +316,15 @@ const actions = {
             ] = form_id;
           });
 
+          let section_requests = [];
           for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
           {
             let section_data = all_sections_data[i_row][i_section];
 
             let content = {};
             content[sections_config_id] = [section_data];
-            axios.post(state.base_url + 'entity', content)
+
+            section_requests.push(axios.post(state.base_url + 'entity', content)
             .then(response => {
               let section_id = response.data.content.inserted_id;
               console.log("inserted section_id" + section_id);
@@ -337,7 +339,7 @@ const actions = {
                 ] = form_id;
               });
               
-              let fields_post_requests = [];
+              let fields_requests = [];
 
               for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
               {
@@ -345,7 +347,7 @@ const actions = {
 
                 let content = {};
                 content[fields_config_id] = [field_data];
-                fields_post_requests.push(
+                fields_requests.push(
                   axios.post(state.base_url + 'entity', content)
                   .then(response => {
                     let field_id = response.data.content.inserted_id;
@@ -353,15 +355,18 @@ const actions = {
                   })
                 );
               }
-              Promise.all(fields_post_requests)
-              .then(() => {state.status_msg = '';});
-            })
+              return Promise.all(fields_requests);
+            }));
           }
-        })
+          return Promise.all(section_requests);
+        }));
       }
+      return Promise.all(row_requests);
     })
     .then(response => {
       console.log(response);
+      console.log("Finished");
+      state.status_msg = '';
     })
     .catch(e => console.log(e));
 
