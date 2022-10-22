@@ -173,11 +173,20 @@ const actions = {
       let data_values = {};
       configurations.forEach(config => {
         let value = values[config.id];
-        if ((value || value === 0) && // check it has a truthy value, but counting 0 as valid
-          (!Array.isArray(value) || (value.length > 0))) // and that is not an empty array
-        {
-          data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
-        } else if (config.required_in_create_form && !ignore_required_array.includes(config.id)) {
+        if (value || value === 0) {  // check it has a truthy value, but counting 0 as valid
+          if (!Array.isArray(value))  // If it's not an array, we store that id
+          {
+            data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
+            return;
+          } else if (value.length > 0)  // If it's a filled array, we store the array but with the ids
+          {
+            data_values[config.id] = [];
+            values[config.id].forEach(value => data_values[config.id].push(value.id));
+            return;
+          }
+        }
+        // Check if we should ignore this unfilled/invalid required value
+        if (config.required_in_create_form && !ignore_required_array.includes(config.id)) {
           unfilled_required_values += 1;
         }
       })
@@ -241,6 +250,8 @@ const actions = {
     
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
+    console.log("Finishes");
+    console.log(form_config_values);
     
     state.status_msg = 'Guardando';
 
