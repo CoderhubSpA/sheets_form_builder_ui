@@ -16,15 +16,6 @@ const mutations = {
         state.form.config_values = payload.config_values;
         state.form.is_loaded = true;
     },
-    addSection(state, payload){
-        state.form.rows[payload.row_idx].sections.push(payload.section)
-    },
-    addRow(state, payload){
-        state.form.rows.push(payload.row)
-    },
-    addField(state, payload){
-        state.form.rows[payload.row_idx].sections[payload.section_idx].push(payload.field)
-    }
  }
 
 const actions = {
