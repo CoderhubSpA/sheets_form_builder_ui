@@ -126,7 +126,9 @@ export default {
           sections:[],
           config_values: config_values,
           form_id: "",
-          index: this.rows.length
+          index: this.rows.length,
+          local_entity_data: {},
+          unfilled_required_values: 0,
         }
       },
       deleteRow (idx) {

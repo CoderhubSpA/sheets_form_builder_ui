@@ -74,6 +74,8 @@ export default {
         idxRow: -1,
         idxSection: -1,
         show:false,
+        local_entity_data: {},
+        unfilled_required_values: 0,
       };
       
       if (!item.config_values)

@@ -168,88 +168,39 @@ const actions = {
      */
     let state = context.state;
 
-    let fill_data = (configurations, values, ignore_required_array) => {
-      // parses and generates a json with all valid values
-      let data_values = {};
-      configurations.forEach(config => {
-        let value = values[config.id];
-        if (value || value === 0) {  // check it has a truthy value, but counting 0 as valid
-          if (!Array.isArray(value))  // If it's not an array, we store that id
-          {
-            data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
-            return;
-          } else if (value.length > 0)  // If it's a filled array, we store the array but with the ids
-          {
-            data_values[config.id] = [];
-            values[config.id].forEach(value => data_values[config.id].push(value.id));
-            return;
-          }
-        }
-        // Check if we should ignore this unfilled/invalid required value
-        if (config.required_in_create_form && !ignore_required_array.includes(config.id)) {
-          unfilled_required_values += 1;
-        }
-      })
-      return data_values;
-    };
     let autofill_order = (elements, order_id) => {
       // fills the config_values
       elements.forEach((element, index) => {
         element.config_values[order_id] = index;
       })
     };
-
-    // Parse form configuration
-    let unfilled_required_values = 0;
-    let form_config_values = fill_data(
-      state.form_config, context.rootState.form.form.config_values, []);
+    let form = context.rootState.form.form;
     
     // Parse form rows while checking for unfilled required values
-    let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
+    let rows = form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
     autofill_order(rows, state.rows_config.find(config => config.name === 'Orden').id);
-
-    let rows_data = [];
-    let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
-    let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
-    rows.forEach(row => {
-      
-      rows_data.push(fill_data(state.rows_config, row.config_values, [state.rows_config.find(config => config.name === 'Formulario').id]));
-      
-      
+    rows.forEach(row => {      
       autofill_order(row.sections, state.sections_config.find(config => config.name === 'Orden').id);
-      let sections_data = [];
-      let sections_fields_data = [];
       row.sections.forEach(section => {
-        sections_data.push(
-          fill_data(
-            state.sections_config, section.config_values, [
-              state.sections_config.find(config => config.name === 'Formulario').id,
-              state.sections_config.find(config => config.name === 'Fila del formulario').id
-            ]
-          )
-        );
-        
         autofill_order(section.fields, state.fields_config.find(config => config.name === 'Orden').id);
-        let fields_data = [];
+      })      
+    });
+
+    context.dispatch('form/fillLocalEntityData', null, {root:true});
+
+    let unfilled_required_count = form.unfilled_required_values.length;
+    form.rows.forEach(row => {
+      unfilled_required_count += row.unfilled_required_values.length;
+      row.sections.forEach(section => {
+        unfilled_required_count += section.unfilled_required_values.length;
         section.fields.forEach(field => {
-          fields_data.push(
-            fill_data(
-              state.fields_config, field.config_values, [
-                state.fields_config.find(config => config.name === 'Formulario').id,
-                state.fields_config.find(config => config.name === 'Sección formulario').id
-              ]
-            )
-          );
+          unfilled_required_count += field.unfilled_required_values.length;
         })
-        sections_fields_data.push(fields_data);
       })
-      all_sections_data.push(sections_data);
-      all_fields_data.push(sections_fields_data);
-      
-    })
-    
+    });
+
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
-    if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
+    if (unfilled_required_count) throw Error('There are ' + unfilled_required_count + ' unfilled values');
     
     state.status_msg = 'Guardando';
 
@@ -268,25 +219,30 @@ const actions = {
       /**
        * POST request using the config_id with the values in a JSON that the API supports.
        */
-
       let content = {};
-      content[config_id] = [form_config_values];
+      content[config_id] = [form.local_entity_data];
       return axios.post(state.base_url + 'entity', content);      
     })
     .then(response => {
       /**
-       * Add the inserted_id in all the rows and post it
+       * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
+       * 
+       * Then, add the inserted_id in all the rows and post it
        */
       let form_id = response.data.content.inserted_id;
+      form.config_values[state.form_config.find(config => config.name === 'id').id] 
+      = form.local_entity_data[state.form_config.find(config => config.name === 'id').id]
+      = form_id;
+      console.log("inserted form_id " + form_id);
 
       // find the 'Formulario' configuration
       let row_form_config = state.rows_config.find(config => config.name === 'Formulario').id;
-      rows_data.forEach(row_data => {
+      form.rows.forEach(row => {
         // Associate the row with the created form
-        row_data[row_form_config] = form_id;
+        row.config_values[row_form_config] = form_id;
+        row.local_entity_data[row_form_config] = form_id;
       })
 
-      console.log("inserted form_id " + form_id);
       // The API doesn't return the inserted_id of all elements, so while we can send all the rows, 
       // we shouldn't because we need all of the inserted_id
       /*
@@ -294,73 +250,82 @@ const actions = {
       content[rows_config_id] = rows_data;
       */
       let row_requests = [];
-      for (let i_row = 0; i_row < rows_data.length; i_row++)
-      {
-        let row_data = rows_data[i_row];
-
+      form.rows.forEach(row => {
         let content = {};
-        content[rows_config_id] = [row_data];
-
+        content[rows_config_id] = [row.local_entity_data];
+  
         row_requests.push(axios.post(state.base_url + 'entity', content)
         .then(response => {
           let row_id = response.data.content.inserted_id;
+          row.config_values[state.rows_config.find(config => config.name === 'id').id]
+          = row.local_entity_data[state.rows_config.find(config => config.name === 'id').id]
+          = row_id;
           console.log("inserted row_id "+row_id);
-
-          all_sections_data[i_row].forEach(section_data => {
+          
+          row.sections.forEach(section => {
             // Associate the section with the created row and form
-            section_data[
+            section.local_entity_data[
+              state.sections_config.find(config => config.name == 'Fila del formulario').id
+            ] = section.config_values[
               state.sections_config.find(config => config.name == 'Fila del formulario').id
             ] = row_id;
-            section_data[
+
+            section.local_entity_data[
+              state.sections_config.find(config => config.name == 'Formulario').id
+            ] = section.config_values[
               state.sections_config.find(config => config.name == 'Formulario').id
             ] = form_id;
           });
-
+  
           let section_requests = [];
-          for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
-          {
-            let section_data = all_sections_data[i_row][i_section];
-
+          row.sections.forEach(section => {  
             let content = {};
-            content[sections_config_id] = [section_data];
-
+            content[sections_config_id] = [section.local_entity_data];
+  
             section_requests.push(axios.post(state.base_url + 'entity', content)
             .then(response => {
               let section_id = response.data.content.inserted_id;
-              console.log("inserted section_id" + section_id);
-
-              all_fields_data[i_row][i_section].forEach(field_data => {
-                field_data[
+              section.config_values[state.sections_config.find(config => config.name === 'id').id]
+              = section.local_entity_data[state.sections_config.find(config => config.name === 'id').id]
+              = section_id;
+              console.log("inserted section_id " + section_id);
+  
+              section.fields.forEach(field => {
+                field.local_entity_data[
+                  state.fields_config.find(config => config.name == 'Sección formulario').id
+                ] = field.config_values[
                   state.fields_config.find(config => config.name == 'Sección formulario').id
                 ] = section_id;
-                field_data[
 
+                field.local_entity_data[
+                  state.fields_config.find(config => config.name == 'Formulario').id
+                ] = field.config_values[
                   state.fields_config.find(config => config.name == 'Formulario').id
                 ] = form_id;
               });
               
               let fields_requests = [];
-
-              for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
-              {
-                let field_data = all_fields_data[i_row][i_section][i_field];
-
+              section.fields.forEach(field => {
                 let content = {};
-                content[fields_config_id] = [field_data];
+                content[fields_config_id] = [field.local_entity_data];
+
                 fields_requests.push(
                   axios.post(state.base_url + 'entity', content)
                   .then(response => {
                     let field_id = response.data.content.inserted_id;
+                    field.config_values[state.fields_config.find(config => config.name === 'id').id]
+                    = field.local_entity_data[state.fields_config.find(config => config.name === 'id').id]
+                    = field_id;
                     console.log("inserted field_id " + field_id);
                   })
                 );
-              }
+              })
               return Promise.all(fields_requests);
             }));
-          }
+          })
           return Promise.all(section_requests);
         }));
-      }
+      })
       return Promise.all(row_requests);
     })
     .then(response => {

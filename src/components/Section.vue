@@ -158,6 +158,8 @@ export default {
           idxRow: -1,
           form_id: this.$store.state.form.form.rows[this.idxRow].form_id,
           config_values: config_values, // here we store the values for the sections_config
+          local_entity_data: {},
+          unfilled_required_values: 0,
         }
       },
       deleteSection (idx) {
