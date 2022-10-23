@@ -6,6 +6,12 @@ function fillObjLocalEntityData (configurations, obj) {
     configurations.forEach(config => {
       let value = values[config.id];
       if (value || value === 0) {  // check it has a truthy value, but counting 0 as valid
+        if (config.name === 'id')
+        {
+            // The id configuration is stored twice, one with key 'id' and the other as usual with config.id
+            data_values['id'] = values[config.id];
+            // DO NOT RETURN HERE, it's stored twice in the database so we need to do it here
+        }
         if (!Array.isArray(value))  // If it's not an array, we store that id
         {
           data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];

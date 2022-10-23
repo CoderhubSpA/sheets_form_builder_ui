@@ -221,7 +221,7 @@ const actions = {
        */
       let content = {};
       content[config_id] = [form.local_entity_data];
-      return axios.post(state.base_url + 'entity', content);      
+      return axios.post(state.base_url + (form.local_entity_data['id'] ? 'entity/update': 'entity'), content);
     })
     .then(response => {
       /**
@@ -232,6 +232,7 @@ const actions = {
       let form_id = response.data.content.inserted_id;
       form.config_values[state.form_config.find(config => config.name === 'id').id] 
       = form.local_entity_data[state.form_config.find(config => config.name === 'id').id]
+      = form.local_entity_data["id"]
       = form_id;
       console.log("inserted form_id " + form_id);
 
@@ -254,11 +255,12 @@ const actions = {
         let content = {};
         content[rows_config_id] = [row.local_entity_data];
   
-        row_requests.push(axios.post(state.base_url + 'entity', content)
+        row_requests.push(axios.post(state.base_url + (row.local_entity_data['id'] ? 'entity/update': 'entity'), content)
         .then(response => {
           let row_id = response.data.content.inserted_id;
           row.config_values[state.rows_config.find(config => config.name === 'id').id]
           = row.local_entity_data[state.rows_config.find(config => config.name === 'id').id]
+          = row.local_entity_data["id"]
           = row_id;
           console.log("inserted row_id "+row_id);
           
@@ -282,11 +284,12 @@ const actions = {
             let content = {};
             content[sections_config_id] = [section.local_entity_data];
   
-            section_requests.push(axios.post(state.base_url + 'entity', content)
+            section_requests.push(axios.post(state.base_url + (section.local_entity_data['id'] ? 'entity/update': 'entity'), content)
             .then(response => {
               let section_id = response.data.content.inserted_id;
               section.config_values[state.sections_config.find(config => config.name === 'id').id]
               = section.local_entity_data[state.sections_config.find(config => config.name === 'id').id]
+              = section.local_entity_data["id"]
               = section_id;
               console.log("inserted section_id " + section_id);
   
@@ -310,11 +313,12 @@ const actions = {
                 content[fields_config_id] = [field.local_entity_data];
 
                 fields_requests.push(
-                  axios.post(state.base_url + 'entity', content)
+                  axios.post(state.base_url + (field.local_entity_data['id'] ? 'entity/update': 'entity'), content)
                   .then(response => {
                     let field_id = response.data.content.inserted_id;
                     field.config_values[state.fields_config.find(config => config.name === 'id').id]
                     = field.local_entity_data[state.fields_config.find(config => config.name === 'id').id]
+                    = field.local_entity_data["id"]
                     = field_id;
                     console.log("inserted field_id " + field_id);
                   })
