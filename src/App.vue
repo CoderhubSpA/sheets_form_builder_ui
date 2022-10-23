@@ -48,7 +48,7 @@ export default {
     },
     mounted: function() {
       this.$store.dispatch('api/fetchFormConfig').then(() => {
-        this.$store.dispatch('form/new_form');
+        this.$store.dispatch('form/newForm');
       });
       this.$store.dispatch('api/fetchRowsConfig');
       this.$store.dispatch('api/fetchSectionConfig');

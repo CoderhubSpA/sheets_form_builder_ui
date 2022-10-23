@@ -17,7 +17,7 @@
             <b-spinner variant="info" style="margin-right: 2em">
             </b-spinner>
           </div>
-          <b-button class="btn btn-success text-white" @click="$store.dispatch('api/post_form')">Guardar</b-button>
+          <b-button class="btn btn-success text-white" @click="$store.dispatch('api/postForm')">Guardar</b-button>
         </b-navbar-nav>
     </b-navbar>
   </div>

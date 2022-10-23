@@ -161,7 +161,7 @@ const actions = {
     return axios.get(state.base_url + state.info_url + entity_id)
     .then(response => context.commit('SET_FIELDS', response.data.content.columns))
   },
-  post_form(context) {
+  postForm(context) {
     /**
      * Checks that all required configurations are valid.
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields

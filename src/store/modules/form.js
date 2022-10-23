@@ -11,7 +11,7 @@ const state = {
     current_view: "xl"
 }
 const mutations = {
-    loadForm(state, payload) {
+    LOAD_FORM(state, payload) {
         state.form.rows = payload.rows;
         state.form.config_values = payload.config_values;
         state.form.is_loaded = true;
@@ -19,7 +19,7 @@ const mutations = {
  }
 
 const actions = {
-	new_form(context) {
+	newForm(context) {
         let api_state = context.rootState.api;
         let config_values = {};
         
@@ -30,7 +30,7 @@ const actions = {
                 [];
         })
 
-        context.commit('loadForm', {
+        context.commit('LOAD_FORM', {
             'rows': [],
             'config_values': config_values,
         });
