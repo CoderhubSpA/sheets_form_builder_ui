@@ -10,9 +10,9 @@
           <transition-group name="fade" tag="b-row" class="sections">
 
                 <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`"
-                      :cols = "view =='xl' ? (sections[index].colXl ? sections[index].colXl : 12) : 
-                              (view == 'md' ? (sections[index].colMd ? sections[index].colMd : 12): 
-                              sections[index].colSm ? sections[index].colSm : 12) "
+                      :cols = "view =='xl' ? (getColXl(section) ? getColXl(section) : 12) : 
+                              (view == 'md' ? (getColMd(section) ? getColMd(section) : 12): 
+                              getColSm(section) ? getColSm(section) : 12) "
                       class="cursor-move my-1"
                       >
                       <div 
@@ -24,9 +24,7 @@
                      >
                     <b-form-row>
                       <div class="form-group flex">
-                        <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
-                        <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
-                        <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
+                        <b-input v-model="section.config_values[sectionNameConfigId]" type="text" class="form-control" placeholder="Nombre Sección"/>
                         <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`" @click="openSectionConfig(section)">×</button>
                         <b-modal :id="`modal-borrar-seccion-${idxRow}-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                           <template #default="{ close }">
@@ -56,10 +54,16 @@
             <!-- {{sections}} -->
             <div class="pt-3 border-dotted bg-light rounded" > <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
               <div class="container text-center">
-                <button type="button"  class="btn-primary btn btn-circle btn-lg" size="sm" @click="addSection">
+                <button type="button"  class="btn-primary btn btn-circle btn-lg" @click="addSection" v-if="view=='xl'">
+                  <v-icon name="plus" scale="1.45"/>
+                </button>
+                <button type="button"  class="btn-primary btn btn-circle btn-md" @click="addSection" v-if="view=='md'">
                   <v-icon name="plus" scale="1.25"/>
                 </button>
-                <p>Añadir Sección</p>
+                <button type="button"  class="btn-primary btn btn-circle btn-sm" @click="addSection" v-if="view=='sm'">
+                  <v-icon name="plus" scale="1"/>
+                </button>
+                <p :class="view=='xl'? 'normalText': (view=='md'? 'mediumText' : 'smallText' )">Añadir Sección</p>
               </div>
             </div>
         </b-row>
@@ -96,33 +100,44 @@ export default {
       },
       view(){
         return this.$store.state.form.current_view
+      },
+      sectionNameConfigId() {
+        return this.$store.state.api.sections_config.find(config => config.name === 'Título de la sección').id;
+      },
+      formatTypes() {
+        return this.$store.state.tools.format_types;
       }
 
     },
     data: () => ({
-      formatTypes: [
-        {name: 'TEXT', value: ""},
-        {name: 'NUMBER', value: null},
-        {name: 'SELECTOR', value: []},
-        {name: 'SiNo', value: null}
-      ]
+      
     }),
   
     methods: {
-      selectFormat(format, name){
-        let res = null;
-        this.formatTypes.forEach(element =>{
-          if (format === element.name){
-            console.log("primer if")
-            if (name === 'col_sm' || name === 'col_md' || name === 'col_xl'){
-              res = "12"
-            }
-            else {
-              res = element.value
-            }
-          }
-        })
-        return res;
+      getColXl(section) {
+        return section.config_values[
+          this.$store.state.api.sections_config.find(config => config.name === 'col_xl').id
+        ];
+      },
+      getColMd(section) {
+        return section.config_values[
+            this.$store.state.api.sections_config.find(config => config.name === 'col_md').id
+          ];
+      },
+      getColSm(section) {
+        return section.config_values[
+            this.$store.state.api.sections_config.find(config => config.name === 'col_sm').id
+          ];
+      },
+      selectFormat(format, name) {
+        if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+          return "12";
+        }
+        let type = this.formatTypes.find(element => element.name === format);
+        if (type)
+          return type.value;
+        console.log("No se encontró el formato" + format);
+        return "";
       },
       addSection () {
         let section = this.newSection();
@@ -138,12 +153,7 @@ export default {
 
         return {
           index: this.sections.length,
-          name: "",
-          description:"",
-          colSm:12,
-          colMd:12,
-          colXl:12,
-          image:'',
+          image: [],
           fields: [],
           idxRow: -1,
           form_id: this.$store.state.form.form.rows[this.idxRow].form_id,
@@ -192,13 +202,42 @@ export default {
 <style>
 
 .btn-circle.btn-lg {
-  width: 55px;
-  height: 55px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 12px;
+  width: 58px;
+  height: 58px;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
   text-align: center;
-  background: #008A94;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.btn-circle.btn-sm {
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  border-radius: 20px;
+  font-size: 8px;
+  text-align: center;
+}
+
+.normalText{
+  font-size: 15px;
+}
+
+.mediumText{
+  font-size: 13px;
+}
+
+.smallText{
+  font-size: 11px;
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {

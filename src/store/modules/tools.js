@@ -1,4 +1,13 @@
 const state = {
+    format_types: [
+        {name: 'TEXT', value: ""},
+        {name: 'NUMBER', value: null},
+        {name: 'SELECTOR', value: []},
+        {name: 'SELECTOR[1XN][ONLYNEW]', value: []},
+        {name: 'SiNo', value: null},
+        {name: 'DOCUMENT[IMAGE]', value: []},
+        {name: 'URL', value: ''}
+    ],
     config : [
         // {name: 'Nombre de campo', type: 'text-input'},
         // {name: 'required', type: 'checkbox'},

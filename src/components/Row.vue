@@ -1,6 +1,5 @@
 <template>
   <div id="row" class="container">
-    <form>
       <div class="form-row" >
         <div class="row  row-cols-1 row-cols">
           <div class="col">
@@ -9,12 +8,18 @@
               :animation="200"
               ghost-class="moving-section">
               <transition-group>
-                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move">
-                  <form @click.self="openRowConfig(row)">
-                    <div class="form-group col-md-4 flex">
+                <div v-for="(row, index) in rows" :key="index" :id="`row-${index}`" class="cursor-move"
+                :style="$store.state.form.current_row_config===row? 
+                                  'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;':
+                                  ''"
+                                  @click.self="openRowConfig(row)">
+                  <div @click.self="openRowConfig(row)">
+                    <div :class="view =='xl' ? 'form-group col-md-4 flex' : 
+                              (view == 'md' ? 'form-group col-md-6 flex': 
+                              'form-group col-md-8 flex')" >
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
-                      <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
+                      <b-input v-model="row.config_values[rowNameConfigId]" type="text" class="form-control" placeholder="Nombre Fila"/>
                       <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" @click="openRowConfig(row)"> 
                         <v-icon class="custom-icon" name="trash"></v-icon>
                       </button>
@@ -27,7 +32,7 @@
                         </template>
                       </b-modal>
                     </div>
-                  </form>
+                  </div>
                   <br>
                   <div class="p-3 border-solid bg-light rounded container" v-bind="row">
                   <Section :idxRow="index"></Section>
@@ -39,16 +44,21 @@
           </draggable>
             <div class="pt-3 border-dotted bg-light rounded" >
               <div class="container text-center">
-                <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow">
+                <button type="button"  class="btn btn-primary btn-circle btn-xl" @click="addRow" v-if="view=='xl'">
                   <v-icon name="plus" scale="1.75"/>
                 </button>
-                <p>Añadir Fila</p>
+                <button type="button"  class="btn btn-primary btn-circle btn-lg" @click="addRow" v-if="view=='md'">
+                  <v-icon name="plus" scale="1.45"/>
+                </button>
+                <button type="button"  class="btn btn-primary btn-circle btn-md" @click="addRow" v-if="view=='sm'">
+                  <v-icon name="plus" scale="1.25"/>
+                </button>
+                <p :class="view=='xl'? 'normalText': (view=='md'? 'mediumText' : 'smallText' )">Añadir Fila</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </form>
   </div>
 </template>
 
@@ -72,12 +82,18 @@ export default {
     {
       rows(){
         return this.$store.state.form.form.rows
+      },
+      view(){
+        return this.$store.state.form.current_view
+      },
+      rowNameConfigId() {
+        return this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id;
+      },
+      formatTypes() {
+        return this.$store.state.tools.format_types;
       }
     },
     data: () => ({
-      // rows: [
-        
-      // ]
     }),
     mounted(){
     },
@@ -88,14 +104,23 @@ export default {
         this.rows.push(row)
         this.openRowConfig(row)
       },
+      selectFormat(format, name){
+        if (name === 'col_sm' || name === 'col_md' || name === 'col_xl') {
+          return "12";
+        }
+        let type = this.formatTypes.find(element => element.name === format);
+        if (type)
+          return type.value;
+        console.log("No se encontró el formato" + format);
+        return "";
+      },
       newRow(){
         let config_values = {};
         this.$store.state.api.rows_config.forEach(config => {
-          config_values[config.id] = config.format === "TEXT" ? "": []
+          config_values[config.id] = this.selectFormat(config.format, config.name)
         });
         
         return {
-          name:"",
           sections:[],
           config_values: config_values,
           form_id: "",
@@ -137,8 +162,38 @@ export default {
   border-radius: 35px;
   font-size: 12px;
   text-align: center;
-  background: #008A94;
 }
+
+.btn-circle.btn-lg {
+  width: 58px;
+  height: 58px;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.normalText{
+  font-size: 16px;
+}
+
+.mediumText{
+  font-size: 14px;
+}
+
+.smallText{
+  font-size: 12px;
+}
+
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
   background-color: #008A94 !important;

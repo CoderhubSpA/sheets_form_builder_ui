@@ -6,47 +6,49 @@
     <b-list-group style="padding: 1em;overflow-x:hidden;">
       <div v-if="currentForm">
         <h5>Formulario:</h5>
-        <h6>"{{form.name}}"</h6>
+        <h6>"{{currentFormName}}"</h6>
         <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
-          <label :for="'menu-'+menu_id+'-element-'+element.name">{{ element.name }}</label>
+          <label :for="'menu-'+menu_id+'-element-'+element.name">
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
+          </label>
           <!-- v-if else depending on element.format -->
           <b-form-checkbox v-if="element.format=='SiNo'"
             :id="'menu-'+menu_id+'-element-'+element.name"
-            v-model="$store.state.api.config_values[element.id]"
+            v-model="$store.state.form.form.config_values[element.id]"
           >
           </b-form-checkbox>
-
-          <b-form-input v-else-if="element.col_name=='name'"
-            :id="'nameInserted'"
-            :placeholder="currentForm.name"
-            v-model="currentForm.name"
-          >
-          </b-form-input>
 
           <b-form-input v-else-if="element.format=='TEXT'"
             :id="'menu-'+menu_id+'-element-'+element.name"
             :placeholder="'Ingresa '+element.name"
-            v-model="$store.state.api.config_values[element.id]"
+            v-model="$store.state.form.form.config_values[element.id]"
           >
           </b-form-input>
 
           <div v-else-if="element.name=='Tipo de Entidad'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-            v-model="$store.state.api.config_values[element.id]" @change="showFields($store.state.api.config_values[element.id].id)">
+            v-model="$store.state.form.form.config_values[element.id]" @change="showFields($store.state.form.form.config_values[element.id].id)">
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
-            >{{option.name}}</option>
+            >{{element.col_name_fk ? option[element.col_name_fk] : option.name}}</option>
             </select>
           </div>
 
           <div v-else-if="element.format=='SELECTOR'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
-            v-model="$store.state.api.config_values[element.id]">
+            v-model="$store.state.form.form.config_values[element.id]">
               <option v-for="option in $store.state.api.config_select[element.id].options" 
               :value="option"
               :key="option.id"
-            >{{option.name}}</option>
+            >{{
+                element.col_name_fk ? option[element.col_name_fk] : option.name
+              }}</option>
             </select>
           </div>
           <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
@@ -80,11 +82,16 @@
       </div>
       
       <div v-else-if="currentRow">
-        <h4>Fila: {{ currentRow.name }}</h4>
+        <h4>Fila: {{ currentRowName }}</h4>
         <br>
-        <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.rows_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
 
           <b-form-checkbox
@@ -95,9 +102,9 @@
 
           <b-form-input v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.name"
-            :placeholder="currentRow.name"
-            v-model="currentRow.name"
-            @change="updateRowName(currentRow.name)"
+            :placeholder="currentRow.config_values[element.id]"
+            v-model="currentRow.config_values[element.id]"
+            @change="updateRowName(currentRow.config_values[element.id])"
           >
           </b-form-input>
 
@@ -110,21 +117,6 @@
           ></b-form-input>
 
           <select
-          v-else-if="element.col_name=='form_id'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentRow.config_values[element.id]"
-            @change="updateFormId(currentRow.config_values[element.id])"
-          >
-            <option v-for="option in $store.state.api.rows_config_select[element.id].options"
-              :value="option"
-              :key="option.id">
-              {{ option.name }}
-            </option>
-          </select>
-
-
-          <select
           v-else-if="element.format=='SELECTOR'"
             class="form-select"
             :id="'menu-'+menu_id+'-element-'+element.id"
@@ -133,7 +125,7 @@
             <option v-for="option in $store.state.api.rows_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
           </select>
 
@@ -153,11 +145,16 @@
       
       </div>
       <div v-else-if="currentSection">
-        <h5>Sección: {{currentSection.name}}</h5>
+        <h5>Sección: {{currentSectionName}}</h5>
         <br>
-              <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.sections_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
 
           <b-form-checkbox
@@ -166,39 +163,26 @@
             v-model="currentSection.config_values[element.id]"
           ></b-form-checkbox>
 
-          <select 
-            v-else-if="element.col_name=='form_id'"
-            class="form-select"
-            :id="'menu-'+menu_id+'-element-'+element.id"
-            v-model="currentSection.config_values[element.id]"
-          > 
-          <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(ops => ops.name==currentSection.form_id.name)"
-              :value="option"
-              :key="option.id">
-              {{ option.name }}
-            </option>
-        </select>
-
           <b-input
           v-else-if="element.col_name=='name'"
             :id="'menu-'+menu_id+'-element-'+element.id"
-             v-model="currentSection.name" type="text" placeholder="Nombre Sección"/>
+             v-model="currentSection.config_values[element.id]" type="text" placeholder="Nombre Sección"/>
 
         <b-form-textarea 
         v-else-if="element.col_name=='description'"
-        size="lg" v-model="currentSection.description" :id="'menu-'+menu_id+'-element-'+element.id"/>
+        size="lg" v-model="currentSection.config_values[element.id]" :id="'menu-'+menu_id+'-element-'+element.id"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_sm'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colSm"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_md'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colMd"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
         <custom-slider
         v-else-if="element.col_name=='col_xl'"
-        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.colXl"/>
+        min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
 
           <b-form-input
@@ -206,18 +190,6 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           ></b-form-input>
-          
-          <custom-slider
-          v-else-if="element.col_name=='col_sm'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
-          
-          <custom-slider
-          v-else-if="element.col_name=='col_md'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
-
-          <custom-slider
-          v-else-if="element.col_name=='col_xl'"
-          min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentSection.config_values[element.id]"/>
 
           <b-form-input
           v-else-if="element.format=='NUMBER'"
@@ -233,10 +205,10 @@
             :id="'menu-'+menu_id+'-element-'+element.id"
             v-model="currentSection.config_values[element.id]"
           >
-            <option v-for="option in $store.state.api.sections_config_select[element.id].options"
+            <option v-for="option in $store.state.api.sections_config_select[element.id].options.filter(op => op.show_in_create_form==2)"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
           </select>
 
@@ -271,16 +243,23 @@
       </div>
 
       <div v-else-if="currentField">
-        <h5>{{ currentField.name }}</h5>
+        <h5>
+          {{ currentFieldName }}
+        </h5>
         <br>
-              <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2)" :key="element.id" style="padding: 0.5em">
+              <div v-for="element in $store.state.api.fields_config.filter(element => element.show_in_create_form==2 && hiddenConfig(element))" :key="element.id" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id">
-            {{ element.name }}
+            <div v-if="element.required_in_create_form === 1">
+              {{ element.name }} <span class="text-danger">*</span>
+            </div>
+            <div v-else>
+              {{ element.name }}
+            </div>
           </label>
           
           <b-form-checkbox
           v-if="element.format=='SiNo'"
-            :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+            :id="'menu-'+menu_id+'-element-'+element.id"
                   v-model="currentField.config_values[element.id]">
           </b-form-checkbox>
 
@@ -293,27 +272,34 @@
           <option v-for="option in $store.state.api.fields_config_select[element.id].options"
               :value="option"
               :key="option.id">
-              {{ option.name }}
+              {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
             </option>
         </select>
 
-              <b-form-input
-              v-else-if="element.format=='TEXT'"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
-                  v-model="currentField.config_values[element.id]"
-                :placeholder="'Ingresa ' + element.name">
-              </b-form-input>
-
               <custom-slider
               v-else-if="element.col_name=='col_sm'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colSm"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
               <custom-slider
               v-else-if="element.col_name=='col_md'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colMd"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
 
               <custom-slider
               v-else-if="element.col_name=='col_xl'"
-              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.colXl"/>
+              min="1" max="12" step="1" :id="'menu-'+menu_id+'-element-'+element.id" v-model="currentField.config_values[element.id]"/>
+
+              <textarea
+              v-else-if="element.col_name=='description'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                class="col-12" placeholder="Ingrese descripción del campo"
+                v-model="currentField.config_values[element.id]"></textarea>
+
+              <b-form-input
+              v-else-if="element.format=='TEXT'"
+                :id="'menu-'+menu_id+'-element-'+element.id"
+                  v-model="currentField.config_values[element.id]"
+                :placeholder="'Ingresa ' + element.name">
+              </b-form-input>
+              
 
               <b-form-input
               v-else-if="element.format=='NUMBER'"
@@ -332,7 +318,7 @@
 
               <div
               v-else-if="element.name=='Columna'"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                :id="'menu-'+menu_id+'-element-'+element.id"
               >
                   {{ currentField.config_values[element.id].name }}
               </div>
@@ -340,14 +326,14 @@
               <select
               v-else-if="element.format=='SELECTOR'"
                 class="form-select"
-                :id="'menu-'+menu_id+'-field-'+currentField.id+'-element-'+element.id"
+                :id="'menu-'+menu_id+'-element-'+element.id"
                   v-model="currentField.config_values[element.id]"
               >
                 <option v-for="option in $store.state.api.fields_config_select[element.id].options" 
                   :value="option"
                   :key="'option-'+option.id"
                 >
-                  {{ option.name }}
+                  {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
                 </option>
               </select>
 
@@ -355,24 +341,6 @@
                 {{ element }}
               </b-list-group-item>
             </div>
-            <!--
-            <label for="field-config-required">Requerido</label>
-            <b-form-checkbox id="field-config-required" v-model="currentField.required"></b-form-checkbox>
-            -->
-            <label for="field-config-col-sm">col sm: </label>
-            <!-- <b-input v-model="currentField.colSm" id="field-config-col-sm" type="number"/> -->
-            <label for="field-config-col-md">col md: </label>
-            <!-- <b-input v-model="currentField.colMd" id="field-config-col-md" type="number"/> -->
-            <label for="field-config-col-xl">col xl: </label>
-
-            <!-- <b-input v-model="currentField.colXl" id="field-config-col-xl" type="number"/> -->
-            <br>
-            <label for="field-config-description">Descripción</label>
-            <div>
-              <textarea class="col-12" placeholder="Ingrese la descripción del campo" v-model="currentField.description"></textarea>
-            </div>
-            <br> -->
-
       </div>
     </b-list-group>
   </div>
@@ -426,6 +394,26 @@ export default {
       return this.$store.state.form.current_config;
     },
 
+    currentFieldName() {
+      return this.currentField.config_values[
+        this.$store.state.api.fields_config.find(config => config.name === 'Columna').id
+      ].name;
+    },
+    currentSectionName() {
+      return this.currentSection.config_values[
+        this.$store.state.api.sections_config.find(config => config.name === 'Título de la sección').id
+      ];
+    },
+    currentRowName() {
+      return this.currentRow.config_values[
+        this.$store.state.api.rows_config.find(config => config.name === 'Nombre').id
+      ];
+    },
+    currentFormName() {
+      return this.currentForm.config_values[
+        this.$store.state.api.config.find(config => config.name === 'Nombre').id
+      ]
+    }
   },
   data() {
     return {
@@ -449,6 +437,10 @@ export default {
       this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(section => 
       section.form_row_id = element
       )
+    },
+    hiddenConfig(element){
+      let columns_hidden = [ 'Formulario', 'Fila del formulario', 'Sección formulario', 'Alternativas', 'Entidad del form', 'Sección siguiente default', 'Mostrar solo por el campo', 'Mostrar solo si el campo posee valor', 'Columna']
+      return !(columns_hidden.includes(element.name))
     }
   }
 }
@@ -456,4 +448,9 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css">
 </style>
+<style>
 
+.slider {
+  margin-top: 1em !important; margin-bottom: 0 !important;
+}
+</style>
