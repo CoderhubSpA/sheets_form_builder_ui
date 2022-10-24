@@ -141,10 +141,10 @@ export default {
       }
     },
     openFieldConfig(newField) {
-      this.$store.state.form.current_section_config = null;
-      this.$store.state.form.current_form_config = null;
-      this.$store.state.form.current_row_config = null;
-      this.$store.state.form.current_field_config = newField;
+      this.$store.state.form.current_section_config = null
+      this.$store.state.form.current_form_config = null
+      this.$store.state.form.current_row_config = null
+      this.$store.state.form.current_field_config = newField
     },
     dragleave() {
       this.$store.commit('tools/change_hover', false);

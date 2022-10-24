@@ -32,9 +32,7 @@
 }
 </style>
 <script>
-
-// import Row from './components/Row.vue';
-import FormComponent from './components/FormComponent.vue'
+import FormComponent from './components/Form/FormComponent.vue'
 import ToolboxComponent from './components/Toolbox/ToolboxComponent.vue'
 import NavbarComponent from './components/Navbar.vue';
 

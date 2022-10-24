@@ -1,5 +1,5 @@
 <template>
-<div class="campo col-6">
+<div class="fieldMenuComponent col-6">
   <div class="card text-center h-100">
     <div class="card-body" style="padding:0.25em 0.5em;">
       <!-- commented fields have a fontawesome icon that doesn't display correctly right now, 
@@ -54,7 +54,7 @@
 <script>
 
 export default {
-  name: 'CampoComponent',
+  name: 'FieldMenuComponent',
   props: {
     text: {
       type: String,
@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style>
-.campo {
+.fieldMenuComponent {
   color: #000000;
 
   padding: 5px 10px;

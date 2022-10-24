@@ -8,7 +8,6 @@
           :animation="200"
           ghost-class="moving-section">
           <transition-group name="fade" tag="b-row" class="sections">
-
                 <b-col v-for="(section, index) in sections" :key="section.index" :id="`section-${section.index}`"
                       :cols = "view =='xl' ? (getColXl(section) ? getColXl(section) : 12) : 
                               (view == 'md' ? (getColMd(section) ? getColMd(section) : 12): 
@@ -40,10 +39,7 @@
                     <b-form-row class="p-3 border-solid bg-light rounded container" v-bind="section.seccion"
                     @click.self="openSectionConfig(section)"
                     >
-                    
-                    
-
-                      <Field :idxSection="index" :idxRow="idxRow"/>
+                      <FieldComponent :idxSection="index" :idxRow="idxRow"/>
                     </b-form-row>
                     
                   </div>
@@ -73,15 +69,15 @@
   
 <script>
 import draggable from 'vuedraggable'
-import Campo from './Toolbox/CampoComponent.vue';
-import Field from "./Fields/Field.vue"
+import FieldMenuComponent from '../Toolbox/FieldsMenu/FieldMenuComponent.vue';
+import FieldComponent from './FieldComponent.vue';
   
 export default {
     name: "Section",
     components: {
     draggable,
-    Campo,
-    Field
+    FieldMenuComponent,
+    FieldComponent
 },
     props:{
       idRow:{
