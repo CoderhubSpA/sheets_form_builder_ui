@@ -17,7 +17,9 @@
         },
         computed: {
             getAction() {
-                return this.$store.state.api.actions
+                return this.$store.state.form.form.config_values[
+                    this.$store.state.api.form_config.find(config => config.name === 'Acciones').id
+                ];
             }
         }
     }

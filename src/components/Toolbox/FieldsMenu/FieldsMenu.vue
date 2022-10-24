@@ -6,8 +6,8 @@
       @dragstart.native="hover_fields=true" 
       @dragend.native="hover_fields=false"
       class="card-deck row" style="display:flex; margin: 5px 0 5px 0;" :group="{name: 'Fields', pull:true, put: true}" :list="fields" :clone="cloneAction">
-        <Campo v-for="(element, index) in fields" v-if="element.show_in_create_form==2 && checkName(element.name)" :key="element.name" :text="element.name" :format="element.format">
-        </Campo>
+        <FieldMenuComponent v-for="(element, index) in fields" v-if="element.show_in_create_form==2 && checkName(element.name)" :key="element.name" :text="element.name" :format="element.format">
+        </FieldMenuComponent>
       </draggable>
 
     </div>
@@ -16,17 +16,15 @@
 
 <script>
 import draggable from 'vuedraggable';
-import multiselect from 'vue-multiselect';
-import Campo from './CampoComponent.vue';
+import FieldMenuComponent from './FieldMenuComponent.vue';
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default {
   name: 'FieldsDropdownMenu',
   components: {
-    Campo,
+    FieldMenuComponent,
     draggable,
-    multiselect,
   },
 
   props: {
@@ -74,6 +72,8 @@ export default {
         idxRow: -1,
         idxSection: -1,
         show:false,
+        local_entity_data: {},
+        unfilled_required_values: 0,
       };
       
       if (!item.config_values)

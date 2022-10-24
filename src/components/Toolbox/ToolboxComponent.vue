@@ -11,13 +11,13 @@
   <div class="ps-0" id="tab">
     <div v-if="tab == 'fields'">
       <fields
-      :menu_name="'Campos'"
-      :menu_id="'panelsStayOpen-collapseOne'"/>
+      :menu_name="'Fields'"
+      :menu_id="'Fields_Menu'"/>
     </div>
     <div v-else-if="tab == 'config'">
       <config
       :menu_name="'Configuración'"
-      :menu_id="'panelsStayOpen-collapseTwo'"/>
+      :menu_id="'Config_Menu'"/>
     </div>
   </div>
 </div>
@@ -27,8 +27,8 @@
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import fields from './FieldsDropdownMenu.vue';
-import config from './ConfigDropdownMenu.vue';
+import fields from './FieldsMenu/FieldsMenu.vue';
+import config from './ConfigMenu/ConfigMenu.vue';
 
 export default {
   name: 'ToolboxComponent',

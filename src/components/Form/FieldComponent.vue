@@ -37,7 +37,7 @@
                   </template>
                 </b-modal>
               </div>
-              <b-input v-model="field.name" type="text" class="form-control" placeholder="Nombre campo" />
+              <b-input v-model="field.config_values[fieldNameConfig.id]" type="text" class="form-control" :placeholder="fieldNameConfig.name" />
             </div>
           </div>
 
@@ -88,6 +88,9 @@ export default {
     },
     view() {
       return this.$store.state.form.current_view
+    },
+    fieldNameConfig() {
+      return this.$store.state.api.fields_config.find(config => config.name === 'Título del campo')
     },
     draggingField:{
       get(){
