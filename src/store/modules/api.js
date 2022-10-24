@@ -1,21 +1,56 @@
 import axios from "axios";
 
+// Helpers
+function retrieveConfigurationsOptions(configurations, entities_fk) {
+  let config_select = {};
+
+  configurations.forEach(config => {
+
+    let options = [];
+
+    if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
+    {
+      let json_options = JSON.parse(config.options);
+      for (let key in json_options)
+      {
+        options.push({
+          'id': key,
+          'name': json_options[key],
+        });
+      }
+      config_select[config.id] = {
+        'options': options,
+      }
+    } else {
+      const options_fk = config.entity_type_fk;
+      config_select[config.id] = {
+        'options': entities_fk[options_fk],
+      }
+
+      if (!config_select[config.id].options)
+      {
+        config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
+      }
+    }
+  });
+
+  return config_select;
+}
+
+
 const state = {
   status_msg: '',
   base_url: 'http://127.0.0.1:8081/',
   info_url: 'entity/info/',
   records_url: 'sheets/getrecord/form/',
-  //form_id: '8106ddcc-21d3-40f6-94fa-c2fe85ac638f',
-  configuration_id: 'form',
-  rows_id: 'form_row',
-  sections_id: 'form_section',
-  fields_id: 'form_field',
-  config: [],
-  config_select: {},
+  form_entity_name: 'form',
+  row_entity_name: 'form_row',
+  section_entity_name: 'form_section',
+  field_entity_name: 'form_field',
+  form_config: [],
+  form_config_select: {},
   rows_config: [],
   rows_config_select: {},
-  actions: [],
-  sections: [],
   sections_config: [],  // shared config, the values are stored in each section separated
   sections_config_select: {}, // for each config, it's select options
   fields: [
@@ -34,382 +69,273 @@ const state = {
   },
 }
 
+const getters = {
+  formConfigURL (state) {
+    return state.base_url + state.info_url + state.form_entity_name;
+  },
+  rowsConfigURL (state) {
+    return state.base_url + state.info_url + state.row_entity_name;
+  },
+  sectionsConfigURL (state) {
+    return state.base_url + state.info_url + state.section_entity_name;
+  },
+  fieldsConfigURL (state) {
+    return state.base_url + state.info_url + state.field_entity_name;
+  }
+}
+
 const mutations = {
-  FETCH_FORM_CONFIG(state){
-    return axios.get(
-      state.base_url + state.info_url + state.configuration_id
-    )
-    .then(response => {
-      let columns = response.data.content.columns;
-      state.config = columns;
-
-      state.config.forEach(config => {
-
-        if (!config.entity_type_fk)  // The options are in config.options, or there aren't any options (it may not be a selector)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key],
-            });
-          }
-          state.config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk],
-          }
-
-          if (!state.config_select[config.id].options)
-          {
-            state.config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-          }
-        }
-      });
-    });
+  SET_FORM_CONFIG(state, config) {
+    state.form_config = config;
   },
-  FETCH_FIELDS_CONFIG(state) {
-    // We don't need to get the possible fields, that's will be done when the user selects an entity for its form
-
-    // But we do need to get their configurations
-    axios.get(
-      state.base_url + state.info_url + state.fields_id
-    )
-    .then(response => {
-      let columns = response.data.content.columns;
-      // All fields share the configuration columns, so we load that shared information
-      state.fields_config = columns;
-      // and for selectors and those configuration of that kind, we load their options
-      state.fields_config.forEach(config => {
-        const options_fk = config.entity_type_fk;
-        if (!options_fk)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              "id": key,
-              "name": json_options[key]
-            })
-          }
-          state.fields_config_select[config.id] = {
-            'options': options
-          };
-        } else {
-          if (!response.data.content.entities_fk[options_fk])
-          {
-            state.fields_config_select[config.id] = {
-              'options': [{'id': 'ff', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-            }
-          } else {
-            state.fields_config_select[config.id] = {
-              'options': response.data.content.entities_fk[options_fk]
-            }
-          }
-        }
-      });
-    })
+  SET_FORM_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.form_config_select = config_select_options;
   },
-
-  FETCH_ROWS_CONFIG() {
-    axios.get(
-      state.base_url + state.info_url + state.rows_id
-    )
-    .then(response => {
-      state.rows_config = response.data.content.columns;
-
-      state.rows_config.forEach(config => {
-        if (!config.entity_type_fk)
-        {
-          // The options are in config.options, or there aren't any options (it may not be a selector)
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key]
-            })
-          }
-          state.rows_config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.rows_config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk]
-          }
-
-          if (!state.rows_config_select[config.id].options)
-          {
-            state.rows_config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}]
-          }
-        }
-      });
-      
-    });
+  SET_ROWS_CONFIG(state, config) {
+    state.rows_config = config;
   },
-
-  FETCH_SECTIONS_CONFIG(state) {
-    axios.get(
-      state.base_url + state.info_url + state.sections_id
-    )
-    .then(response => {
-      state.sections_config = response.data.content.columns;
-
-      state.sections_config.forEach(config => {
-        if (!config.entity_type_fk)
-        {
-          let options = [];
-          let json_options = JSON.parse(config.options);
-          for (let key in json_options)
-          {
-            options.push({
-              'id': key,
-              'name': json_options[key],
-            })
-          }
-          state.sections_config_select[config.id] = {
-            'options': options,
-          }
-        } else {
-          const options_fk = config.entity_type_fk;
-          state.sections_config_select[config.id] = {
-            'options': response.data.content.entities_fk[options_fk]
-          }
-
-          if (!state.sections_config_select[config.id].options)
-          {
-            state.sections_config_select[config.id].options = [{'id': 'F', 'name': 'NO HAY OPCIONES EN EL ENTITIES_FK'}];
-          }
-        }
-      });
-      
-      // the values, state.sections_config_values[section.id][config.id], will have to be prepared when creating a section
-      
-
-    })
+  SET_ROWS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.rows_config_select = config_select_options;
   },
-  
-  GET_FIELDS(state, entity_id){
-    axios.get(state.base_url + state.info_url + entity_id)
-    .then(response => 
-      state.fields = response.data.content.columns)
+  SET_SECTIONS_CONFIG(state, config) {
+    state.sections_config = config;
+  },
+  SET_SECTIONS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.sections_config_select = config_select_options;
+  },
+  SET_FIELDS_CONFIG(state, config) {
+    state.fields_config = config;
+  },
+  SET_FIELDS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.fields_config_select = config_select_options;
+  },
+  SET_FIELDS(state, fields){
+    state.fields = fields;
   }
 }
 
 const actions = {
-  fetch_form_config(context){
-    return context.commit('FETCH_FORM_CONFIG');
+  fetchFormConfig(context){
+    return axios.get(
+      context.getters.formConfigURL
+    )
+    .then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_FORM_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk)
+      context.commit('SET_FORM_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  fetch_rows_config(context) {
-    context.commit('FETCH_ROWS_CONFIG');
+  fetchRowsConfig(context) {
+    return axios.get(
+      context.getters.rowsConfigURL
+    )
+    .then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_ROWS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_ROWS_CONFIG_SELECT_OPTIONS', config_select);      
+    });
   },
-  fetch_section_config(context) {
-    context.commit('FETCH_SECTIONS_CONFIG');
+  fetchSectionConfig(context) {
+    return axios.get(
+      context.getters.sectionsConfigURL
+    ).then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_SECTIONS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_SECTIONS_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  fetch_fields_config(context) {
-    context.commit('FETCH_FIELDS_CONFIG');
+  fetchFieldsConfig(context) {
+    return axios.get(
+      context.getters.fieldsConfigURL
+    ).then(response => {
+      let config_columns = response.data.content.columns;
+      context.commit('SET_FIELDS_CONFIG', config_columns);
+      let config_select = retrieveConfigurationsOptions(config_columns, response.data.content.entities_fk);
+      context.commit('SET_FIELDS_CONFIG_SELECT_OPTIONS', config_select);
+    });
   },
-  get_fields(context, payload){
-    context.commit('GET_FIELDS', payload);
+  fetchFields(context, entity_id){
+    return axios.get(state.base_url + state.info_url + entity_id)
+    .then(response => context.commit('SET_FIELDS', response.data.content.columns))
   },
-  post_form(context) {
+  postForm(context) {
     /**
      * Checks that all required configurations are valid.
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
      */
     let state = context.state;
 
-    let fill_data = (configurations, values, ignore_required_array) => {
-      // parses and generates a json with all valid values
-      let data_values = {};
-      configurations.forEach(config => {
-        let value = values[config.id];
-        if ((value || value === 0) && // check it has a truthy value, but counting 0 as valid
-          (!Array.isArray(value) || (value.length > 0))) // and that is not an empty array
-        {
-          data_values[config.id] = values[config.id].id ? values[config.id].id : values[config.id];
-        } else if (config.required_in_create_form && !ignore_required_array.includes(config.id)) {
-          unfilled_required_values += 1;
-        }
-      })
-      return data_values;
-    };
     let autofill_order = (elements, order_id) => {
       // fills the config_values
       elements.forEach((element, index) => {
         element.config_values[order_id] = index;
       })
     };
-
-    // Parse form configuration
-    let unfilled_required_values = 0;
-    let form_config_values = fill_data(
-      state.config, context.rootState.form.form.config_values, []);
+    let form = context.rootState.form.form;
     
     // Parse form rows while checking for unfilled required values
-    let rows = context.rootState.form.form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
+    let rows = form.rows;  // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
     autofill_order(rows, state.rows_config.find(config => config.name === 'Orden').id);
-
-    let rows_data = [];
-    let all_sections_data = [];  // [[sections_data of row1], [sections_data of row2], ...]
-    let all_fields_data = [];  // [[[fields_data of section1], ... of row1], ...]
-    rows.forEach(row => {
-      
-      rows_data.push(fill_data(state.rows_config, row.config_values, [state.rows_config.find(config => config.name === 'Formulario').id]));
-      
-      
+    rows.forEach(row => {      
       autofill_order(row.sections, state.sections_config.find(config => config.name === 'Orden').id);
-      let sections_data = [];
-      let sections_fields_data = [];
       row.sections.forEach(section => {
-        sections_data.push(
-          fill_data(
-            state.sections_config, section.config_values, [
-              state.sections_config.find(config => config.name === 'Formulario').id,
-              state.sections_config.find(config => config.name === 'Fila del formulario').id
-            ]
-          )
-        );
-        
         autofill_order(section.fields, state.fields_config.find(config => config.name === 'Orden').id);
-        let fields_data = [];
+      })      
+    });
+
+    context.dispatch('form/fillLocalEntityData', null, {root:true});
+
+    let unfilled_required_count = form.unfilled_required_values.length;
+    form.rows.forEach(row => {
+      unfilled_required_count += row.unfilled_required_values.length;
+      row.sections.forEach(section => {
+        unfilled_required_count += section.unfilled_required_values.length;
         section.fields.forEach(field => {
-          fields_data.push(
-            fill_data(
-              state.fields_config, field.config_values, [
-                state.fields_config.find(config => config.name === 'Formulario').id,
-                state.fields_config.find(config => config.name === 'Sección formulario').id
-              ]
-            )
-          );
+          unfilled_required_count += field.unfilled_required_values.length;
         })
-        sections_fields_data.push(fields_data);
       })
-      all_sections_data.push(sections_data);
-      all_fields_data.push(sections_fields_data);
-      
-    })
-    
+    });
+
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
-    if (unfilled_required_values) throw Error('There are ' + unfilled_required_values + ' unfilled values');
+    if (unfilled_required_count) throw Error('There are ' + unfilled_required_count + ' unfilled values');
     
     state.status_msg = 'Guardando';
 
     let config_id, rows_config_id, sections_config_id, fields_config_id;
       
     Promise.all([
-      axios.get(state.base_url + state.info_url + state.configuration_id)
+      axios.get(context.getters.formConfigURL)
         .then(response => config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.rows_id)
+      axios.get(context.getters.rowsConfigURL)
         .then(response => rows_config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.sections_id)
+      axios.get(context.getters.sectionsConfigURL)
         .then(response => sections_config_id = response.data.content.entity_type.id),
-      axios.get(state.base_url + state.info_url + state.fields_id)
+      axios.get(context.getters.fieldsConfigURL)
         .then(response => fields_config_id = response.data.content.entity_type.id)])
     .then(() => {
       /**
        * POST request using the config_id with the values in a JSON that the API supports.
        */
-
       let content = {};
-      content[config_id] = [form_config_values];
-      return axios.post(state.base_url + 'entity', content);      
+      content[config_id] = [form.local_entity_data];
+      return axios.post(state.base_url + (form.local_entity_data['id'] ? 'entity/update': 'entity'), content);
     })
     .then(response => {
       /**
-       * Add the inserted_id in all the rows and post it
+       * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
+       * 
+       * Then, add the inserted_id in all the rows and post it
        */
       let form_id = response.data.content.inserted_id;
+      form.config_values[state.form_config.find(config => config.name === 'id').id] 
+      = form.local_entity_data[state.form_config.find(config => config.name === 'id').id]
+      = form.local_entity_data["id"]
+      = form_id;
+      console.log("inserted form_id " + form_id);
 
       // find the 'Formulario' configuration
       let row_form_config = state.rows_config.find(config => config.name === 'Formulario').id;
-      rows_data.forEach(row_data => {
+      form.rows.forEach(row => {
         // Associate the row with the created form
-        row_data[row_form_config] = form_id;
+        row.config_values[row_form_config] = form_id;
+        row.local_entity_data[row_form_config] = form_id;
       })
 
-      console.log("inserted form_id " + form_id);
       // The API doesn't return the inserted_id of all elements, so while we can send all the rows, 
       // we shouldn't because we need all of the inserted_id
       /*
       let content = {};
       content[rows_config_id] = rows_data;
       */
-      for (let i_row = 0; i_row < rows_data.length; i_row++)
-      {
-        let row_data = rows_data[i_row];
-
+      let row_requests = [];
+      form.rows.forEach(row => {
         let content = {};
-        content[rows_config_id] = [row_data];
-        axios.post(state.base_url + 'entity', content)
+        content[rows_config_id] = [row.local_entity_data];
+  
+        row_requests.push(axios.post(state.base_url + (row.local_entity_data['id'] ? 'entity/update': 'entity'), content)
         .then(response => {
           let row_id = response.data.content.inserted_id;
+          row.config_values[state.rows_config.find(config => config.name === 'id').id]
+          = row.local_entity_data[state.rows_config.find(config => config.name === 'id').id]
+          = row.local_entity_data["id"]
+          = row_id;
           console.log("inserted row_id "+row_id);
-
-          all_sections_data[i_row].forEach(section_data => {
+          
+          row.sections.forEach(section => {
             // Associate the section with the created row and form
-            section_data[
+            section.local_entity_data[
+              state.sections_config.find(config => config.name == 'Fila del formulario').id
+            ] = section.config_values[
               state.sections_config.find(config => config.name == 'Fila del formulario').id
             ] = row_id;
-            section_data[
+
+            section.local_entity_data[
+              state.sections_config.find(config => config.name == 'Formulario').id
+            ] = section.config_values[
               state.sections_config.find(config => config.name == 'Formulario').id
             ] = form_id;
           });
-
-          for (let i_section = 0; i_section < all_sections_data[i_row].length; i_section++)
-          {
-            let section_data = all_sections_data[i_row][i_section];
-
+  
+          let section_requests = [];
+          row.sections.forEach(section => {  
             let content = {};
-            content[sections_config_id] = [section_data];
-            axios.post(state.base_url + 'entity', content)
+            content[sections_config_id] = [section.local_entity_data];
+  
+            section_requests.push(axios.post(state.base_url + (section.local_entity_data['id'] ? 'entity/update': 'entity'), content)
             .then(response => {
               let section_id = response.data.content.inserted_id;
-              console.log("inserted section_id" + section_id);
-
-              all_fields_data[i_row][i_section].forEach(field_data => {
-                field_data[
+              section.config_values[state.sections_config.find(config => config.name === 'id').id]
+              = section.local_entity_data[state.sections_config.find(config => config.name === 'id').id]
+              = section.local_entity_data["id"]
+              = section_id;
+              console.log("inserted section_id " + section_id);
+  
+              section.fields.forEach(field => {
+                field.local_entity_data[
+                  state.fields_config.find(config => config.name == 'Sección formulario').id
+                ] = field.config_values[
                   state.fields_config.find(config => config.name == 'Sección formulario').id
                 ] = section_id;
-                field_data[
 
+                field.local_entity_data[
+                  state.fields_config.find(config => config.name == 'Formulario').id
+                ] = field.config_values[
                   state.fields_config.find(config => config.name == 'Formulario').id
                 ] = form_id;
               });
               
-              let fields_post_requests = [];
-
-              for (let i_field = 0; i_field < all_fields_data[i_row][i_section].length; i_field++)
-              {
-                let field_data = all_fields_data[i_row][i_section][i_field];
-
+              let fields_requests = [];
+              section.fields.forEach(field => {
                 let content = {};
-                content[fields_config_id] = [field_data];
-                fields_post_requests.push(
-                  axios.post(state.base_url + 'entity', content)
+                content[fields_config_id] = [field.local_entity_data];
+
+                fields_requests.push(
+                  axios.post(state.base_url + (field.local_entity_data['id'] ? 'entity/update': 'entity'), content)
                   .then(response => {
                     let field_id = response.data.content.inserted_id;
+                    field.config_values[state.fields_config.find(config => config.name === 'id').id]
+                    = field.local_entity_data[state.fields_config.find(config => config.name === 'id').id]
+                    = field.local_entity_data["id"]
+                    = field_id;
                     console.log("inserted field_id " + field_id);
                   })
                 );
-              }
-              Promise.all(fields_post_requests)
-              .then(() => {state.status_msg = '';});
-            })
-          }
-        })
-      }
+              })
+              return Promise.all(fields_requests);
+            }));
+          })
+          return Promise.all(section_requests);
+        }));
+      })
+      return Promise.all(row_requests);
     })
     .then(response => {
       console.log(response);
+      console.log("Finished");
+      state.status_msg = '';
     })
     .catch(e => console.log(e));
 
@@ -420,6 +346,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions
 };

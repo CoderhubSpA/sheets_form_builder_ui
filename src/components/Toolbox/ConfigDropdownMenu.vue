@@ -7,7 +7,7 @@
       <div v-if="currentForm">
         <h5>Formulario:</h5>
         <h6>"{{currentFormName}}"</h6>
-        <div v-for="element in $store.state.api.config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
+        <div v-for="element in $store.state.api.form_config.filter(element => element.show_in_create_form==2)" :key="element.name" style="padding: 0.5em">
           <label :for="'menu-'+menu_id+'-element-'+element.name">
             <div v-if="element.required_in_create_form === 1">
               {{ element.name }} <span class="text-danger">*</span>
@@ -33,7 +33,7 @@
           <div v-else-if="element.name=='Tipo de Entidad'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
             v-model="$store.state.form.form.config_values[element.id]" @change="showFields($store.state.form.form.config_values[element.id].id)">
-              <option v-for="option in $store.state.api.config_select[element.id].options" 
+              <option v-for="option in $store.state.api.form_config_select[element.id].options" 
               :value="option"
               :key="option.id"
             >{{element.col_name_fk ? option[element.col_name_fk] : option.name}}</option>
@@ -43,7 +43,7 @@
           <div v-else-if="element.format=='SELECTOR'">
             <select class="form-select" :id="'menu-'+menu_id+'-element-'+element.name"
             v-model="$store.state.form.form.config_values[element.id]">
-              <option v-for="option in $store.state.api.config_select[element.id].options" 
+              <option v-for="option in $store.state.api.form_config_select[element.id].options" 
               :value="option"
               :key="option.id"
             >{{
@@ -54,12 +54,12 @@
           <div v-else-if="element.format=='SELECTOR[MULTIPLE]'">
             <multiselect
               :type="element.format"
-              v-model="$store.state.api.actions" 
-              :options="$store.state.api.config_select[element.id].options" 
+              v-model="$store.state.form.form.config_values[element.id]" 
+              :options="$store.state.api.form_config_select[element.id].options" 
               :multiple="true" :close-on-select="false" 
               :clear-on-select="false" 
               :preserve-search="true" 
-              placeholder="Seleccione acciones" 
+              :placeholder="'Elige '+element.name" 
               label="name" 
               track-by="id"
               :select-label="''"
@@ -411,7 +411,7 @@ export default {
     },
     currentFormName() {
       return this.currentForm.config_values[
-        this.$store.state.api.config.find(config => config.name === 'Nombre').id
+        this.$store.state.api.form_config.find(config => config.name === 'Nombre').id
       ]
     }
   },
@@ -424,7 +424,7 @@ export default {
       obj.image_url = window.URL.createObjectURL(obj.image)
     },
     showFields(entity_id){
-      this.$store.dispatch('api/get_fields', entity_id);
+      this.$store.dispatch('api/fetchFields', entity_id);
     },
     updateFormId(entity){
       this.$store.state.form.form.rows[this.currentRow.index].form_id = entity
