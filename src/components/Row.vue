@@ -15,7 +15,7 @@
                       <!-- <div class="h3 d-inline-block">{{row.name}}</div> -->
                       <!-- <input type="text" class="form-control" placeholder="Nombre Fila"> -->
                       <b-input v-model="row.name" type="text" class="form-control" placeholder="Nombre Fila"/>
-                      <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" > 
+                      <button type="button" class="btn btn-danger btn-sm delete"  v-b-modal="`modal-borrar-fila-${index}`" @click="openRowConfig(row)"> 
                         <v-icon class="custom-icon" name="trash"></v-icon>
                       </button>
                       <b-modal :id="`modal-borrar-fila-${index}`" centered hide-header @ok="deleteRow(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
@@ -84,9 +84,9 @@ export default {
 
     methods: {
       addRow () {
-        this.rows.push(
-           this.newRow()
-        )
+        let row = this.newRow()
+        this.rows.push(row)
+        this.openRowConfig(row)
       },
       newRow(){
         let config_values = {};
@@ -103,6 +103,10 @@ export default {
         }
       },
       deleteRow (idx) {
+
+        if (this.$store.state.form.current_row_config === this.rows[idx]) {
+          this.$store.state.form.current_row_config = null;
+        }
         this.updateFields(idx)
         this.rows.splice(idx,1)
       },
@@ -118,6 +122,7 @@ export default {
         this.$store.state.form.current_row_config = row
         this.$store.state.form.current_field_config = null
         this.$store.state.form.current_section_config = null
+        this.$store.commit('tools/setActivatedTab', 'config')
       }
   }
 };

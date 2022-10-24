@@ -32,6 +32,9 @@ const mutations = {
     },
     change_hover(state, activated){
         state.hover_fields = activated
+    },
+    setActivatedTab(state, tab){
+        state.actual_tab = tab
     }
  }
 

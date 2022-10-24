@@ -27,7 +27,7 @@
                         <!-- <div class="h4 d-inline-block">{{section.name}}</div> -->
                         <!-- <input type="text" class="form-control" placeholder="Nombre Sección"> -->
                         <b-input v-model="section.name" type="text" class="form-control" placeholder="Nombre Sección"/>
-                        <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`">×</button>
+                        <button type="button" class="close" aria-label="Close" v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`" @click="openSectionConfig(section)">×</button>
                         <b-modal :id="`modal-borrar-seccion-${idxRow}-${index}`" centered hide-header @ok="deleteSection(index)"  ok-variant="danger" ok-title="Sí, estoy seguro" cancel-title="Cancelar">
                           <template #default="{ close }">
                             <div class="container row justify-content-end">
@@ -151,7 +151,7 @@ export default {
         }
       },
       deleteSection (idx) {
-        if (this.$store.state.form.current_section_config?.index == this.sections[idx].index) {
+        if (this.$store.state.form.current_section_config === this.sections[idx]) {
           this.$store.state.form.current_section_config = null;
         }
         this.updateFields(idx);
@@ -180,6 +180,7 @@ export default {
         this.$store.state.form.current_row_config = null
         this.$store.state.form.current_field_config = null
         this.$store.state.form.current_section_config = section
+        this.$store.commit('tools/setActivatedTab', 'config')
       },
       setForm(section,id){
         section.form_id = id

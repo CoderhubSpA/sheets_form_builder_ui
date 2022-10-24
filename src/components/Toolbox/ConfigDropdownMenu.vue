@@ -3,7 +3,7 @@
 
       <b-collapse visible :id="menu_id">
   <div>
-    <b-list-group style="padding: 1em">
+    <b-list-group style="padding: 1em;overflow-x:hidden;">
       <div v-if="currentForm">
         <h5>Formulario:</h5>
         <h6>"{{form.name}}"</h6>
@@ -456,3 +456,4 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css">
 </style>
+
