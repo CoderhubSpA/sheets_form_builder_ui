@@ -1,56 +1,63 @@
 <template>
-<div class="flex-shrink-0 p-3 bg-light" id="tool-box" >
-  <b-nav card-header tabs style="padding-bottom: 10px;">
-    <b-nav-item class="col-6 center" @click="tabFields" :active = "tab =='fields'">
-      <h5><v-icon dense name="list"></v-icon> Campos</h5>
-    </b-nav-item>
-    <b-nav-item class="col-6 center" @click="tabConfig" :active = "tab =='config'">
-      <h5><v-icon dense name="cog"></v-icon> Configuración</h5>
-    </b-nav-item>
-  </b-nav>
-  <div class="ps-0" id="tab">
-    <div v-if="tab == 'fields'">
+  <div class="flex-shrink-0 p-3 bg-light" id="tool-box">
+    <b-nav card-header tabs style="padding-bottom: 10px">
+      <b-nav-item
+        class="col-6 center"
+        @click="tabFields"
+        :active="tab == 'fields'"
+      >
+        <h5><v-icon dense name="list"></v-icon> Campos</h5>
+      </b-nav-item>
+      <b-nav-item
+        class="col-6 center"
+        @click="tabConfig"
+        :active="tab == 'config'"
+      >
+        <h5><v-icon dense name="cog"></v-icon> Configuración</h5>
+      </b-nav-item>
+    </b-nav>
+    <div class="ps-0" id="tab">
       <fields
-      :menu_name="'Fields'"
-      :menu_id="'Fields_Menu'"/>
-    </div>
-    <div v-else-if="tab == 'config'">
+        v-if="tab == 'fields'"
+        :menu_name="'Fields'"
+        :menu_id="'Fields_Menu'"
+      />
       <config
-      :menu_name="'Configuración'"
-      :menu_id="'Config_Menu'"/>
+        v-else-if="tab == 'config'"
+        :menu_name="'Configuración'"
+        :menu_id="'Config_Menu'"
+      />
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-import fields from './FieldsMenu/FieldsMenu.vue';
-import config from './ConfigMenu/ConfigMenu.vue';
+import fields from "./FieldsMenu/FieldsMenu.vue";
+import config from "./ConfigMenu/ConfigMenu.vue";
 
 export default {
-  name: 'ToolboxComponent',
+  name: "ToolboxComponent",
   components: {
     fields,
     config,
-  }, 
-  computed:{
-      tab(){
-          return this.$store.state.tools.actual_tab
-      }
+  },
+  computed: {
+    tab() {
+      return this.$store.state.tools.actual_tab;
+    },
   },
   methods: {
-    tabFields(){
+    tabFields() {
       this.$store.state.tools.actual_tab = "fields";
     },
-    tabConfig(){
+    tabConfig() {
       this.$store.state.tools.actual_tab = "config";
     },
-  }
-}
-
+  },
+};
 </script>
 
 <style>
@@ -59,7 +66,6 @@ export default {
   max-width: 25%;
   flex-wrap: wrap;
 }
-
 
 #tab {
   max-height: 90%;
@@ -71,12 +77,10 @@ export default {
 }
 
 .nav-tabs .nav-item .nav-link.active {
-    color:#4b85bf !important
+  color: #4b85bf !important;
 }
 
 ul {
   width: 100%;
 }
-
-
 </style>
