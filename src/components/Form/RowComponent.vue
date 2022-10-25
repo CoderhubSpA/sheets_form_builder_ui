@@ -71,6 +71,7 @@ export default {
       this.$store.state.form.current_row_config = row;
       this.$store.state.form.current_field_config = null;
       this.$store.state.form.current_section_config = null;
+      this.$store.commit('tools/setActivatedTab', 'config');
     },
   },
 };
