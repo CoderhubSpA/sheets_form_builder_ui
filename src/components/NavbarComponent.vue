@@ -28,7 +28,7 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default {
-    name: "Navbar",
+    name: "NavbarComponent",
     computed:{
       view(){
           return this.$store.state.form.current_view
