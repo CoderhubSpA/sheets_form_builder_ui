@@ -210,6 +210,7 @@ export default {
       this.$store.state.form.current_row_config = null;
       this.$store.state.form.current_field_config = null;
       this.$store.state.form.current_section_config = section;
+      this.$store.commit('tools/setActivatedTab', 'config');
     },
     setForm(section, id) {
       section.form_id = id;
