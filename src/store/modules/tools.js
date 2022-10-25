@@ -12,15 +12,13 @@ const state = {
   actual_tab: "config",
 };
 const mutations = {
-    change_hover(state, activated){
-        state.hover_fields = activated
-    },
-    setActivatedTab(state, tab){
-        state.actual_tab = tab
-    }
+  change_hover(state, activated) {
+    state.hover_fields = activated;
+  },
+  setActivatedTab(state, tab) {
+    state.actual_tab = tab;
+  },
 };
-
-
 
 const actions = {};
 
