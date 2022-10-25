@@ -56,6 +56,9 @@ export default {
         ).id
       ];
     },
+    isLoaded() {
+      return this.$store.state.form.form.is_loaded;
+    },
   },
   data() {
     return {
@@ -69,7 +72,12 @@ export default {
       this.$store.state.form.current_row_config = null;
       this.$store.state.form.current_field_config = null;
       this.$store.state.form.current_section_config = null;
-      this.$store.commit('tools/setActivatedTab', 'config');
+      this.$store.commit("tools/setActivatedTab", "config");
+    },
+  },
+  watch: {
+    isLoaded() {
+      this.openFormConfig(this.form);
     },
   },
 };
