@@ -27,7 +27,7 @@
               : 12
           "
           v-for="(field, index) in sections[idxSection].fields"
-          :key="field.index"
+          :key="index"
           :id="`section-${idxSection}-field-${index}`"
           class="field-item"
         >
@@ -139,10 +139,10 @@ export default {
     },
     deleteField(index) {
       if (
-        this.$store.state.form.current_field_config?.index ==
+        this.$store.state.form.current_config.obj?.index ==
         this.fields[index].index
       ) {
-        this.$store.state.form.current_field_config = null;
+        this.$store.state.form.current_config = {};
       }
       this.updateFields(index);
       this.fields.splice(index, 1);
@@ -157,6 +157,12 @@ export default {
         event.added.element.idxRow = this.idxRow;
         event.added.element.idxSection = this.idxSection;
         this.openFieldConfig(event.added.element);
+        for (var i = 0; i < this.$store.state.api.fields.length; i++) {
+          if (this.$store.state.api.fields[i] === event.added.element) {
+            this.$store.state.api.fields.splice(i, 1);
+            break;
+          }
+        }
       }
     },
     openFieldConfig(newField) {
