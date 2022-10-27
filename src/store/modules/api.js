@@ -54,6 +54,9 @@ const state = {
   fields: [
     // {"id":"id-field1", ...}, {"id": "id-field2", ...}
   ],
+  api_fields: [
+    // {"id":"id-field1", ...}, {"id": "id-field2", ...}
+  ],
   fields_config: [
     // each field will have it's own independent config values
     // but they share the configuration columns, so all of them are stored here like shared config
@@ -108,6 +111,10 @@ const mutations = {
     state.fields_config_select = config_select_options;
   },
   SET_FIELDS(state, fields) {
+    state.fields = fields.filter(
+      (field) => field.show_in_create_form == 2
+    );
+    state.api_fields = fields;
     state.fields = fields;
   },
 };
@@ -158,11 +165,46 @@ const actions = {
     });
   },
   fetchFields(context, entity_id) {
+    let selectFormat = (format, name) => {
+      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
+        return "12";
+      }
+      let type = context.rootState.tools.format_types.find(
+        (element) => element.name === format
+      );
+      if (type) return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    };
+
     return axios
       .get(state.base_url + state.info_url + entity_id)
-      .then((response) =>
-        context.commit("SET_FIELDS", response.data.content.columns)
-      );
+      .then((response) => {
+        let fields = [];
+        response.data.content.columns.forEach((column) => {
+          let config_values = {};
+          context.state.fields_config.forEach((config) => {
+            config_values[config.id] =
+              config.name === "Columna"
+                ? column
+                : selectFormat(config.format, config.name);
+          });
+
+          fields.push({
+            index: fields.length,
+            idxRow: -1,
+            idxSection: -1,
+            show: false,
+            local_entity_data: {},
+            unfilled_required_values: 0,
+            config_values: config_values,
+            show_in_create_form: column.show_in_create_form,
+            name: column.name,
+            format: column.format,
+          });
+        });
+        context.commit("SET_FIELDS", fields); // response.data.content.columns)
+      });
   },
   postForm(context) {
     /**

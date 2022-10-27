@@ -14,15 +14,13 @@
         style="display: flex; margin: 5px 0 5px 0"
         :group="{ name: 'Fields', pull: true, put: true }"
         :list="fields"
-        :clone="cloneAction"
       >
         <FieldMenuComponent
-          v-for="element in fields.filter(element => element.show_in_create_form == 2 && checkName(element.name))"
+          v-for="element in fields"
           :key="element.name"
           :text="element.name"
           :format="element.format"
-        >
-        </FieldMenuComponent>
+        />
       </draggable>
     </div>
   </div>
@@ -35,7 +33,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default {
-  name: "FieldsDropdownMenu",
+  name: "FieldsMenu",
   components: {
     FieldMenuComponent,
     draggable,
@@ -65,7 +63,9 @@ export default {
       },
     },
     fields() {
-      return this.$store.state.api.fields;
+      return this.$store.state.api.fields.filter(
+        (field) => field.show_in_create_form == 2 && this.checkName(field.name)
+      );
     },
     formatTypes() {
       return this.$store.state.tools.format_types;
@@ -78,31 +78,6 @@ export default {
     };
   },
   methods: {
-    cloneAction(item) {
-      let element = {
-        index: this.field_n,
-        idxRow: -1,
-        idxSection: -1,
-        show: false,
-        local_entity_data: {},
-        unfilled_required_values: 0,
-      };
-
-      if (!item.config_values) {
-        // Add the json to store the configuration values of this item
-        let config_values = {};
-        this.$store.state.api.fields_config.forEach((config) => {
-          config_values[config.id] =
-            config.name === "Columna"
-              ? item
-              : this.selectFormat(config.format, config.name);
-        });
-        element["config_values"] = config_values;
-      }
-
-      this.field_n += 1;
-      return { ...element, ...item };
-    },
     hoverCallback() {
       this.hover_fields = !this.hover_fields;
     },

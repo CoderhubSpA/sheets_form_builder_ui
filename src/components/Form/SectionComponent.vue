@@ -2,7 +2,7 @@
   <div
     class="p-3 rounded panel-resizable"
     :style="
-      $store.state.form.current_section_config === section
+      $store.state.form.current_config.obj === section
         ? 'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;'
         : 'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'
     "

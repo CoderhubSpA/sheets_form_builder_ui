@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h5>{{ title }}:</h5>
+    <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api.form_config.filter(
+      v-for="element in $store.state.api[this.currentConfig.config_type].filter(
         (element) =>
           element.show_in_create_form == 2 &&
           !hidden_config.includes(element.name)
@@ -115,21 +115,9 @@ export default {
     multiselect,
   },
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: false,
-    },
     menu_id: {
       type: String,
       required: false,
-    },
-    current_obj: {
-      type: Object,
-      required: true,
     },
     hidden_config: {
       type: Array,
@@ -142,6 +130,21 @@ export default {
   methods: {
     showFields(entity_id) {
       this.$store.dispatch("api/fetchFields", entity_id);
+    },
+  },
+  computed: {
+    currentConfig() {
+      return this.$store.state.form.current_config;
+    },
+    configValues() {
+      return this.currentConfig.obj.config_values;
+    },
+    name() {
+      return this.configValues[
+        this.$store.state.api[this.currentConfig.config_type].find(
+          (config) => config.name === "Nombre"
+        ).id
+      ];
     },
   },
 };

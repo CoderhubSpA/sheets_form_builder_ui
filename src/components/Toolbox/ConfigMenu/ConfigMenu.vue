@@ -1,36 +1,24 @@
 <template>
   <div visible :id="menu_id" style="padding: 1em">
     <FormConfigMenu
-      v-if="currentForm"
-      :name="currentFormName"
+      v-if="currentConfigType === 'form_config'"
       :menu_id="menu_id"
-      :current_obj="currentForm"
       :hidden_config="columns_hidden"
-      :title="'Formulario'"
     />
     <RowConfigMenu
-      v-else-if="currentRow"
-      :name="currentRowName"
+      v-else-if="currentConfigType === 'rows_config'"
       :menu_id="menu_id"
-      :current_obj="currentRow"
       :hidden_config="columns_hidden"
-      :title="'Fila'"
     />
     <SectionConfigMenu
-      v-else-if="currentSection"
-      :name="currentSectionName"
+      v-else-if="currentConfigType === 'sections_config'"
       :menu_id="menu_id"
-      :current_obj="currentSection"
       :hidden_config="columns_hidden"
-      :title="'Sección'"
     />
     <FieldConfigMenu
-      v-else-if="currentField"
-      :name="currentFieldName"
+      v-else-if="currentConfigType === 'fields_config'"
       :menu_id="menu_id"
-      :current_obj="currentField"
       :hidden_config="columns_hidden"
-      :title="'Campo'"
     />
   </div>
 </template>
@@ -67,17 +55,8 @@ export default {
     form() {
       return this.$store.state.form.form;
     },
-    currentForm() {
-      return this.$store.state.form.current_form_config;
-    },
-    currentRow() {
-      return this.$store.state.form.current_row_config;
-    },
-    currentField() {
-      return this.$store.state.form.current_field_config;
-    },
-    currentSection() {
-      return this.$store.state.form.current_section_config;
+    currentConfigType() {
+      return this.$store.state.form.current_config.config_type;
     },
     currentConfig() {
       return this.$store.state.form.current_config;
@@ -98,15 +77,8 @@ export default {
       ];
     },
     currentRowName() {
-      return this.currentRow.config_values[
+      return this.currentRow.obj.config_values[
         this.$store.state.api.rows_config.find(
-          (config) => config.name === "Nombre"
-        ).id
-      ];
-    },
-    currentFormName() {
-      return this.currentForm.config_values[
-        this.$store.state.api.form_config.find(
           (config) => config.name === "Nombre"
         ).id
       ];
@@ -124,6 +96,7 @@ export default {
         "Mostrar solo por el campo",
         "Mostrar solo si el campo posee valor",
         "Columna",
+        "Id",
       ],
     };
   },
@@ -137,11 +110,6 @@ export default {
         (section) => {
           section.form_id = entity;
         }
-      );
-    },
-    updateRowName(element) {
-      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(
-        (section) => (section.form_row_id = element)
       );
     },
   },
