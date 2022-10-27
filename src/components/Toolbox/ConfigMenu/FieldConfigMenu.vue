@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5>{{ title }}:</h5>
+    <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
       v-for="element in $store.state.api.fields_config.filter(
@@ -16,7 +16,7 @@
           'menu-' +
           menu_id +
           '-field-' +
-          current_obj.id +
+          configValues.id +
           '-element-' +
           element.id
         "
@@ -32,7 +32,7 @@
       <b-form-checkbox
         v-if="element.format == 'SiNo'"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
       </b-form-checkbox>
 
@@ -40,7 +40,7 @@
         v-else-if="element.col_name == 'form_id'"
         class="form-select"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
         <option
           v-for="option in $store.state.api.fields_config_select[element.id]
@@ -58,7 +58,7 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
       <custom-slider
         v-else-if="element.col_name == 'col_md'"
@@ -66,7 +66,7 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
 
       <custom-slider
@@ -75,7 +75,7 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
 
       <textarea
@@ -83,13 +83,13 @@
         :id="'menu-' + menu_id + '-element-' + element.id"
         class="col-12"
         placeholder="Ingrese descripción del campo"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></textarea>
 
       <b-form-input
         v-else-if="element.format == 'TEXT'"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
         :placeholder="'Ingresa ' + element.name"
       >
       </b-form-input>
@@ -99,28 +99,28 @@
         type="number"
         min="0"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></b-form-input>
 
       <b-form-input
         v-else-if="element.format == 'URL'"
         type="url"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></b-form-input>
 
       <div
         v-else-if="element.name == 'Columna'"
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
-        {{ current_obj.config_values[element.id].name }}
+        {{ configValues[element.id].name }}
       </div>
 
       <select
         v-else-if="element.format == 'SELECTOR'"
         class="form-select"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
         <option
           v-for="option in $store.state.api.fields_config_select[element.id]
@@ -143,21 +143,9 @@
 export default {
   name: "FieldConfigMenu",
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: false,
-    },
     menu_id: {
       type: String,
       required: false,
-    },
-    current_obj: {
-      type: Object,
-      required: true,
     },
     hidden_config: {
       type: Array,
@@ -165,6 +153,24 @@ export default {
       default() {
         return [];
       },
+    },
+  },
+  computed: {
+    currentConfig() {
+      return this.$store.state.form.current_config;
+    },
+    configObject() {
+      return this.currentConfig.obj;
+    },
+    configValues() {
+      return this.configObject.config_values;
+    },
+    name() {
+      return this.configValues[
+        this.$store.state.api[this.currentConfig.config_type].find(
+          (config) => config.name === "Columna"
+        ).id
+      ].name;
     },
   },
 };

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h5>{{ title }}:</h5>
+    <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api.sections_config.filter(
+      v-for="element in $store.state.api[this.currentConfig.config_type].filter(
         (element) =>
           element.show_in_create_form == 2 &&
           !hidden_config.includes(element.name)
@@ -23,13 +23,13 @@
       <b-form-checkbox
         v-if="element.format == 'SiNo'"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></b-form-checkbox>
 
       <b-input
         v-else-if="element.col_name == 'name'"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
         type="text"
         placeholder="Nombre Sección"
       />
@@ -37,7 +37,7 @@
       <b-form-textarea
         v-else-if="element.col_name == 'description'"
         size="lg"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
         :id="'menu-' + menu_id + '-element-' + element.id"
       />
 
@@ -47,7 +47,7 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
 
       <custom-slider
@@ -56,7 +56,7 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
 
       <custom-slider
@@ -65,13 +65,13 @@
         max="12"
         step="1"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       />
 
       <b-form-input
         v-else-if="element.format == 'TEXT'"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></b-form-input>
 
       <b-form-input
@@ -79,14 +79,14 @@
         type="number"
         min="0"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       ></b-form-input>
 
       <select
         v-else-if="element.format == 'SELECTOR'"
         class="form-select"
         :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="current_obj.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
         <option
           v-for="option in $store.state.api.sections_config_select[
@@ -105,9 +105,9 @@
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
         <b-form-file
-          v-model="current_obj.image"
+          v-model="configObject.image"
           :id="'section-config-image' + element.id"
-          @input="handleImage(current_obj)"
+          @input="handleImage(configObject)"
           accept="image/jpeg, image/png, image/gif"
           plain
         ></b-form-file>
@@ -121,7 +121,7 @@
           centered
         >
           <b-img
-            :src="current_obj.image_url"
+            :src="configObject.image_url"
             alt="image-section"
             width="320px"
           />
@@ -139,21 +139,9 @@
 export default {
   name: "SectionConfigMenu",
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: false,
-    },
     menu_id: {
       type: String,
       required: false,
-    },
-    current_obj: {
-      type: Object,
-      required: true,
     },
     hidden_config: {
       type: Array,
@@ -161,6 +149,24 @@ export default {
       default() {
         return [];
       },
+    },
+  },
+  computed: {
+    currentConfig() {
+      return this.$store.state.form.current_config;
+    },
+    configObject() {
+      return this.currentConfig.obj;
+    },
+    configValues() {
+      return this.configObject.config_values;
+    },
+    name() {
+      return this.configValues[
+        this.$store.state.api[this.currentConfig.config_type].find(
+          (config) => config.name === "Título de la sección"
+        ).id
+      ];
     },
   },
 };

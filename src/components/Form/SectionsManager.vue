@@ -206,11 +206,12 @@ export default {
       }
     },
     openSectionConfig(section) {
-      this.$store.state.form.current_form_config = null;
-      this.$store.state.form.current_row_config = null;
-      this.$store.state.form.current_field_config = null;
-      this.$store.state.form.current_section_config = section;
-      this.$store.commit('tools/setActivatedTab', 'config');
+      this.$store.state.form.current_config = {
+        obj: section,
+        title: "Configuración de la sección",
+        config_type: "sections_config",
+      };
+      this.$store.commit("tools/setActivatedTab", "config");
     },
     setForm(section, id) {
       section.form_id = id;

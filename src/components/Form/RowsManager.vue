@@ -11,7 +11,7 @@
                 :id="`row-${index}`"
                 class="cursor-move"
                 :style="
-                  $store.state.form.current_row_config === row
+                  $store.state.form.current_config.obj === row
                     ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
                     : ''
                 "
@@ -161,10 +161,11 @@ export default {
       });
     },
     openRowConfig(row) {
-      this.$store.state.form.current_form_config = null;
-      this.$store.state.form.current_row_config = row;
-      this.$store.state.form.current_field_config = null;
-      this.$store.state.form.current_section_config = null;
+      this.$store.state.form.current_config = {
+        obj: row,
+        title: "Fila",
+        config_type: "rows_config",
+      };
     },
   },
 };

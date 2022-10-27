@@ -59,10 +59,7 @@ const state = {
     local_entity_data: {},
     unfilled_required_values: 0,
   },
-  current_form_config: null,
-  current_row_config: null,
-  current_section_config: null,
-  current_field_config: null,
+  current_config: {},
   current_view: "xl",
 };
 const mutations = {

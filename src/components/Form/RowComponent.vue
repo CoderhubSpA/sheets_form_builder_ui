@@ -67,11 +67,12 @@ export default {
   },
   methods: {
     openRowConfig(row) {
-      this.$store.state.form.current_form_config = null;
-      this.$store.state.form.current_row_config = row;
-      this.$store.state.form.current_field_config = null;
-      this.$store.state.form.current_section_config = null;
-      this.$store.commit('tools/setActivatedTab', 'config');
+      this.$store.state.form.current_config = {
+        obj: row,
+        title: "Fila",
+        config_type: "rows_config",
+      };
+      this.$store.commit("tools/setActivatedTab", "config");
     },
   },
 };
