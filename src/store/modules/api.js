@@ -204,7 +204,6 @@ const actions = {
           });
         });
         context.commit("SET_FIELDS", fields); // response.data.content.columns)
-        console.log(fields);
       });
   },
   postForm(context) {
