@@ -54,9 +54,6 @@ const state = {
   fields: [
     // {"id":"id-field1", ...}, {"id": "id-field2", ...}
   ],
-  api_fields: [
-    // {"id":"id-field1", ...}, {"id": "id-field2", ...}
-  ],
   fields_config: [
     // each field will have it's own independent config values
     // but they share the configuration columns, so all of them are stored here like shared config
@@ -111,10 +108,6 @@ const mutations = {
     state.fields_config_select = config_select_options;
   },
   SET_FIELDS(state, fields) {
-    state.fields = fields.filter(
-      (field) => field.show_in_create_form == 2
-    );
-    state.api_fields = fields;
     state.fields = fields;
   },
 };
