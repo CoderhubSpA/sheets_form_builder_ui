@@ -18,11 +18,11 @@
                 @click.self="openRowConfig(row)"
               >
                 <RowComponent
-                  :row="row"
                   :view="view"
                   :name_config_id="rowNameConfigId"
                   :index="index"
                   @delete-row-event="deleteRow"
+                  @open-row-config-event="openRowConfig"
                 />
                 <br />
                 <div

@@ -29,7 +29,6 @@
               class="cursor-move my-1"
             >
               <SectionComponent
-                :section="section"
                 :view="view"
                 :name_config_id="sectionNameConfigId"
                 :index="index"
