@@ -21,6 +21,7 @@
           class="close"
           aria-label="Close"
           v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
+          @click="$emit('open-section-config-event', section)"
         >
           ×
         </button>

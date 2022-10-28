@@ -23,6 +23,7 @@
                   :name_config_id="rowNameConfigId"
                   :index="index"
                   @delete-row-event="deleteRow"
+                  @open-row-config-event="openRowConfig"
                 />
                 <br />
                 <div
@@ -120,7 +121,9 @@ export default {
 
   methods: {
     addRow() {
-      this.rows.push(this.newRow());
+      let newRow = this.newRow();
+      this.rows.push(newRow);
+      this.openRowConfig(newRow);
     },
     selectFormat(format, name) {
       if (name === "col_sm" || name === "col_md" || name === "col_xl") {
@@ -166,6 +169,7 @@ export default {
         title: "Fila",
         config_type: "rows_config",
       };
+      this.$store.commit("tools/setActivatedTab", "config");
     },
   },
 };

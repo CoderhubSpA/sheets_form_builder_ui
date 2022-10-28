@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="openRowConfig(row)">
+  <div @click.self="$emit('open-row-config-event', row)">
     <div
       :class="
         view == 'xl'
@@ -19,6 +19,7 @@
         type="button"
         class="btn btn-danger btn-sm delete"
         v-b-modal="`modal-borrar-fila-${index}`"
+        @click="$emit('open-row-config-event', row)"
       >
         <v-icon class="custom-icon" name="trash"></v-icon>
       </button>
@@ -65,15 +66,6 @@ export default {
       required: true,
     },
   },
-  methods: {
-    openRowConfig(row) {
-      this.$store.state.form.current_config = {
-        obj: row,
-        title: "Fila",
-        config_type: "rows_config",
-      };
-      this.$store.commit("tools/setActivatedTab", "config");
-    },
-  },
+  methods: {},
 };
 </script>
