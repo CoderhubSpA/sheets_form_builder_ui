@@ -209,6 +209,7 @@ export default {
         obj: section,
         title: "Configuración de la sección",
         config_type: "sections_config",
+        name_id: "Título de la sección",
       };
       this.$store.commit("tools/setActivatedTab", "config");
     },

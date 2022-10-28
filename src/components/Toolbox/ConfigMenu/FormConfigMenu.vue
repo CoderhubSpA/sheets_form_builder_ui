@@ -3,7 +3,7 @@
     <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api[this.currentConfig.config_type].filter(
+      v-for="element in $store.state.api[configType].filter(
         (element) =>
           element.show_in_create_form == 2 &&
           !hidden_config.includes(element.name)
@@ -19,11 +19,11 @@
           {{ element.name }}
         </div>
       </label>
-      <!-- v-if else depending on element.format -->
+
       <b-form-checkbox
         v-if="element.format == 'SiNo'"
         :id="'menu-' + menu_id + '-element-' + element.name"
-        v-model="$store.state.form.form.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
       </b-form-checkbox>
 
@@ -31,7 +31,7 @@
         v-else-if="element.format == 'TEXT'"
         :id="'menu-' + menu_id + '-element-' + element.name"
         :placeholder="'Ingresa ' + element.name"
-        v-model="$store.state.form.form.config_values[element.id]"
+        v-model="configValues[element.id]"
       >
       </b-form-input>
 
@@ -39,14 +39,13 @@
         <select
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
-          v-model="$store.state.form.form.config_values[element.id]"
-          @change="
-            showFields($store.state.form.form.config_values[element.id].id)
-          "
+          v-model="configValues[element.id]"
+          @change="showFields(configValues[element.id].id)"
         >
           <option
-            v-for="option in $store.state.api.form_config_select[element.id]
-              .options"
+            v-for="option in $store.state.api[configType + '_select'][
+              element.id
+            ].options"
             :value="option"
             :key="option.id"
           >
@@ -61,7 +60,7 @@
         <select
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
-          v-model="$store.state.form.form.config_values[element.id]"
+          v-model="configValues[element.id]"
         >
           <option
             v-for="option in $store.state.api.form_config_select[element.id]
@@ -78,7 +77,7 @@
       <div v-else-if="element.format == 'SELECTOR[MULTIPLE]'">
         <multiselect
           :type="element.format"
-          v-model="$store.state.form.form.config_values[element.id]"
+          v-model="configValues[element.id]"
           :options="$store.state.api.form_config_select[element.id].options"
           :multiple="true"
           :close-on-select="false"
@@ -136,12 +135,18 @@ export default {
     currentConfig() {
       return this.$store.state.form.current_config;
     },
+    configType() {
+      return this.currentConfig.config_type;
+    },
+    configObject() {
+      return this.currentConfig.obj;
+    },
     configValues() {
-      return this.currentConfig.obj.config_values;
+      return this.configObject.config_values;
     },
     name() {
       return this.configValues[
-        this.$store.state.api[this.currentConfig.config_type].find(
+        this.$store.state.api[this.configType].find(
           (config) => config.name === "Nombre"
         ).id
       ];

@@ -20,19 +20,40 @@
         </div>
       </label>
 
-      <b-form-checkbox
-        v-if="element.format == 'SiNo'"
-        :id="'menu-' + menu_id + '-element-' + element.id"
-        v-model="configValues[element.id]"
-      ></b-form-checkbox>
+      <!--Entity Type-->
+
+      <div v-if="element.name == 'Tipo de Entidad'">
+        <select
+          class="form-select"
+          :id="'menu-' + menu_id + '-element-' + element.name"
+          v-model="configValues[element.id]"
+          @change="showFields(configValues[element.id].id)"
+        >
+          <option
+            v-for="option in $store.state.api[configType + '_select'][
+              element.id
+            ].options"
+            :value="option"
+            :key="option.id"
+          >
+            {{
+              element.col_name_fk ? option[element.col_name_fk] : option.name
+            }}
+          </option>
+        </select>
+      </div>
+
+      <!--Name-->
 
       <b-input
         v-else-if="element.col_name == 'name'"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
         type="text"
-        placeholder="Nombre Sección"
+        placeholder="Ingrese el nombre"
       />
+
+      <!--Description-->
 
       <b-form-textarea
         v-else-if="element.col_name == 'description'"
@@ -40,6 +61,8 @@
         v-model="configValues[element.id]"
         :id="'menu-' + menu_id + '-element-' + element.id"
       />
+
+      <!--Customs Sliders-->
 
       <custom-slider
         v-else-if="element.col_name == 'col_sm'"
@@ -68,36 +91,76 @@
         v-model="configValues[element.id]"
       />
 
+      <!--Types from the api-->
+
+      <b-form-checkbox
+        v-else-if="element.format == 'SiNo'"
+        :id="'menu-' + menu_id + '-element-' + element.name"
+        v-model="configValues[element.id]"
+      >
+      </b-form-checkbox>
+
       <b-form-input
         v-else-if="element.format == 'TEXT'"
-        :id="'menu-' + menu_id + '-element-' + element.id"
+        :id="'menu-' + menu_id + '-element-' + element.name"
+        :placeholder="'Ingresa ' + element.name"
         v-model="configValues[element.id]"
-      ></b-form-input>
+      >
+      </b-form-input>
 
       <b-form-input
         v-else-if="element.format == 'NUMBER'"
-        type="number"
-        min="0"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
       ></b-form-input>
 
-      <select
-        v-else-if="element.format == 'SELECTOR'"
-        class="form-select"
+      <b-form-input
+        v-else-if="element.format == 'URL'"
+        type="url"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
-      >
-        <option
-          v-for="option in $store.state.api.sections_config_select[
-            element.id
-          ].options.filter((op) => op.show_in_create_form == 2)"
-          :value="option"
-          :key="option.id"
+      ></b-form-input>
+
+      <div v-else-if="element.format == 'SELECTOR'">
+        <select
+          class="form-select"
+          :id="'menu-' + menu_id + '-element-' + element.name"
+          v-model="configValues[element.id]"
         >
-          {{ element.col_name_fk ? option[element.col_name_fk] : option.name }}
-        </option>
-      </select>
+          <option
+            v-for="option in $store.state.api[configType + '_select'][
+              element.id
+            ].options"
+            :value="option"
+            :key="option.id"
+          >
+            {{
+              element.col_name_fk ? option[element.col_name_fk] : option.name
+            }}
+          </option>
+        </select>
+      </div>
+
+      <div v-else-if="element.format == 'SELECTOR[MULTIPLE]'">
+        <multiselect
+          :type="element.format"
+          v-model="configValues[element.id]"
+          :options="
+            $store.state.api[configType + '_select'][element.id].options
+          "
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          :placeholder="'Elige ' + element.name"
+          label="name"
+          track-by="id"
+          :select-label="''"
+          :selected-label="''"
+          :deselect-label="''"
+        >
+        </multiselect>
+      </div>
 
       <b-form-row
         class="py-1 w-100"
@@ -128,6 +191,7 @@
         </b-modal>
         <b-button v-b-modal.modal-1 variant="primary">Ver imagen</b-button>
       </b-form-row>
+
       <b-list-group-item v-else>
         {{ element }}
       </b-list-group-item>
@@ -136,19 +200,41 @@
 </template>
 
 <script>
+import multiselect from "vue-multiselect";
+
 export default {
-  name: "SectionConfigMenu",
+  name: "ConfigMenuCompoent",
+  components: {
+    multiselect,
+  },
+  data() {
+    return {
+      hidden_config: [
+        "Formulario",
+        "Fila del formulario",
+        "Sección formulario",
+        "Alternativas",
+        "Entidad del form",
+        "Sección siguiente default",
+        "Mostrar solo por el campo",
+        "Mostrar solo si el campo posee valor",
+        "Columna",
+        "Id",
+      ],
+    };
+  },
   props: {
     menu_id: {
       type: String,
       required: false,
     },
-    hidden_config: {
-      type: Array,
-      required: false,
-      default() {
-        return [];
-      },
+  },
+  methods: {
+    showFields(entity_id) {
+      this.$store.dispatch("api/fetchFields", entity_id);
+    },
+    handleImage(obj) {
+      obj.image_url = window.URL.createObjectURL(obj.image);
     },
   },
   computed: {
@@ -165,12 +251,23 @@ export default {
       return this.configObject.config_values;
     },
     name() {
-      return this.configValues[
-        this.$store.state.api[this.configType].find(
-          (config) => config.name === "Título de la sección"
-        ).id
-      ];
+      let name =
+        this.configValues[
+          this.$store.state.api[this.configType].find(
+            (config) => config.name === this.currentConfig.name_id
+          ).id
+        ];
+      return name.name ? name.name : name;
     },
   },
 };
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
+<style>
+.slider {
+  margin-top: 1em !important;
+  margin-bottom: 0 !important;
+}
+</style>

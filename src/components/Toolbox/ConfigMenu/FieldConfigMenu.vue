@@ -3,7 +3,7 @@
     <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api.fields_config.filter(
+      v-for="element in $store.state.api[configType].filter(
         (element) =>
           element.show_in_create_form == 2 &&
           !hidden_config.includes(element.name)
@@ -11,16 +11,7 @@
       :key="element.id"
       style="padding: 0.5em"
     >
-      <label
-        :for="
-          'menu-' +
-          menu_id +
-          '-field-' +
-          configValues.id +
-          '-element-' +
-          element.id
-        "
-      >
+      <label :for="'menu-' + menu_id + '-element-' + element.id">
         <div v-if="element.required_in_create_form === 1">
           {{ element.name }} <span class="text-danger">*</span>
         </div>
@@ -43,7 +34,7 @@
         v-model="configValues[element.id]"
       >
         <option
-          v-for="option in $store.state.api.fields_config_select[element.id]
+          v-for="option in $store.state.api[configType + '_select'][element.id]
             .options"
           :value="option"
           :key="option.id"
@@ -123,7 +114,7 @@
         v-model="configValues[element.id]"
       >
         <option
-          v-for="option in $store.state.api.fields_config_select[element.id]
+          v-for="option in $store.state.api[configType + '_select'][element.id]
             .options"
           :value="option"
           :key="'option-' + option.id"
@@ -159,6 +150,9 @@ export default {
     currentConfig() {
       return this.$store.state.form.current_config;
     },
+    configType() {
+      return this.currentConfig.config_type;
+    },
     configObject() {
       return this.currentConfig.obj;
     },
@@ -167,7 +161,7 @@ export default {
     },
     name() {
       return this.configValues[
-        this.$store.state.api[this.currentConfig.config_type].find(
+        this.$store.state.api[this.configType].find(
           (config) => config.name === "Columna"
         ).id
       ].name;

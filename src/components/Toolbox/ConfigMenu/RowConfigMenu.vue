@@ -3,7 +3,7 @@
     <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api.rows_config.filter(
+      v-for="element in $store.state.api[configType].filter(
         (element) =>
           element.show_in_create_form == 2 &&
           !hidden_config.includes(element.name)
@@ -90,12 +90,18 @@ export default {
     currentConfig() {
       return this.$store.state.form.current_config;
     },
+    configType() {
+      return this.currentConfig.config_type;
+    },
+    configObject() {
+      return this.currentConfig.obj;
+    },
     configValues() {
-      return this.currentConfig.obj.config_values;
+      return this.configObject.config_values;
     },
     name() {
       return this.configValues[
-        this.$store.state.api[this.currentConfig.config_type].find(
+        this.$store.state.api[this.configType].find(
           (config) => config.name === "Nombre"
         ).id
       ];
