@@ -125,6 +125,51 @@ const actions = {
       unfilled_required_values: 0,
     });
   },
+  loadForm(context, { form, rows, sections, fields }) {
+    let selectFormat = (format, name) => {
+      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
+        return "12";
+      }
+      let type = context.rootState.tools.format_types.find(
+        (element) => element.name === format
+      );
+      if (type) return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    };
+
+    let api_state = context.rootState.api;
+    console.log("Loading the following form");
+    console.log(form);
+    let form_config_values = {};
+    api_state.form_config.forEach((config) => {
+      form_config_values[config.id] = Array.isArray(form[config.id])
+        ? [...form[config.id]]
+        : form[config.id]
+        ? form[config.id]
+        : selectFormat(config.format, config.name);
+
+      if (Array.isArray(form_config_values[config.id])) {
+        form_config_values[config.id].forEach((id_val, index) => {
+          form_config_values[config.id][index] = api_state.form_config_select[
+            config.id
+          ].options.find((option) => option.id === id_val);
+        });
+      } else if (config.format === "SELECTOR") {
+        form_config_values[config.id] = api_state.form_config_select[
+          config.id
+        ].options.find((option) => option.id === form_config_values[config.id]);
+      }
+    });
+    console.log(form_config_values);
+
+    context.commit("SET_FORM", {
+      rows: [],
+      config_values: form_config_values,
+      local_entity_data: form,
+      unfilled_required_values: 0,
+    });
+  },
   fillLocalEntityData({ commit, state, rootState }) {
     let state_api = rootState.api;
     let form = state.form;

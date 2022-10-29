@@ -36,10 +36,21 @@ function retrieveConfigurationsOptions(configurations, entities_fk) {
   return config_select;
 }
 
+function parseJSONValues(json) {
+  for (let key in json) {
+    try {
+      json[key] = JSON.parse(json[key]);
+    } catch (e) {
+      continue;
+    }
+  }
+}
+
 const state = {
   status_msg: "",
   base_url: "http://127.0.0.1:8081/",
   info_url: "entity/info/",
+  data_url: "entity/data/",
   records_url: "sheets/getrecord/form/",
   form_entity_name: "form",
   row_entity_name: "form_row",
@@ -79,6 +90,18 @@ const getters = {
   },
   fieldsConfigURL(state) {
     return state.base_url + state.info_url + state.field_entity_name;
+  },
+  formDataURL(state) {
+    return state.base_url + state.data_url + state.form_entity_name;
+  },
+  rowsDataURL(state) {
+    return state.base_url + state.data_url + state.row_entity_name;
+  },
+  sectionsDataURL(state) {
+    return state.base_url + state.data_url + state.section_entity_name;
+  },
+  fieldsDataURL(state) {
+    return state.base_url + state.data_url + state.field_entity_name;
   },
 };
 
@@ -197,6 +220,65 @@ const actions = {
           });
         });
         context.commit("SET_FIELDS", fields); // response.data.content.columns)
+      });
+  },
+  fetchForm(context, form_id) {
+    let form, rows, sections, fields;
+    let requests = [
+      // Form
+      axios.get(context.getters.formDataURL).then((response) => {
+        form = response.data.content.data.find((form) => form.id === form_id);
+        parseJSONValues(form);
+      }),
+      // Rows
+      axios.get(context.getters.rowsDataURL).then((response) => {
+        let form_id_config = context.state.rows_config.find(
+          (config) => config.col_name === "form_id"
+        ).id;
+        rows = response.data.content.data.filter(
+          (row) => row[form_id_config] === form_id
+        );
+        parseJSONValues(rows);
+      }),
+      // Sections
+      axios.get(context.getters.sectionsDataURL).then((response) => {
+        let form_id_config = context.state.sections_config.find(
+          (config) => config.col_name === "form_id"
+        ).id;
+        sections = response.data.content.data.filter(
+          (section) => section[form_id_config] === form_id
+        );
+        parseJSONValues(sections);
+      }),
+      // Fields
+      axios.get(context.getters.fieldsDataURL).then((response) => {
+        let form_id_config = context.state.fields_config.find(
+          (config) => config.col_name === "form_id"
+        ).id;
+        fields = response.data.content.data.filter(
+          (field) => field[form_id_config] === form_id
+        );
+        parseJSONValues(fields);
+      }),
+    ];
+
+    return Promise.all(requests)
+      .then(() => {
+        context.dispatch(
+          "fetchFields",
+          form[
+            context.state.form_config.find(
+              (config) => config.name === "Tipo de Entidad"
+            ).id
+          ]
+        );
+      })
+      .then(() => {
+        context.dispatch(
+          "form/loadForm",
+          { form: form, rows: rows, sections: sections, fields: fields },
+          { root: true }
+        );
       });
   },
   postForm(context) {
