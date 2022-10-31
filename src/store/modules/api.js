@@ -133,6 +133,9 @@ const mutations = {
   SET_FIELDS(state, fields) {
     state.fields = fields;
   },
+  REMOVE_FIELD(state, field) {
+    state.fields = state.fields.filter((element) => element !== field);
+  },
 };
 
 const actions = {
@@ -263,7 +266,7 @@ const actions = {
     ];
 
     return Promise.all(requests)
-      .then(() => {
+      .then(() =>
         context.dispatch(
           "fetchFields",
           form[
@@ -271,15 +274,15 @@ const actions = {
               (config) => config.name === "Tipo de Entidad"
             ).id
           ]
-        );
-      })
-      .then(() => {
+        )
+      )
+      .then(() =>
         context.dispatch(
           "form/loadForm",
           { form: form, rows: rows, sections: sections, fields: fields },
           { root: true }
-        );
-      });
+        )
+      );
   },
   postForm(context) {
     /**

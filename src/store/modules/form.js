@@ -207,8 +207,60 @@ const actions = {
             section,
             selectFormat
           );
+          let section_fields = [];
+          let section_id_config = api_state.fields_config.find(
+            (config) => config.col_name === "form_section_id"
+          ).id;
+          fields
+            .filter((field) => field[section_id_config] === section.id)
+            .forEach((field) => {
+              let field_config_values = getValuesFromRemoteEntityData(
+                api_state.fields_config,
+                api_state.fields_config_select,
+                field,
+                selectFormat
+              );
+
+              let api_field = api_state.fields.find(
+                (api_field) =>
+                  api_field.name ===
+                  field_config_values[
+                    api_state.fields_config.find(
+                      (config) => config.name === "Columna"
+                    ).id
+                  ].name
+              );
+              if (!api_field) {
+                console.warn(
+                  "Possible duplicated field in the form. Column: " +
+                    field_config_values[
+                      api_state.fields_config.find(
+                        (config) => config.name === "Columna"
+                      ).id
+                    ].name
+                );
+                section_fields.push({
+                  index: -1,
+                  idxRow: -1,
+                  idxSection: -1,
+                  show: false,
+                  show_in_create_form: true,
+                  name: null,
+                  format: null,
+                  config_values: field_config_values,
+                  local_entity_data: field,
+                  unfilled_required_values: 0,
+                });
+                return;
+              }
+              context.commit("api/REMOVE_FIELD", api_field, { root: true });
+              api_field["config_values"] = field_config_values;
+              api_field["local_entity_data"] = field;
+              section_fields.push(api_field);
+            });
+
           row_sections.push({
-            fields: [],
+            fields: section_fields,
             index: -1,
             idxRow: -1,
             config_values: section_config_values,
@@ -243,10 +295,23 @@ const actions = {
           section1.config_values[order_conf_id] -
           section2.config_values[order_conf_id]
       );
-
       row.sections.forEach((section, idxSection) => {
         section.idxRow = idxRow;
         section.index = idxSection;
+
+        let order_conf_id = api_state.fields_config.find(
+          (config) => config.name === "Orden"
+        ).id;
+        section.fields.sort(
+          (field1, field2) =>
+            field1.config_values[order_conf_id] -
+            field2.config_values[order_conf_id]
+        );
+        section.fields.forEach((field, idxField) => {
+          field.idxRow = idxRow;
+          field.idxSection = idxSection;
+          field.index = idxField;
+        });
       });
     });
 
