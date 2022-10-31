@@ -55,6 +55,8 @@ function getValuesFromRemoteEntityData(
       config_values[config.id] = configurations_select[config.id].options.find(
         (option) => option.id === config_values[config.id]
       );
+    else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
+      config_values[config.id] = config_values[config.id].toString();
   });
 
   return config_values;
@@ -181,6 +183,9 @@ const actions = {
 
     console.log("Loading the following " + rows.length + " rows");
     console.log(rows);
+    console.log("and " + sections.length + " sections");
+    console.log(sections);
+
     let form_rows = [];
     rows.forEach((row) => {
       let row_config_values = getValuesFromRemoteEntityData(
@@ -189,8 +194,30 @@ const actions = {
         row,
         selectFormat
       );
+      let row_sections = [];
+      let row_id_config = api_state.sections_config.find(
+        (config) => config.col_name === "form_row_id"
+      ).id;
+      sections
+        .filter((section) => section[row_id_config] === row.id)
+        .forEach((section) => {
+          let section_config_values = getValuesFromRemoteEntityData(
+            api_state.sections_config,
+            api_state.sections_config_select,
+            section,
+            selectFormat
+          );
+          row_sections.push({
+            fields: [],
+            index: -1,
+            idxRow: -1,
+            config_values: section_config_values,
+            local_entity_data: section,
+            unfilled_required_values: 0,
+          });
+        });
       form_rows.push({
-        sections: [],
+        sections: row_sections,
         config_values: row_config_values,
         index: -1,
         local_entity_data: row,
@@ -205,7 +232,23 @@ const actions = {
       (row1, row2) =>
         row1.config_values[order_conf_id] - row2.config_values[order_conf_id]
     );
-    for (let i = 0; i < form_rows.length; i++) form_rows[i].index = i;
+    form_rows.forEach((row, idxRow) => {
+      row.index = idxRow;
+
+      let order_conf_id = api_state.sections_config.find(
+        (config) => config.name === "Orden"
+      ).id;
+      row.sections.sort(
+        (section1, section2) =>
+          section1.config_values[order_conf_id] -
+          section2.config_values[order_conf_id]
+      );
+
+      row.sections.forEach((section, idxSection) => {
+        section.idxRow = idxRow;
+        section.index = idxSection;
+      });
+    });
 
     context.commit("SET_FORM", {
       rows: form_rows,
@@ -213,9 +256,6 @@ const actions = {
       local_entity_data: form,
       unfilled_required_values: 0,
     });
-
-    console.log("Loading the following " + sections.length + " sections");
-    console.log(sections);
     console.log("Loading the following " + fields.length + " fields");
     console.log(fields);
   },
