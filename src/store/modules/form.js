@@ -163,12 +163,56 @@ const actions = {
     });
     console.log(form_config_values);
 
+    console.log("Loading the following " + rows.length + " rows");
+    console.log(rows);
+    let form_rows = [];
+    rows.forEach((row) => {
+      let row_config_values = {};
+      api_state.rows_config.forEach((config) => {
+        row_config_values[config.id] = Array.isArray(row[config.id])
+          ? [...row[config.id]]
+          : row[config.id]
+          ? row[config.id]
+          : selectFormat(config.format, config.name);
+        if (Array.isArray(row_config_values[config.id])) {
+          row_config_values[config.id].forEach((id_val, index) => {
+            row_config_values[config.id][index] = api_state.rows_config_select[
+              config.id
+            ].options.find((option) => option.id === id_val);
+          });
+        } else if (config.format === "SELECTOR") {
+          row_config_values[config.id] = api_state.rows_config_select[
+            config.id
+          ].options.find(
+            (option) => option.id === row_config_values[config.id]
+          );
+        }
+      });
+      form_rows.push({
+        sections: [],
+        config_values: row_config_values,
+        index: -1,
+        local_entity_data: row,
+        unfilled_required_values: 0,
+      });
+    });
+    // Order index
+    let order_conf_id = api_state.rows_config.find(
+      (config) => config.name === "Orden"
+    ).id;
+    form_rows.sort(
+      (row1, row2) =>
+        row1.config_values[order_conf_id] - row2.config_values[order_conf_id]
+    );
+    for (let i = 0; i < form_rows.length; i++) form_rows[i].index = i;
+
     context.commit("SET_FORM", {
-      rows: [],
+      rows: form_rows,
       config_values: form_config_values,
       local_entity_data: form,
       unfilled_required_values: 0,
     });
+
   },
   fillLocalEntityData({ commit, state, rootState }) {
     let state_api = rootState.api;
