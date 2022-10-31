@@ -31,6 +31,35 @@ function fillObjLocalEntityData(configurations, obj) {
   return data_values;
 }
 
+function getValuesFromRemoteEntityData(
+  configurations,
+  configurations_select,
+  entity_data,
+  selectFormat
+) {
+  let config_values = {};
+  configurations.forEach((config) => {
+    config_values[config.id] = Array.isArray(entity_data[config.id])
+      ? [...entity_data[config.id]]
+      : entity_data[config.id]
+      ? entity_data[config.id]
+      : selectFormat(config.format, config.name);
+
+    if (Array.isArray(config_values[config.id]))
+      config_values[config.id].forEach((id_val, index) => {
+        config_values[config.id][index] = configurations_select[
+          config.id
+        ].options.find((option) => option.id === id_val);
+      });
+    else if (config.format === "SELECTOR")
+      config_values[config.id] = configurations_select[config.id].options.find(
+        (option) => option.id === config_values[config.id]
+      );
+  });
+
+  return config_values;
+}
+
 function lookForUnfilledRequiredValues(
   configurations,
   obj,
@@ -141,53 +170,25 @@ const actions = {
     let api_state = context.rootState.api;
     console.log("Loading the following form");
     console.log(form);
-    let form_config_values = {};
-    api_state.form_config.forEach((config) => {
-      form_config_values[config.id] = Array.isArray(form[config.id])
-        ? [...form[config.id]]
-        : form[config.id]
-        ? form[config.id]
-        : selectFormat(config.format, config.name);
+    let form_config_values = getValuesFromRemoteEntityData(
+      api_state.form_config,
+      api_state.form_config_select,
+      form,
+      selectFormat
+    );
 
-      if (Array.isArray(form_config_values[config.id])) {
-        form_config_values[config.id].forEach((id_val, index) => {
-          form_config_values[config.id][index] = api_state.form_config_select[
-            config.id
-          ].options.find((option) => option.id === id_val);
-        });
-      } else if (config.format === "SELECTOR") {
-        form_config_values[config.id] = api_state.form_config_select[
-          config.id
-        ].options.find((option) => option.id === form_config_values[config.id]);
-      }
-    });
     console.log(form_config_values);
 
     console.log("Loading the following " + rows.length + " rows");
     console.log(rows);
     let form_rows = [];
     rows.forEach((row) => {
-      let row_config_values = {};
-      api_state.rows_config.forEach((config) => {
-        row_config_values[config.id] = Array.isArray(row[config.id])
-          ? [...row[config.id]]
-          : row[config.id]
-          ? row[config.id]
-          : selectFormat(config.format, config.name);
-        if (Array.isArray(row_config_values[config.id])) {
-          row_config_values[config.id].forEach((id_val, index) => {
-            row_config_values[config.id][index] = api_state.rows_config_select[
-              config.id
-            ].options.find((option) => option.id === id_val);
-          });
-        } else if (config.format === "SELECTOR") {
-          row_config_values[config.id] = api_state.rows_config_select[
-            config.id
-          ].options.find(
-            (option) => option.id === row_config_values[config.id]
-          );
-        }
-      });
+      let row_config_values = getValuesFromRemoteEntityData(
+        api_state.rows_config,
+        api_state.rows_config_select,
+        row,
+        selectFormat
+      );
       form_rows.push({
         sections: [],
         config_values: row_config_values,
@@ -213,6 +214,10 @@ const actions = {
       unfilled_required_values: 0,
     });
 
+    console.log("Loading the following " + sections.length + " sections");
+    console.log(sections);
+    console.log("Loading the following " + fields.length + " fields");
+    console.log(fields);
   },
   fillLocalEntityData({ commit, state, rootState }) {
     let state_api = rootState.api;
