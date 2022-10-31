@@ -170,21 +170,12 @@ const actions = {
     };
 
     let api_state = context.rootState.api;
-    console.log("Loading the following form");
-    console.log(form);
     let form_config_values = getValuesFromRemoteEntityData(
       api_state.form_config,
       api_state.form_config_select,
       form,
       selectFormat
     );
-
-    console.log(form_config_values);
-
-    console.log("Loading the following " + rows.length + " rows");
-    console.log(rows);
-    console.log("and " + sections.length + " sections");
-    console.log(sections);
 
     let form_rows = [];
     rows.forEach((row) => {
@@ -321,8 +312,6 @@ const actions = {
       local_entity_data: form,
       unfilled_required_values: 0,
     });
-    console.log("Loading the following " + fields.length + " fields");
-    console.log(fields);
   },
   fillLocalEntityData({ commit, state, rootState }) {
     let state_api = rootState.api;
