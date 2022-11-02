@@ -43,6 +43,25 @@
         </select>
       </div>
 
+      <!--Actions-->
+      <multiselect
+        v-else-if="element.name == 'Acciones'"
+        :type="element.format"
+        v-model="configActions"
+        :options="$store.state.api[configType + '_select'][element.id].options"
+        :multiple="true"
+        :close-on-select="false"
+        :clear-on-select="false"
+        :preserve-search="true"
+        :placeholder="'Elige ' + element.name"
+        label="name"
+        track-by="id"
+        :select-label="''"
+        :selected-label="''"
+        :deselect-label="''"
+      >
+      </multiselect>
+
       <!--Name-->
 
       <b-input
@@ -220,6 +239,7 @@ export default {
         "Mostrar solo si el campo posee valor",
         "Columna",
         "Id",
+        "Acción",
       ],
     };
   },
@@ -249,6 +269,23 @@ export default {
     },
     configValues() {
       return this.configObject.config_values;
+    },
+    configActions: {
+      get() {
+        return this.configObject.config_values[
+          this.$store.state.api.form_config.find(
+            (config) => config.name === "Acciones"
+          ).id
+        ];
+      },
+      set(val) {
+        this.configObject.config_values[
+          this.$store.state.api.form_config.find(
+            (config) => config.name === "Acciones"
+          ).id
+        ] = val;
+        this.$store.dispatch("form/updateActions");
+      },
     },
     name() {
       let name =

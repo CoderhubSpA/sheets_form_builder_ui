@@ -52,6 +52,7 @@ export default {
     this.$store.dispatch("api/fetchRowsConfig");
     this.$store.dispatch("api/fetchSectionConfig");
     this.$store.dispatch("api/fetchFieldsConfig");
+    this.$store.dispatch("api/fetchActionsConfig");
   },
   methods: {},
 };

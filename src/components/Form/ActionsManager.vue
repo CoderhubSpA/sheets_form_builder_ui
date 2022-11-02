@@ -2,8 +2,9 @@
   <div id="actions-buttons" class="row justify-content-md-center">
     <ActionComponent
       v-for="(button, index) in getAction"
-      :text="button.name"
+      :index="index"
       :key="index"
+      @open-action-config-event="openActionConfig"
     />
   </div>
 </template>
@@ -22,11 +23,17 @@ export default {
   },
   computed: {
     getAction() {
-      return this.$store.state.form.form.config_values[
-        this.$store.state.api.form_config.find(
-          (config) => config.name === "Acciones"
-        ).id
-      ];
+      return this.$store.state.form.form.actions;
+    },
+  },
+  methods: {
+    openActionConfig(action) {
+      this.$store.state.form.current_config = {
+        obj: action,
+        title: "Configuración de la acción",
+        config_type: "actions_config",
+        name_id: "Acción",
+      };
     },
   },
 };

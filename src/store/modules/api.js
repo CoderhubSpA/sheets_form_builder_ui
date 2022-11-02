@@ -42,11 +42,14 @@ const state = {
   info_url: "entity/info/",
   records_url: "sheets/getrecord/form/",
   form_entity_name: "form",
+  action_entity_name: "form_has_action",
   row_entity_name: "form_row",
   section_entity_name: "form_section",
   field_entity_name: "form_field",
   form_config: [],
   form_config_select: {},
+  actions_config: [],
+  actions_config_select: {},
   rows_config: [],
   rows_config_select: {},
   sections_config: [], // shared config, the values are stored in each section separated
@@ -71,6 +74,9 @@ const getters = {
   formConfigURL(state) {
     return state.base_url + state.info_url + state.form_entity_name;
   },
+  actionsConfigURL(state) {
+    return state.base_url + state.info_url + state.action_entity_name;
+  },
   rowsConfigURL(state) {
     return state.base_url + state.info_url + state.row_entity_name;
   },
@@ -88,6 +94,12 @@ const mutations = {
   },
   SET_FORM_CONFIG_SELECT_OPTIONS(state, config_select_options) {
     state.form_config_select = config_select_options;
+  },
+  SET_ACTIONS_CONFIG(state, config) {
+    state.actions_config = config;
+  },
+  SET_ACTIONS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.actions_config_select = config_select_options;
   },
   SET_ROWS_CONFIG(state, config) {
     state.rows_config = config;
@@ -122,6 +134,17 @@ const actions = {
         response.data.content.entities_fk
       );
       context.commit("SET_FORM_CONFIG_SELECT_OPTIONS", config_select);
+    });
+  },
+  fetchActionsConfig(context) {
+    return axios.get(context.getters.actionsConfigURL).then((response) => {
+      let config_columns = response.data.content.columns;
+      context.commit("SET_ACTIONS_CONFIG", config_columns);
+      let config_select = retrieveConfigurationsOptions(
+        config_columns,
+        response.data.content.entities_fk
+      );
+      context.commit("SET_ACTIONS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
   fetchRowsConfig(context) {
