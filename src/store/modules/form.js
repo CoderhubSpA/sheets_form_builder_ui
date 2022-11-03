@@ -55,6 +55,8 @@ const state = {
   form: {
     is_loaded: false,
     rows: [],
+    actions: [],
+    actions_unlisted: [], // The deselected actions, stored here to avoid losing their config_values
     config_values: {},
     local_entity_data: {},
     unfilled_required_values: 0,
@@ -65,6 +67,7 @@ const state = {
 const mutations = {
   LOAD_FORM(state, payload) {
     state.form.rows = payload.rows;
+    state.form.actions = payload.actions;
     state.form.config_values = payload.config_values;
     state.form.local_entity_data = payload.local_entity_data;
     state.form.unfilled_required_values = payload.unfilled_required_values;
@@ -72,6 +75,9 @@ const mutations = {
   },
   SET_FORM_LOCAL_ENTITY_DATA(state, payload) {
     state.form.local_entity_data = payload;
+  },
+  SET_ACTION_LOCAL_ENTITY_DATA(state, payload) {
+    state.form.actions[payload.actionIdx].local_entity_data = payload.data;
   },
   SET_ROW_LOCAL_ENTITY_DATA(state, payload) {
     state.form.rows[payload.rowIdx].local_entity_data = payload.data;
@@ -88,6 +94,10 @@ const mutations = {
   },
   SET_FORM_UNFILLED_REQUIRED_VALUES(state, payload) {
     state.form.unfilled_required_values = payload;
+  },
+  SET_ACTION_UNFILLED_REQUIRED_VALUES(state, payload) {
+    state.form.actions[payload.actionIdx].unfilled_required_values =
+      payload.data;
   },
   SET_ROW_UNFILLED_REQUIRED_VALUES(state, payload) {
     state.form.rows[payload.rowIdx].unfilled_required_values = payload.data;
@@ -120,9 +130,71 @@ const actions = {
 
     context.commit("LOAD_FORM", {
       rows: [],
+      actions: [],
       config_values: config_values,
       local_entity_data: {},
       unfilled_required_values: 0,
+    });
+  },
+  updateActions({ state, rootState }) {
+    /**
+     * Updates form.actions using the actions selected in form.config_values
+     */
+    let form_selected_actions =
+      state.form.config_values[
+        rootState.api.form_config.find((config) => config.name === "Acciones")
+          .id
+      ];
+    let action_id_config = rootState.api.actions_config.find(
+      (config) => config.col_name === "action_id"
+    ).id;
+
+    // Move all form.actions to form.unlisted_actions, then move back only the selected ones.
+    state.form.actions.forEach((action) =>
+      state.form.actions_unlisted.push(action)
+    );
+    state.form.actions = [];
+
+    form_selected_actions.forEach((selected_action, actionIdx) => {
+      let form_action = state.form.actions_unlisted.find(
+        (action) =>
+          action.config_values[action_id_config].id === selected_action.id
+      );
+      if (form_action) {
+        // This selected action was ever configured , so we move it back to form.actions
+        state.form.actions.push(form_action);
+        let to_remove_idx = state.form.actions_unlisted.indexOf(form_action);
+        state.form.actions_unlisted.splice(to_remove_idx, 1);
+        return;
+      }
+      // This selected action was never configured, so we have to create the form action
+      let config_values = {};
+      let selectFormat = (format, name) => {
+        if (name === "col_sm" || name === "col_md" || name === "col_xl") {
+          return "12";
+        }
+        let type = rootState.tools.format_types.find(
+          (element) => element.name === format
+        );
+        if (type) return type.value;
+        console.log("No se encontró el formato" + format);
+        return "";
+      };
+      rootState.api.actions_config.forEach((config) => {
+        config_values[config.id] =
+          config.id === action_id_config
+            ? selected_action // Associate the button to the action
+            : config.col_name === "name"
+            ? selected_action.name // Default button's name is the action name
+            : selectFormat(config.format, config.name);
+      });
+
+      state.form.actions.push({
+        index: actionIdx,
+        config_values: config_values,
+        local_entity_data: {},
+        unfilled_required_values: 0,
+      });
     });
   },
   fillLocalEntityData({ commit, state, rootState }) {
@@ -136,6 +208,20 @@ const actions = {
       "SET_FORM_UNFILLED_REQUIRED_VALUES",
       lookForUnfilledRequiredValues(state_api.form_config, form, [])
     );
+    form.actions.forEach((action, actionIdx) => {
+      commit("SET_ACTION_LOCAL_ENTITY_DATA", {
+        actionIdx: actionIdx,
+        data: fillObjLocalEntityData(state_api.actions_config, action),
+      });
+      commit("SET_ACTION_UNFILLED_REQUIRED_VALUES", {
+        actionIdx,
+        data: lookForUnfilledRequiredValues(
+          state_api.actions_config,
+          action,
+          []
+        ),
+      });
+    });
 
     form.rows.forEach((row, rowIdx) => {
       commit("SET_ROW_LOCAL_ENTITY_DATA", {
