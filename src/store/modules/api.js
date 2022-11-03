@@ -317,6 +317,14 @@ const actions = {
          * POST request using the config_id with the values in a JSON that the API supports.
          */
         let content = {};
+
+        let actions_config_id = state.form_config.find(
+          (config) => config.name === "Acciones"
+        ).id;
+        if (form.local_entity_data[actions_config_id]) {
+          console.log("here");
+          delete form.local_entity_data[actions_config_id];
+        }
         content[config_id] = [form.local_entity_data];
         return axios.post(
           state.base_url +
