@@ -378,6 +378,11 @@ const actions = {
         let action_requests = [];
         form.actions.forEach((action) => {
           let content = {};
+
+          if (action.local_entity_data["id"])
+            delete action.local_entity_data[
+              state.actions_config.find((config) => config.name === "id").id
+            ];
           content[actions_config_id] = [action.local_entity_data];
 
           action_requests.push(
