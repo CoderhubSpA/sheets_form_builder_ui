@@ -58,10 +58,6 @@ export default {
     Fields,
   },
   props: {
-    section: {
-      type: Object,
-      required: true,
-    },
     view: {
       type: String,
       required: true,
@@ -79,6 +75,10 @@ export default {
       required: true,
     },
   },
-  methods: {},
+  computed: {
+    section() {
+      return this.$store.state.form.form.rows[this.idxRow].sections[this.index];
+    },
+  },
 };
 </script>

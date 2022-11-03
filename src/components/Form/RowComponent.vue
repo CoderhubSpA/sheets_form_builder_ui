@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="openRowConfig(row)">
+  <div @click.self="$emit('open-row-config-event',row)">
     <div
       :class="
         view == 'xl'
@@ -48,10 +48,6 @@
 export default {
   name: "RowComponent",
   props: {
-    row: {
-      type: Object,
-      required: true,
-    },
     view: {
       type: String,
       required: true,
@@ -65,14 +61,9 @@ export default {
       required: true,
     },
   },
-  methods: {
-    openRowConfig(row) {
-      this.$store.state.form.current_config = {
-        obj: row,
-        title: "Fila",
-        config_type: "rows_config",
-      };
-      this.$store.commit("tools/setActivatedTab", "config");
+  computed: {
+    row() {
+      return this.$store.state.form.form.rows[this.index];
     },
   },
 };

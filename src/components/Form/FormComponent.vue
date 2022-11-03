@@ -70,8 +70,9 @@ export default {
     openFormConfig(form) {
       this.$store.state.form.current_config = {
         obj: form,
-        title: "Formulario",
+        title: "Configuración del formulario",
         config_type: "form_config",
+        name_id: "Nombre",
       };
       this.$store.commit("tools/setActivatedTab", "config");
     },

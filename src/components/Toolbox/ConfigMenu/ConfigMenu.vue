@@ -1,5 +1,7 @@
 <template>
   <div visible :id="menu_id" style="padding: 1em">
+    <ConfigMenuComponent :menu_id="menu_id" />
+    <!--
     <FormConfigMenu
       v-if="currentConfigType === 'form_config'"
       :menu_id="menu_id"
@@ -20,22 +22,17 @@
       :menu_id="menu_id"
       :hidden_config="columns_hidden"
     />
+      -->
   </div>
 </template>
 
 <script>
-import FormConfigMenu from "./FormConfigMenu.vue";
-import RowConfigMenu from "./RowConfigMenu.vue";
-import SectionConfigMenu from "./SectionConfigMenu.vue";
-import FieldConfigMenu from "./FieldConfigMenu.vue";
+import ConfigMenuComponent from "./ConfigMenuComponent.vue";
 
 export default {
   name: "ConfigMenu",
   components: {
-    FormConfigMenu,
-    RowConfigMenu,
-    SectionConfigMenu,
-    FieldConfigMenu,
+    ConfigMenuComponent,
   },
   props: {
     menu_name: {
@@ -85,41 +82,8 @@ export default {
     },
   },
   data() {
-    return {
-      columns_hidden: [
-        "Formulario",
-        "Fila del formulario",
-        "Sección formulario",
-        "Alternativas",
-        "Entidad del form",
-        "Sección siguiente default",
-        "Mostrar solo por el campo",
-        "Mostrar solo si el campo posee valor",
-        "Columna",
-        "Id",
-      ],
-    };
+    return {};
   },
-  methods: {
-    handleImage(obj) {
-      obj.image_url = window.URL.createObjectURL(obj.image);
-    },
-    updateFormId(entity) {
-      this.$store.state.form.form.rows[this.currentRow.index].form_id = entity;
-      this.$store.state.form.form.rows[this.currentRow.index].sections.forEach(
-        (section) => {
-          section.form_id = entity;
-        }
-      );
-    },
-  },
+  methods: {},
 };
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style>
-.slider {
-  margin-top: 1em !important;
-  margin-bottom: 0 !important;
-}
-</style>
