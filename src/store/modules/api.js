@@ -268,6 +268,9 @@ const actions = {
         });
       });
     });
+    form.actions.forEach((action) => {
+      unfilled_required_count += action.unfilled_required_values.length;
+    });
 
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_count)
@@ -275,12 +278,22 @@ const actions = {
 
     state.status_msg = "Guardando";
 
-    let config_id, rows_config_id, sections_config_id, fields_config_id;
+    let config_id,
+      actions_config_id,
+      rows_config_id,
+      sections_config_id,
+      fields_config_id;
 
     Promise.all([
       axios
         .get(context.getters.formConfigURL)
         .then((response) => (config_id = response.data.content.entity_type.id)),
+      axios
+        .get(context.getters.actionsConfigURL)
+        .then(
+          (response) =>
+            (actions_config_id = response.data.content.entity_type.id)
+        ),
       axios
         .get(context.getters.rowsConfigURL)
         .then(
@@ -315,7 +328,7 @@ const actions = {
         /**
          * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
          *
-         * Then, add the inserted_id in all the rows and post it
+         * Then, add the inserted_id in all the actions and rows and post it
          */
         let form_id = response.data.content.inserted_id;
         form.config_values[
@@ -329,6 +342,16 @@ const actions = {
         console.log("inserted form_id " + form_id);
 
         // find the 'Formulario' configuration
+
+        let action_form_config = state.actions_config.find(
+          (config) => config.name === "Formulario"
+        ).id;
+        form.actions.forEach((action) => {
+          // Associate the action with the created form
+          action.config_values[action_form_config] = form_id;
+          action.local_entity_data[action_form_config] = form_id;
+        });
+
         let row_form_config = state.rows_config.find(
           (config) => config.name === "Formulario"
         ).id;
@@ -344,6 +367,38 @@ const actions = {
       let content = {};
       content[rows_config_id] = rows_data;
       */
+        let action_requests = [];
+        form.actions.forEach((action) => {
+          let content = {};
+          content[actions_config_id] = [action.local_entity_data];
+
+          action_requests.push(
+            axios
+              .post(
+                state.base_url +
+                  (action.local_entity_data["id"] ? "entity/update" : "entity"),
+                content
+              )
+              .then((response) => {
+                let action_id = response.data.content.inserted_id;
+                action.config_values[
+                  state.actions_config.find((config) => config.name === "id").id
+                ] =
+                  action.local_entity_data[
+                    state.actions_config.find(
+                      (config) => config.name === "id"
+                    ).id
+                  ] =
+                  action.local_entity_data["id"] =
+                    action_id;
+                console.log("inserted action_id " + action_id);
+              })
+              .catch((error) => {
+                console.log("Error en el post de una acción:");
+                console.log(error);
+              })
+          );
+        });
         let row_requests = [];
         form.rows.forEach((row) => {
           let content = {};

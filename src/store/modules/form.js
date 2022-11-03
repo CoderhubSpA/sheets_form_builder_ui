@@ -76,6 +76,9 @@ const mutations = {
   SET_FORM_LOCAL_ENTITY_DATA(state, payload) {
     state.form.local_entity_data = payload;
   },
+  SET_ACTION_LOCAL_ENTITY_DATA(state, payload) {
+    state.form.actions[payload.actionIdx].local_entity_data = payload.data;
+  },
   SET_ROW_LOCAL_ENTITY_DATA(state, payload) {
     state.form.rows[payload.rowIdx].local_entity_data = payload.data;
   },
@@ -91,6 +94,10 @@ const mutations = {
   },
   SET_FORM_UNFILLED_REQUIRED_VALUES(state, payload) {
     state.form.unfilled_required_values = payload;
+  },
+  SET_ACTION_UNFILLED_REQUIRED_VALUES(state, payload) {
+    state.form.actions[payload.actionIdx].unfilled_required_values =
+      payload.data;
   },
   SET_ROW_UNFILLED_REQUIRED_VALUES(state, payload) {
     state.form.rows[payload.rowIdx].unfilled_required_values = payload.data;
@@ -201,6 +208,20 @@ const actions = {
       "SET_FORM_UNFILLED_REQUIRED_VALUES",
       lookForUnfilledRequiredValues(state_api.form_config, form, [])
     );
+    form.actions.forEach((action, actionIdx) => {
+      commit("SET_ACTION_LOCAL_ENTITY_DATA", {
+        actionIdx: actionIdx,
+        data: fillObjLocalEntityData(state_api.actions_config, action),
+      });
+      commit("SET_ACTION_UNFILLED_REQUIRED_VALUES", {
+        actionIdx,
+        data: lookForUnfilledRequiredValues(
+          state_api.actions_config,
+          action,
+          []
+        ),
+      });
+    });
 
     form.rows.forEach((row, rowIdx) => {
       commit("SET_ROW_LOCAL_ENTITY_DATA", {
