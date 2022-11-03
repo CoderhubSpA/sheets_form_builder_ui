@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="$emit('open-row-config-event',row)">
+  <div @click.self="$emit('open-row-config-event', row)">
     <div
       :class="
         view == 'xl'
@@ -19,6 +19,7 @@
         type="button"
         class="btn btn-danger btn-sm delete"
         v-b-modal="`modal-borrar-fila-${index}`"
+        @click="$emit('open-row-config-event', row)"
       >
         <v-icon class="custom-icon" name="trash"></v-icon>
       </button>

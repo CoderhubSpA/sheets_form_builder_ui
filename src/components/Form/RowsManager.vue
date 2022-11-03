@@ -120,7 +120,9 @@ export default {
 
   methods: {
     addRow() {
-      this.rows.push(this.newRow());
+      let newRow = this.newRow();
+      this.rows.push(newRow);
+      this.openRowConfig(newRow);
     },
     selectFormat(format, name) {
       if (name === "col_sm" || name === "col_md" || name === "col_xl") {
@@ -167,6 +169,7 @@ export default {
         config_type: "rows_config",
         name_id: "Nombre",
       };
+      this.$store.commit("tools/setActivatedTab", "config");
     },
   },
 };
