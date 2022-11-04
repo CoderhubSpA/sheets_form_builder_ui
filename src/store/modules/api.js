@@ -53,12 +53,15 @@ const state = {
   data_url: "entity/data/",
   records_url: "sheets/getrecord/form/",
   form_entity_name: "form",
+  action_entity_name: "form_has_action",
   row_entity_name: "form_row",
   section_entity_name: "form_section",
   field_entity_name: "form_field",
   form_list_options: [],
   form_config: [],
   form_config_select: {},
+  actions_config: [],
+  actions_config_select: {},
   rows_config: [],
   rows_config_select: {},
   sections_config: [], // shared config, the values are stored in each section separated
@@ -82,6 +85,9 @@ const state = {
 const getters = {
   formConfigURL(state) {
     return state.base_url + state.info_url + state.form_entity_name;
+  },
+  actionsConfigURL(state) {
+    return state.base_url + state.info_url + state.action_entity_name;
   },
   rowsConfigURL(state) {
     return state.base_url + state.info_url + state.row_entity_name;
@@ -112,6 +118,12 @@ const mutations = {
   },
   SET_FORM_CONFIG_SELECT_OPTIONS(state, config_select_options) {
     state.form_config_select = config_select_options;
+  },
+  SET_ACTIONS_CONFIG(state, config) {
+    state.actions_config = config;
+  },
+  SET_ACTIONS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
+    state.actions_config_select = config_select_options;
   },
   SET_ROWS_CONFIG(state, config) {
     state.rows_config = config;
@@ -149,6 +161,17 @@ const actions = {
         response.data.content.entities_fk
       );
       context.commit("SET_FORM_CONFIG_SELECT_OPTIONS", config_select);
+    });
+  },
+  fetchActionsConfig(context) {
+    return axios.get(context.getters.actionsConfigURL).then((response) => {
+      let config_columns = response.data.content.columns;
+      context.commit("SET_ACTIONS_CONFIG", config_columns);
+      let config_select = retrieveConfigurationsOptions(
+        config_columns,
+        response.data.content.entities_fk
+      );
+      context.commit("SET_ACTIONS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
   fetchRowsConfig(context) {
@@ -349,6 +372,9 @@ const actions = {
         });
       });
     });
+    form.actions.forEach((action) => {
+      unfilled_required_count += action.unfilled_required_values.length;
+    });
 
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
     if (unfilled_required_count)
@@ -356,12 +382,22 @@ const actions = {
 
     state.status_msg = "Guardando";
 
-    let config_id, rows_config_id, sections_config_id, fields_config_id;
+    let config_id,
+      actions_config_id,
+      rows_config_id,
+      sections_config_id,
+      fields_config_id;
 
     Promise.all([
       axios
         .get(context.getters.formConfigURL)
         .then((response) => (config_id = response.data.content.entity_type.id)),
+      axios
+        .get(context.getters.actionsConfigURL)
+        .then(
+          (response) =>
+            (actions_config_id = response.data.content.entity_type.id)
+        ),
       axios
         .get(context.getters.rowsConfigURL)
         .then(
@@ -385,6 +421,14 @@ const actions = {
          * POST request using the config_id with the values in a JSON that the API supports.
          */
         let content = {};
+
+        let actions_config_id = state.form_config.find(
+          (config) => config.name === "Acciones"
+        ).id;
+        if (form.local_entity_data[actions_config_id]) {
+          console.log("here");
+          delete form.local_entity_data[actions_config_id];
+        }
         content[config_id] = [form.local_entity_data];
         return axios.post(
           state.base_url +
@@ -396,7 +440,7 @@ const actions = {
         /**
          * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
          *
-         * Then, add the inserted_id in all the rows and post it
+         * Then, add the inserted_id in all the actions and rows and post it
          */
         let form_id = response.data.content.inserted_id;
         form.config_values[
@@ -410,6 +454,16 @@ const actions = {
         console.log("inserted form_id " + form_id);
 
         // find the 'Formulario' configuration
+
+        let action_form_config = state.actions_config.find(
+          (config) => config.name === "Formulario"
+        ).id;
+        form.actions.forEach((action) => {
+          // Associate the action with the created form
+          action.config_values[action_form_config] = form_id;
+          action.local_entity_data[action_form_config] = form_id;
+        });
+
         let row_form_config = state.rows_config.find(
           (config) => config.name === "Formulario"
         ).id;
@@ -425,6 +479,43 @@ const actions = {
       let content = {};
       content[rows_config_id] = rows_data;
       */
+        let action_requests = [];
+        form.actions.forEach((action) => {
+          let content = {};
+
+          if (action.local_entity_data["id"])
+            delete action.local_entity_data[
+              state.actions_config.find((config) => config.name === "id").id
+            ];
+          content[actions_config_id] = [action.local_entity_data];
+
+          action_requests.push(
+            axios
+              .post(
+                state.base_url +
+                  (action.local_entity_data["id"] ? "entity/update" : "entity"),
+                content
+              )
+              .then((response) => {
+                let action_id = response.data.content.inserted_id;
+                action.config_values[
+                  state.actions_config.find((config) => config.name === "id").id
+                ] =
+                  action.local_entity_data[
+                    state.actions_config.find(
+                      (config) => config.name === "id"
+                    ).id
+                  ] =
+                  action.local_entity_data["id"] =
+                    action_id;
+                console.log("inserted action_id " + action_id);
+              })
+              .catch((error) => {
+                console.log("Error en el post de una acción:");
+                console.log(error);
+              })
+          );
+        });
         let row_requests = [];
         form.rows.forEach((row) => {
           let content = {};
