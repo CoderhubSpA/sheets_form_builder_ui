@@ -101,6 +101,9 @@ const getters = {
   formDataURL(state) {
     return state.base_url + state.data_url + state.form_entity_name;
   },
+  actionsDataURL(state) {
+    return state.base_url + state.data_url + state.action_entity_name;
+  },
   rowsDataURL(state) {
     return state.base_url + state.data_url + state.row_entity_name;
   },
@@ -268,7 +271,7 @@ const actions = {
     });
   },
   fetchForm(context, form_id) {
-    let form, rows, sections, fields;
+    let form, rows, sections, fields, actions;
     let requests = [
       // Form
       axios.get(context.getters.formDataURL).then((response) => {
@@ -305,6 +308,14 @@ const actions = {
         );
         parseJSONValues(fields);
       }),
+      axios.get(context.getters.actionsDataURL).then((response) => {
+        let form_id_config = context.state.actions_config.find(
+          (config) => config.col_name === "form_id"
+        ).id;
+        actions = response.data.content.data.filter(
+          (action) => action[form_id_config] === form_id
+        );
+      }),
     ];
 
     return Promise.all(requests)
@@ -321,7 +332,13 @@ const actions = {
       .then(() =>
         context.dispatch(
           "form/loadForm",
-          { form: form, rows: rows, sections: sections, fields: fields },
+          {
+            form: form,
+            rows: rows,
+            sections: sections,
+            fields: fields,
+            actions: actions,
+          },
           { root: true }
         )
       );
@@ -426,7 +443,6 @@ const actions = {
           (config) => config.name === "Acciones"
         ).id;
         if (form.local_entity_data[actions_config_id]) {
-          console.log("here");
           delete form.local_entity_data[actions_config_id];
         }
         content[config_id] = [form.local_entity_data];

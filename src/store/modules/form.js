@@ -167,7 +167,7 @@ const actions = {
       unfilled_required_values: 0,
     });
   },
-  loadForm(context, { form, rows, sections, fields }) {
+  loadForm(context, { form, rows, sections, fields, actions }) {
     let selectFormat = (format, name) => {
       if (name === "col_sm" || name === "col_md" || name === "col_xl") {
         return "12";
@@ -187,6 +187,22 @@ const actions = {
       form,
       selectFormat
     );
+
+    let form_actions = [];
+    actions.forEach((action) => {
+      let action_config_values = getValuesFromRemoteEntityData(
+        api_state.actions_config,
+        api_state.actions_config_select,
+        action,
+        selectFormat
+      );
+      form_actions.push({
+        config_values: action_config_values,
+        index: -1,
+        local_entity_data: action,
+        unfilled_required_values: 0,
+      });
+    });
 
     let form_rows = [];
     rows.forEach((row) => {
@@ -319,6 +335,7 @@ const actions = {
 
     context.commit("SET_FORM", {
       rows: form_rows,
+      actions: form_actions,
       config_values: form_config_values,
       local_entity_data: form,
       unfilled_required_values: 0,
