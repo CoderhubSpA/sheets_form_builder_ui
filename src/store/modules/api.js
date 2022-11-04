@@ -56,6 +56,7 @@ const state = {
   row_entity_name: "form_row",
   section_entity_name: "form_section",
   field_entity_name: "form_field",
+  form_list_options: [],
   form_config: [],
   form_config_select: {},
   rows_config: [],
@@ -224,6 +225,24 @@ const actions = {
         });
         context.commit("SET_FIELDS", fields); // response.data.content.columns)
       });
+  },
+  fetchFormList({ state, getters }) {
+    return axios.get(getters.formDataURL).then((response) => {
+      let form_options = [];
+      response.data.content.data.forEach((form) => {
+        console.log();
+        form_options.push({
+          name: form[
+            state.form_config.find((config) => config.col_name === "name").id
+          ],
+          value:
+            form[
+              state.form_config.find((config) => config.col_name === "id").id
+            ],
+        });
+      });
+      state.form_list_options = form_options;
+    });
   },
   fetchForm(context, form_id) {
     let form, rows, sections, fields;

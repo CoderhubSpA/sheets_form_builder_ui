@@ -6,6 +6,7 @@
       style="min-height: 600px; height: 91vh"
       class="d-flex flex-row"
     >
+      <SetupModalComponent />
       <ToolboxComponent />
       <FormComponent />
     </div>
@@ -39,16 +40,24 @@ $body-bg: #ffffff;
 import FormComponent from "./components/Form/FormComponent.vue";
 import ToolboxComponent from "./components/Toolbox/ToolboxComponent.vue";
 import NavbarComponent from "./components/NavbarComponent.vue";
+import SetupModalComponent from "./components/Setup/SetupModalComponent.vue";
 
 export default {
   name: "App",
-  components: { FormComponent, ToolboxComponent, NavbarComponent },
+  components: {
+    FormComponent,
+    ToolboxComponent,
+    NavbarComponent,
+    SetupModalComponent,
+  },
   data: () => ({}),
   created: function () {},
   mounted: function () {
+    this.$bvModal.show("setup-modal");
     this.$store.dispatch("api/fetchFormConfig").then(() => {
-      this.$store.dispatch("form/newForm");
+      this.$store.dispatch("api/fetchFormList");
     });
+
     this.$store.dispatch("api/fetchRowsConfig");
     this.$store.dispatch("api/fetchSectionConfig");
     this.$store.dispatch("api/fetchFieldsConfig");
