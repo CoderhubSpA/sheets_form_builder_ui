@@ -31,6 +31,37 @@ function fillObjLocalEntityData(configurations, obj) {
   return data_values;
 }
 
+function getValuesFromRemoteEntityData(
+  configurations,
+  configurations_select,
+  entity_data,
+  selectFormat
+) {
+  let config_values = {};
+  configurations.forEach((config) => {
+    config_values[config.id] = Array.isArray(entity_data[config.id])
+      ? [...entity_data[config.id]]
+      : entity_data[config.id]
+      ? entity_data[config.id]
+      : selectFormat(config.format, config.name);
+
+    if (Array.isArray(config_values[config.id]))
+      config_values[config.id].forEach((id_val, index) => {
+        config_values[config.id][index] = configurations_select[
+          config.id
+        ].options.find((option) => option.id === id_val);
+      });
+    else if (config.format === "SELECTOR")
+      config_values[config.id] = configurations_select[config.id].options.find(
+        (option) => option.id === config_values[config.id]
+      );
+    else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
+      config_values[config.id] = config_values[config.id].toString();
+  });
+
+  return config_values;
+}
+
 function lookForUnfilledRequiredValues(
   configurations,
   obj,
@@ -65,7 +96,7 @@ const state = {
   current_view: "xl",
 };
 const mutations = {
-  LOAD_FORM(state, payload) {
+  SET_FORM(state, payload) {
     state.form.rows = payload.rows;
     state.form.actions = payload.actions;
     state.form.config_values = payload.config_values;
@@ -128,11 +159,185 @@ const actions = {
           : [];
     });
 
-    context.commit("LOAD_FORM", {
+    context.commit("SET_FORM", {
       rows: [],
       actions: [],
       config_values: config_values,
       local_entity_data: {},
+      unfilled_required_values: 0,
+    });
+  },
+  loadForm(context, { form, rows, sections, fields, actions }) {
+    let selectFormat = (format, name) => {
+      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
+        return "12";
+      }
+      let type = context.rootState.tools.format_types.find(
+        (element) => element.name === format
+      );
+      if (type) return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    };
+
+    let api_state = context.rootState.api;
+    let form_config_values = getValuesFromRemoteEntityData(
+      api_state.form_config,
+      api_state.form_config_select,
+      form,
+      selectFormat
+    );
+
+    let form_actions = [];
+    actions.forEach((action) => {
+      let action_config_values = getValuesFromRemoteEntityData(
+        api_state.actions_config,
+        api_state.actions_config_select,
+        action,
+        selectFormat
+      );
+      form_actions.push({
+        config_values: action_config_values,
+        index: -1,
+        local_entity_data: action,
+        unfilled_required_values: 0,
+      });
+    });
+
+    let form_rows = [];
+    rows.forEach((row) => {
+      let row_config_values = getValuesFromRemoteEntityData(
+        api_state.rows_config,
+        api_state.rows_config_select,
+        row,
+        selectFormat
+      );
+      let row_sections = [];
+      let row_id_config = api_state.sections_config.find(
+        (config) => config.col_name === "form_row_id"
+      ).id;
+      sections
+        .filter((section) => section[row_id_config] === row.id)
+        .forEach((section) => {
+          let section_config_values = getValuesFromRemoteEntityData(
+            api_state.sections_config,
+            api_state.sections_config_select,
+            section,
+            selectFormat
+          );
+          let section_fields = [];
+          let section_id_config = api_state.fields_config.find(
+            (config) => config.col_name === "form_section_id"
+          ).id;
+          fields
+            .filter((field) => field[section_id_config] === section.id)
+            .forEach((field) => {
+              let field_config_values = getValuesFromRemoteEntityData(
+                api_state.fields_config,
+                api_state.fields_config_select,
+                field,
+                selectFormat
+              );
+
+              let api_field = api_state.fields.find(
+                (api_field) =>
+                  api_field.name ===
+                  field_config_values[
+                    api_state.fields_config.find(
+                      (config) => config.name === "Columna"
+                    ).id
+                  ].name
+              );
+              if (!api_field) {
+                console.warn(
+                  "Possible duplicated field in the form. Column: " +
+                    field_config_values[
+                      api_state.fields_config.find(
+                        (config) => config.name === "Columna"
+                      ).id
+                    ].name
+                );
+                section_fields.push({
+                  index: -1,
+                  idxRow: -1,
+                  idxSection: -1,
+                  show: false,
+                  show_in_create_form: true,
+                  name: null,
+                  format: null,
+                  config_values: field_config_values,
+                  local_entity_data: field,
+                  unfilled_required_values: 0,
+                });
+                return;
+              }
+              context.commit("api/REMOVE_FIELD", api_field, { root: true });
+              api_field["config_values"] = field_config_values;
+              api_field["local_entity_data"] = field;
+              section_fields.push(api_field);
+            });
+
+          row_sections.push({
+            fields: section_fields,
+            index: -1,
+            idxRow: -1,
+            config_values: section_config_values,
+            local_entity_data: section,
+            unfilled_required_values: 0,
+          });
+        });
+      form_rows.push({
+        sections: row_sections,
+        config_values: row_config_values,
+        index: -1,
+        local_entity_data: row,
+        unfilled_required_values: 0,
+      });
+    });
+    // Order index
+    let order_conf_id = api_state.rows_config.find(
+      (config) => config.name === "Orden"
+    ).id;
+    form_rows.sort(
+      (row1, row2) =>
+        row1.config_values[order_conf_id] - row2.config_values[order_conf_id]
+    );
+    form_rows.forEach((row, idxRow) => {
+      row.index = idxRow;
+
+      let order_conf_id = api_state.sections_config.find(
+        (config) => config.name === "Orden"
+      ).id;
+      row.sections.sort(
+        (section1, section2) =>
+          section1.config_values[order_conf_id] -
+          section2.config_values[order_conf_id]
+      );
+      row.sections.forEach((section, idxSection) => {
+        section.idxRow = idxRow;
+        section.index = idxSection;
+
+        let order_conf_id = api_state.fields_config.find(
+          (config) => config.name === "Orden"
+        ).id;
+        section.fields.sort(
+          (field1, field2) =>
+            field1.config_values[order_conf_id] -
+            field2.config_values[order_conf_id]
+        );
+        section.fields.forEach((field, idxField) => {
+          field.idxRow = idxRow;
+          field.idxSection = idxSection;
+          field.index = idxField;
+        });
+      });
+    });
+
+    context.commit("SET_FORM", {
+      rows: form_rows,
+      actions: form_actions,
+      config_values: form_config_values,
+      local_entity_data: form,
       unfilled_required_values: 0,
     });
   },

@@ -27,6 +27,7 @@
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
           v-model="configValues[element.id]"
+          disabled
           @change="showFields(configValues[element.id].id)"
         >
           <option
