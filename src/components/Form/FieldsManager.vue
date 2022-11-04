@@ -170,6 +170,7 @@ export default {
         obj: newField,
         title: "Configuración del campo",
         config_type: "fields_config",
+        name_id: "Columna",
       };
       this.$store.commit("tools/setActivatedTab", "config");
     },

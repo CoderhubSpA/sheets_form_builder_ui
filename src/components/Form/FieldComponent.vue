@@ -69,10 +69,6 @@
 export default {
   name: "FieldComponent",
   props: {
-    field: {
-      type: Object,
-      required: true,
-    },
     idxRow: {
       type: Number,
       required: true,
@@ -92,6 +88,13 @@ export default {
     index: {
       type: Number,
       required: true,
+    },
+  },
+  computed: {
+    field() {
+      return this.$store.state.form.form.rows[this.idxRow].sections[
+        this.idxSection
+      ].fields[this.index];
     },
   },
 };
