@@ -26,7 +26,9 @@
                   ? getColSm(section)
                   : 12
               "
-              class="cursor-move my-1"
+              class="cursor-move my-1 panel-resizable"
+              :ref="`section-${index}`"
+              @mousedown="changeSize(index)"
             >
               <SectionComponent
                 :section="section"
@@ -42,7 +44,7 @@
         </draggable>
         <!-- pa debuguear -->
         <!-- {{sections}} -->
-        <div class="pt-3 border-dotted bg-light rounded">
+        <div class="pt-3 border-dotted bg-light rounded" ref="box" @click.once="getInitialSize">
           <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
           <div class="container text-center">
             <button
@@ -123,7 +125,9 @@ export default {
       return this.$store.state.tools.format_types;
     },
   },
-  data: () => ({}),
+  data: () => ({
+    initialWidth: null,
+  }),
 
   methods: {
     getColXl(section) {
@@ -215,6 +219,50 @@ export default {
     },
     setForm(section, id) {
       section.form_id = id;
+    },
+    getInitialSize(){
+        let width = this.$refs.box.clientWidth;
+        this.initialWidth = width;
+    },
+    changeSize(index){
+      // VER COMO OBTENER VALOR INICIAL
+      const c = this.$refs['section-'+ index][0];
+      console.log(c)
+      const initial_value = this.initialWidth
+      const minimum_size = 20;
+      const maximum_size = initial_value - 23 - 4; // ARREGLAR
+      let original_width = 0;
+      let original_x = 0;
+      let original_mouse_x = 0;
+      c.addEventListener('mousedown', function(e){
+        e.preventDefault()
+        original_width = parseFloat(getComputedStyle(c, null).getPropertyValue('width').replace('px', ''));
+        original_x = c.getBoundingClientRect().left;
+        original_mouse_x = e.pageX;
+        window.addEventListener('mousemove', resize)
+        window.addEventListener('mouseup', stopResize)
+      })
+      
+      function resize(e) {
+          const width = original_width + (e.pageX - original_mouse_x);
+          if (width > minimum_size && width < maximum_size) {
+            c.style.width = width + 'px'
+          }
+      }
+      
+      function stopResize() {
+        window.removeEventListener('mousemove', resize)
+      }
+      
+      let view = this.$store.state.form.current_view;
+      let col = "col_"+view;
+      let width = this.$refs['section-'+ index][0].clientWidth;
+      let newSize =  ((12*width) / initial_value).toFixed(0);
+      if (newSize >= 1){
+        this.sections[index].config_values[this.$store.state.api.sections_config.find(config => config.name === col).id] = newSize.toString();
+      } else {
+        this.sections[index].config_values[this.$store.state.api.sections_config.find(config => config.name === col).id] = "1";
+      }
     },
   },
 };
@@ -317,8 +365,6 @@ export default {
 
 .panel-resizable {
   resize: horizontal;
-  max-width: 100%;
-  min-width: 25%;
   overflow: hidden;
 }
 </style>
