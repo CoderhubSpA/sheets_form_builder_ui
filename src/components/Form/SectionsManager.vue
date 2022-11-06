@@ -225,12 +225,11 @@ export default {
         this.initialWidth = width;
     },
     changeSize(index){
-      // VER COMO OBTENER VALOR INICIAL
       const c = this.$refs['section-'+ index][0];
       console.log(c)
       const initial_value = this.initialWidth
       const minimum_size = 20;
-      const maximum_size = initial_value - 23 - 4; // ARREGLAR
+      const maximum_size = initial_value;
       let original_width = 0;
       let original_x = 0;
       let original_mouse_x = 0;
