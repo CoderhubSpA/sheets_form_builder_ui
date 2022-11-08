@@ -10,27 +10,30 @@
                 :key="index"
                 :id="`row-${index}`"
                 class="cursor-move"
-                :style="
-                  $store.state.form.current_config.obj === row
-                    ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
-                    : ''
-                "
                 @click.self="openRowConfig(row)"
               >
-                <RowComponent
-                  :view="view"
-                  :name_config_id="rowNameConfigId"
-                  :index="index"
-                  @delete-row-event="deleteRow"
-                  @open-row-config-event="openRowConfig"
-                />
-                <br />
                 <div
-                  class="p-3 border-solid bg-light rounded container"
-                  v-bind="row"
+                  :style="
+                    $store.state.form.current_config.obj === row
+                      ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
+                      : ''
+                  "
                 >
-                  <Sections :idxRow="index" />
+                  <RowComponent
+                    :view="view"
+                    :name_config_id="rowNameConfigId"
+                    :index="index"
+                    @delete-row-event="deleteRow"
+                    @open-row-config-event="openRowConfig"
+                  />
                   <br />
+                  <div
+                    class="p-3 border-solid bg-light rounded container"
+                    v-bind="row"
+                  >
+                    <Sections :idxRow="index" />
+                    <br />
+                  </div>
                 </div>
                 <hr />
               </div>
