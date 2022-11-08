@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar  type="dark" variant="dark">
-        <b-navbar-nav style="margin-left: 2vh;">
+        <b-navbar-nav class="justify-content-center" style="margin-left: 65vh;">
           <b-button class="btn m-1" @click="viewXl" :variant = "view =='xl' ? 'secondary' : 'dark'">
               <v-icon class="custom-icon" name="laptop"></v-icon>
           </b-button>
