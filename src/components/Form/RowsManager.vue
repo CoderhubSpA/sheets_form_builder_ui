@@ -119,6 +119,12 @@ export default {
     },
   },
   data: () => ({}),
+
+  created() {
+    let newRow = this.newRow();
+    this.rows.push(newRow);
+  },
+
   mounted() {},
 
   methods: {

@@ -124,6 +124,12 @@ export default {
   },
   data: () => ({}),
 
+  created() {
+    let section = this.newSection();
+    section.idxRow = this.idxRow;
+    this.sections.push(section);
+  },
+
   methods: {
     getColXl(section) {
       return section.config_values[
