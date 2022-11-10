@@ -168,6 +168,8 @@ export default {
           config.format,
           config.name
         );
+        if(config.col_name === "valid")
+          config_values[config.id] = true;
       });
 
       return {
