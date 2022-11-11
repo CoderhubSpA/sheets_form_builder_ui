@@ -5,7 +5,7 @@
     <div :class="showMenu ? 'hide-fold':'show-fold'" class="float-end">
       <b-row class="m-0">
         <b-col class="p-2">
-          <v-icon @click="showMenu=!showMenu" class="float-end" role="button" name="angle-left" scale="1.5"  />
+          <v-icon @click="openMenu" class="float-end" role="button" name="angle-left" scale="1.5"  />
         </b-col>
       </b-row> 
 
@@ -16,7 +16,7 @@
     <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
       <b-row class="m-0">
         <b-col class="p-2">
-          <v-icon @click="showMenu=!showMenu" class="float-end" role="button" name="angle-right" scale="1.5"  />
+          <v-icon @click="closeMenu" class="float-end" role="button" name="angle-right" scale="1.5"  />
         </b-col>
       </b-row>
       <b-row class="m-0">
@@ -114,17 +114,34 @@ export default {
   data() {
     return {
       collapse:true,
-      showMenu:true,
+      showMenu:false,
     };
   },
-  methods: {},
+  methods: {
+    openMenu(){
+      this.showMenu = !this.showMenu;
+      var elements = document.getElementsByClassName("custom-side-menu");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.width=("25%");
+      }
+      console.log("open")
+    },
+    closeMenu(){
+      this.showMenu = !this.showMenu;
+      var elements = document.getElementsByClassName("custom-side-menu");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].style.width=("3%");
+      }
+      console.log("close")
+    }
+  },
 };
 </script>
 
 <style lang="scss">
 
 .custom-side-menu{
-  width: 25%;
+  width: 3%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;

@@ -1,10 +1,10 @@
 <template>
-  <div class="flex-shrink-0 custom-side-menu">
+  <div id="sidebarfields" class="flex-shrink-0 custom-side-menu">
 
     <div :class="showMenu ? 'hide-fold':'show-fold'">
       <b-row class="m-0">
         <b-col class="p-2">
-          <v-icon @click="showMenu=!showMenu" class="float-start" role="button" name="angle-right" scale="1.5"  />
+          <v-icon @click="openMenu" class="float-start" role="button" name="angle-right" scale="1.5"  />
         </b-col>
       </b-row> 
       <b-row class="m-0 p-0 py-3" style="writing-mode: vertical-rl; font-size: 16pt; ">
@@ -14,7 +14,7 @@
     <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
       <b-row class="m-0">
         <b-col class="p-2">
-          <v-icon @click="showMenu=!showMenu" class="float-start" role="button" name="angle-left" scale="1.5"  />
+          <v-icon @click="closeMenu" class="float-start" role="button" name="angle-left" scale="1.5"  />
         </b-col>
       </b-row>
       <div class="mx-2">
@@ -94,7 +94,7 @@ export default {
     return {
       field_n: 0,
       search: "",
-      showMenu:true,
+      showMenu:false,
     };
   },
   methods: {
@@ -117,6 +117,14 @@ export default {
       console.log("No se encontró el formato" + format);
       return "";
     },
+    openMenu(){
+      this.showMenu = !this.showMenu;
+      document.getElementById("sidebarfields").style.width = "20%";
+    },
+    closeMenu(){
+      this.showMenu = !this.showMenu;
+      document.getElementById("sidebarfields").style.width = "3%";
+    }
   },
 };
 </script>
@@ -168,8 +176,8 @@ export default {
 }
 
 .custom-side-menu{
-  width: 20%;
-  max-width: 20%;
+  width: 3%;
+  /* max-width: 20%; */
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
