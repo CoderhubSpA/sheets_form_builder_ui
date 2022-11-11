@@ -1,28 +1,47 @@
 <template>
-  <div>
-    <div>
-      <b-input
-        v-model="search"
-        id="section-config-name"
-        type="text"
-        placeholder="Busca un campo aquí..."
-      />
-      <draggable
-        @dragstart.native="hover_fields = true"
-        @dragend.native="hover_fields = false"
-        class="card-deck row"
-        style="display: flex; margin: 5px 0 5px 0"
-        :group="{ name: 'Fields', pull: true, put: true }"
-        :list="fields"
-      >
-        <FieldMenuComponent
-          v-for="element in fields"
-          :key="element.name"
-          :text="element.name"
-          :format="element.format"
-        />
-      </draggable>
+  <div class="flex-shrink-0 custom-side-menu">
+
+    <div :class="showMenu ? 'hide-fold':'show-fold'">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon @click="showMenu=!showMenu" class="float-start" role="button" name="angle-right" scale="1.5"  />
+        </b-col>
+      </b-row> 
+      <b-row class="m-0 p-0 py-3" style="writing-mode: vertical-rl; font-size: 16pt; ">
+        Campos
+      </b-row> 
     </div>
+    <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon @click="showMenu=!showMenu" class="float-start" role="button" name="angle-left" scale="1.5"  />
+        </b-col>
+      </b-row>
+      <div class="mx-2">
+        <b-input
+          v-model="search"
+          id="section-config-name"
+          type="text"
+          placeholder="Busca un campo aquí..."
+        />
+        <draggable
+          @dragstart.native="hover_fields = true"
+          @dragend.native="hover_fields = false"
+          class="card-deck row"
+          style="display: flex; margin: 5px 0 5px 0"
+          :group="{ name: 'Fields', pull: true, put: true }"
+          :list="fields"
+        >
+          <FieldMenuComponent
+            v-for="element in fields"
+            :key="element.name"
+            :text="element.name"
+            :format="element.format"
+          />
+        </draggable>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -75,6 +94,7 @@ export default {
     return {
       field_n: 0,
       search: "",
+      showMenu:true,
     };
   },
   methods: {
@@ -145,5 +165,31 @@ export default {
   margin-bottom: 10px;
 
   padding: 5px;
+}
+
+.custom-side-menu{
+  width: 20%;
+  max-width: 20%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.show-menu{
+  display:block;
+}
+.hide-menu{
+  display:none;
+}
+.show-fold{
+  display:block;
+  width: 35px;
+  height: 100%;
+  max-height: 100%;
+  background-color: #eeeef5;
+  color:#008a94;
+}
+.hide-fold{
+  display:none;
+
 }
 </style>

@@ -1,6 +1,36 @@
 <template>
-  <div visible :id="menu_id" style="padding: 1em">
-    <ConfigMenuComponent :menu_id="menu_id" />
+  <div :id="menu_id" class="flex-shrink-0 custom-side-menu float-end">
+    
+    
+    <div :class="showMenu ? 'hide-fold':'show-fold'" class="float-end">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon @click="showMenu=!showMenu" class="float-end" role="button" name="angle-left" scale="1.5"  />
+        </b-col>
+      </b-row> 
+
+      <b-row class="m-0 p-0 py-3" style="writing-mode: vertical-rl; font-size: 16pt;">
+        Configuración
+      </b-row> 
+    </div>
+    <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon @click="showMenu=!showMenu" class="float-end" role="button" name="angle-right" scale="1.5"  />
+        </b-col>
+      </b-row>
+      <b-row class="m-0">
+        
+        <b-col cols="2" class="text-center d-none" >
+          
+          <!-- <p class="m-0" style="writing-mode: vertical-rl; text-orientation: mixed;font-size: 16pt;">Configuración</p> -->
+        </b-col>
+      <b-col class="px-3 m-0">
+        <ConfigMenuComponent :menu_id="menu_id"/>
+      </b-col>
+      </b-row>
+    </div>
+ 
     <!--
     <FormConfigMenu
       v-if="currentConfigType === 'form_config'"
@@ -82,8 +112,42 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      collapse:true,
+      showMenu:true,
+    };
   },
   methods: {},
 };
 </script>
+
+<style lang="scss">
+
+.custom-side-menu{
+  width: 25%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.show-menu{
+  display:block;
+  height: 100%;
+  overflow-x: hidden;
+}
+.hide-menu{
+  display:none;
+}
+.show-fold{
+  display:block;
+  width: 35px;
+  height: 100%;
+  max-height: 100%;
+  background-color: #eeeef5;
+  color:#008a94;
+}
+.hide-fold{
+  display:none;
+}
+
+</style>
