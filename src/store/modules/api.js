@@ -1,6 +1,14 @@
 import axios from "axios";
 
 // Helpers
+/**
+ * For each configuration, looks if it has options and stores them in a json.
+ *
+ * For a given configuration, its options may be obtained from entities_fk or from the same configuration's options
+ * @param configurations Array of configurations
+ * @param entities_fk The entity/info json with options
+ * @returns {{}} The json of configuration options config_select
+ */
 function retrieveConfigurationsOptions(configurations, entities_fk) {
   let config_select = {};
 
@@ -155,6 +163,11 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Fetch form-entity configuration, select options included
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchFormConfig(context) {
     return axios.get(context.getters.formConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
@@ -166,6 +179,11 @@ const actions = {
       context.commit("SET_FORM_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
+  /**
+   * Fetch action-entity configuration, select options included
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchActionsConfig(context) {
     return axios.get(context.getters.actionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
@@ -177,6 +195,11 @@ const actions = {
       context.commit("SET_ACTIONS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
+  /**
+   * Fetch row-entity configuration, select options included
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchRowsConfig(context) {
     return axios.get(context.getters.rowsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
@@ -188,6 +211,11 @@ const actions = {
       context.commit("SET_ROWS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
+  /**
+   * Fetch section-entity configuration, select option included
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchSectionConfig(context) {
     return axios.get(context.getters.sectionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
@@ -199,6 +227,11 @@ const actions = {
       context.commit("SET_SECTIONS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
+  /**
+   * Fetch fields-entity configuration, select option included
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchFieldsConfig(context) {
     return axios.get(context.getters.fieldsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
@@ -210,6 +243,12 @@ const actions = {
       context.commit("SET_FIELDS_CONFIG_SELECT_OPTIONS", config_select);
     });
   },
+  /**
+   * Fetch all possible fields for a given form's entity-type
+   * @param context
+   * @param entity_id id of the form's entity-type
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchFields(context, entity_id) {
     let selectFormat = (format, name) => {
       if (name === "col_sm" || name === "col_md" || name === "col_xl") {
@@ -254,6 +293,12 @@ const actions = {
         context.commit("SET_FIELDS", fields); // response.data.content.columns)
       });
   },
+  /**
+   * Fetch available forms list (not the whole forms themselves)
+   * @param state
+   * @param getters
+   * @returns {Promise<AxiosResponse<any>>}
+   */
   fetchFormList({ state, getters }) {
     return axios.get(getters.formDataURL).then((response) => {
       let form_options = [];
@@ -272,7 +317,14 @@ const actions = {
       state.form_list_options = form_options;
     });
   },
+  /**
+   * Fetch a whole existing form, with all of its elements (rows, etc)
+   * @param context
+   * @param form_id
+   * @returns {Promise<any>}
+   */
   fetchForm(context, form_id) {
+    // Fetch the form and all of its content
     let form, rows, sections, fields, actions;
     let requests = [
       // Form
@@ -310,6 +362,7 @@ const actions = {
         );
         parseJSONValues(fields);
       }),
+      // Actions
       axios.get(context.getters.actionsDataURL).then((response) => {
         let form_id_config = context.state.actions_config.find(
           (config) => config.col_name === "form_id"
@@ -320,6 +373,7 @@ const actions = {
       }),
     ];
 
+    // Calls to fetch the form's possible fields, and then calls for loading the form with all the info
     return Promise.all(requests)
       .then(() =>
         context.dispatch(
@@ -345,23 +399,27 @@ const actions = {
         )
       );
   },
+  /**
+   * Post the form after validating it and parsing it
+   * @param context
+   */
   postForm(context) {
     /**
-     * Checks that all required configurations are valid.
+     * First checks that all required configurations are valid.
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
      */
     let state = context.state;
 
     let autofill_order = (elements, order_id) => {
-      // fills the config_values
+      // fills the order on the config_values
       elements.forEach((element, index) => {
         element.config_values[order_id] = index;
       });
     };
     let form = context.rootState.form.form;
 
-    // Parse form rows while checking for unfilled required values
-    let rows = form.rows; // form.name existe también, pero no es la idea que exista eso, pues eso debería estar en config_values
+    // First fills the order config for all elements that need it
+    let rows = form.rows;
     autofill_order(
       rows,
       state.rows_config.find((config) => config.name === "Orden").id
@@ -379,8 +437,11 @@ const actions = {
       });
     });
 
+    // Then call for filling the local entity data,
+    // parsing each config_values
     context.dispatch("form/fillLocalEntityData", null, { root: true });
 
+    // As last step of the preparations, we count the unfilled_required_values, throwing an error if there's any
     let unfilled_required_count = form.unfilled_required_values.length;
     form.rows.forEach((row) => {
       unfilled_required_count += row.unfilled_required_values.length;
@@ -399,6 +460,8 @@ const actions = {
     if (unfilled_required_count)
       throw Error("There are " + unfilled_required_count + " unfilled values");
 
+    // Then starts the posting-process
+
     state.status_msg = "Guardando";
 
     let config_id,
@@ -407,6 +470,7 @@ const actions = {
       sections_config_id,
       fields_config_id;
 
+    // Get the urls where to post the information
     Promise.all([
       axios
         .get(context.getters.formConfigURL)
@@ -458,7 +522,7 @@ const actions = {
         /**
          * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
          *
-         * Then, add the inserted_id in all the actions and rows and post it
+         * Then, add the inserted_id in all the actions and rows and post them
          */
         let form_id = response.data.content.inserted_id;
         form.config_values[
@@ -492,11 +556,12 @@ const actions = {
         });
 
         // The API doesn't return the inserted_id of all elements, so while we can send all the rows,
-        // we shouldn't because we need all of the inserted_id
+        // we shouldn't because we need all the inserted_id
         /*
-      let content = {};
-      content[rows_config_id] = rows_data;
-      */
+        let content = {};
+        content[rows_config_id] = rows_data;
+        */
+        // POST actions
         let action_requests = [];
         form.actions.forEach((action) => {
           let content = {};
@@ -534,6 +599,7 @@ const actions = {
               })
           );
         });
+        // POST rows
         let row_requests = [];
         form.rows.forEach((row) => {
           let content = {};
@@ -581,6 +647,7 @@ const actions = {
                   ] = form_id;
                 });
 
+                // POST sections
                 let section_requests = [];
                 row.sections.forEach((section) => {
                   let content = {};
@@ -612,6 +679,7 @@ const actions = {
                         console.log("inserted section_id " + section_id);
 
                         section.fields.forEach((field) => {
+                          // Associate the field with the created section and form
                           field.local_entity_data[
                             state.fields_config.find(
                               (config) => config.name == "Sección formulario"
@@ -633,6 +701,7 @@ const actions = {
                           ] = form_id;
                         });
 
+                        // POST fields
                         let fields_requests = [];
                         section.fields.forEach((field) => {
                           let content = {};

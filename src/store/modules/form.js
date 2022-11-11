@@ -146,6 +146,10 @@ const mutations = {
 };
 
 const actions = {
+  /**
+   * Creates a new form
+   * @param context
+   */
   newForm(context) {
     let api_state = context.rootState.api;
     let config_values = {};
@@ -167,6 +171,17 @@ const actions = {
       unfilled_required_values: 0,
     });
   },
+  /**
+   * Loads a form, instead of creating a new one.
+   *
+   * Uses JSON and list of JSON entity-data structures
+   * @param context
+   * @param form form
+   * @param rows rows of the form
+   * @param sections sections of the form
+   * @param fields fields of the form
+   * @param actions actions of the form
+   */
   loadForm(context, { form, rows, sections, fields, actions }) {
     let selectFormat = (format, name) => {
       if (name === "col_sm" || name === "col_md" || name === "col_xl") {
@@ -341,10 +356,12 @@ const actions = {
       unfilled_required_values: 0,
     });
   },
+  /**
+   * Updates `form.actions` using the actions selected in `form.config_values`
+   * @param state
+   * @param rootState
+   */
   updateActions({ state, rootState }) {
-    /**
-     * Updates form.actions using the actions selected in form.config_values
-     */
     let form_selected_actions =
       state.form.config_values[
         rootState.api.form_config.find((config) => config.name === "Acciones")
@@ -402,6 +419,14 @@ const actions = {
       });
     });
   },
+  /**
+   * Fills `local_entity_data` and `unfilled_required_values` of all the elements in the form
+   *
+   * Uses the `config_values` of the objects to generate the `local_entity data`
+   * @param commit
+   * @param state
+   * @param rootState
+   */
   fillLocalEntityData({ commit, state, rootState }) {
     let state_api = rootState.api;
     let form = state.form;
