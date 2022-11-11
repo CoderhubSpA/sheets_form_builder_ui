@@ -211,18 +211,6 @@ const actions = {
     });
   },
   fetchFields(context, entity_id) {
-    let selectFormat = (format, name) => {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = context.rootState.tools.format_types.find(
-        (element) => element.name === format
-      );
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
-    };
-
     return axios
       .get(state.base_url + state.info_url + entity_id)
       .then((response) => {
@@ -233,7 +221,7 @@ const actions = {
             config_values[config.id] =
               config.name === "Columna"
                 ? column
-                : selectFormat(config.format, config.name);
+                : context.rootGetters["tools/selectFormat"](config);
           });
 
           fields.push({

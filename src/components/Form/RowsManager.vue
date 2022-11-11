@@ -114,9 +114,6 @@ export default {
         (config) => config.name === "Nombre"
       ).id;
     },
-    formatTypes() {
-      return this.$store.state.tools.format_types;
-    },
   },
   data: () => ({}),
   mounted() {},
@@ -127,22 +124,11 @@ export default {
       this.rows.push(newRow);
       this.openRowConfig(newRow);
     },
-    selectFormat(format, name) {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = this.formatTypes.find((element) => element.name === format);
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
-    },
     newRow() {
       let config_values = {};
       this.$store.state.api.rows_config.forEach((config) => {
-        config_values[config.id] = this.selectFormat(
-          config.format,
-          config.name
-        );
+        config_values[config.id] =
+          this.$store.getters["tools/selectFormat"](config);
       });
 
       return {

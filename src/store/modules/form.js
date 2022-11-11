@@ -43,7 +43,7 @@ function getValuesFromRemoteEntityData(
       ? [...entity_data[config.id]]
       : entity_data[config.id]
       ? entity_data[config.id]
-      : selectFormat(config.format, config.name);
+      : selectFormat(config);
 
     if (Array.isArray(config_values[config.id]))
       config_values[config.id].forEach((id_val, index) => {
@@ -168,24 +168,12 @@ const actions = {
     });
   },
   loadForm(context, { form, rows, sections, fields, actions }) {
-    let selectFormat = (format, name) => {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = context.rootState.tools.format_types.find(
-        (element) => element.name === format
-      );
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
-    };
-
     let api_state = context.rootState.api;
     let form_config_values = getValuesFromRemoteEntityData(
       api_state.form_config,
       api_state.form_config_select,
       form,
-      selectFormat
+      context.rootGetters["tools/selectFormat"]
     );
 
     let form_actions = [];
@@ -194,7 +182,7 @@ const actions = {
         api_state.actions_config,
         api_state.actions_config_select,
         action,
-        selectFormat
+        context.rootGetters["tools/selectFormat"]
       );
       form_actions.push({
         config_values: action_config_values,
@@ -210,7 +198,7 @@ const actions = {
         api_state.rows_config,
         api_state.rows_config_select,
         row,
-        selectFormat
+        context.rootGetters["tools/selectFormat"]
       );
       let row_sections = [];
       let row_id_config = api_state.sections_config.find(
@@ -223,7 +211,7 @@ const actions = {
             api_state.sections_config,
             api_state.sections_config_select,
             section,
-            selectFormat
+            context.rootGetters["tools/selectFormat"]
           );
           let section_fields = [];
           let section_id_config = api_state.fields_config.find(
@@ -236,7 +224,7 @@ const actions = {
                 api_state.fields_config,
                 api_state.fields_config_select,
                 field,
-                selectFormat
+                context.rootGetters["tools/selectFormat"]
               );
 
               let api_field = api_state.fields.find(
@@ -341,7 +329,7 @@ const actions = {
       unfilled_required_values: 0,
     });
   },
-  updateActions({ state, rootState }) {
+  updateActions({ state, rootState, rootGetters }) {
     /**
      * Updates form.actions using the actions selected in form.config_values
      */
@@ -374,24 +362,13 @@ const actions = {
       }
       // This selected action was never configured, so we have to create the form action
       let config_values = {};
-      let selectFormat = (format, name) => {
-        if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-          return "12";
-        }
-        let type = rootState.tools.format_types.find(
-          (element) => element.name === format
-        );
-        if (type) return type.value;
-        console.log("No se encontró el formato" + format);
-        return "";
-      };
       rootState.api.actions_config.forEach((config) => {
         config_values[config.id] =
           config.id === action_id_config
             ? selected_action // Associate the button to the action
             : config.col_name === "name"
             ? selected_action.name // Default button's name is the action name
-            : selectFormat(config.format, config.name);
+            : rootGetters["tools/selectFormat"](config);
       });
 
       state.form.actions.push({
