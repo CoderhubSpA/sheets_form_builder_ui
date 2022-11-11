@@ -360,6 +360,7 @@ const actions = {
         );
         parseJSONValues(fields);
       }),
+      // Actions
       axios.get(context.getters.actionsDataURL).then((response) => {
         let form_id_config = context.state.actions_config.find(
           (config) => config.col_name === "form_id"
