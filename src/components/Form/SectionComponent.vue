@@ -13,8 +13,9 @@
         <b-input
           v-model="section.config_values[name_config_id]"
           type="text"
-          class="form-control"
+          class="border-0"
           placeholder="Nombre Sección"
+          v-b-tooltip.hover.bottom title="Cambiar nombre sección"
         />
         <button
           type="button"
@@ -83,3 +84,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.border-0{
+  background: transparent !important;
+}
+.border-0:hover{
+  border: solid !important;
+  border-width: 0.1px !important;
+}
+</style>
