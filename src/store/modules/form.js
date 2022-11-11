@@ -5,7 +5,7 @@ function fillObjLocalEntityData(configurations, obj) {
   let data_values = {};
   configurations.forEach((config) => {
     let value = values[config.id];
-    if (value || value === 0) {
+    if (value || value === false || value === 0) {
       // check it has a truthy value, but counting 0 as valid
       if (config.name === "id") {
         // The id configuration is stored twice, one with key 'id' and the other as usual with config.id
