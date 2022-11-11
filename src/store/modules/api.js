@@ -56,15 +56,17 @@ function parseJSONValues(json) {
 
 const state = {
   status_msg: "",
-  base_url: "http://127.0.0.1:8081/",
-  info_url: "entity/info/",
-  data_url: "entity/data/",
-  records_url: "sheets/getrecord/form/",
-  form_entity_name: "form",
-  action_entity_name: "form_has_action",
-  row_entity_name: "form_row",
-  section_entity_name: "form_section",
-  field_entity_name: "form_field",
+  url: {
+    base: "http://127.0.0.1:8081/",
+    info: "entity/info/",
+    data: "entity/data/",
+    records: "sheets/getrecord/form/",
+    form_entity_name: "form",
+    action_entity_name: "form_has_action",
+    row_entity_name: "form_row",
+    section_entity_name: "form_section",
+    field_entity_name: "form_field",
+  },
   form_list_options: [],
   form_config: [],
   form_config_select: {},
@@ -92,34 +94,34 @@ const state = {
 
 const getters = {
   formConfigURL(state) {
-    return state.base_url + state.info_url + state.form_entity_name;
+    return state.url.base + state.url.info + state.url.form_entity_name;
   },
   actionsConfigURL(state) {
-    return state.base_url + state.info_url + state.action_entity_name;
+    return state.url.base + state.url.info + state.url.action_entity_name;
   },
   rowsConfigURL(state) {
-    return state.base_url + state.info_url + state.row_entity_name;
+    return state.url.base + state.url.info + state.url.row_entity_name;
   },
   sectionsConfigURL(state) {
-    return state.base_url + state.info_url + state.section_entity_name;
+    return state.url.base + state.url.info + state.url.section_entity_name;
   },
   fieldsConfigURL(state) {
-    return state.base_url + state.info_url + state.field_entity_name;
+    return state.url.base + state.url.info + state.url.field_entity_name;
   },
   formDataURL(state) {
-    return state.base_url + state.data_url + state.form_entity_name;
+    return state.url.base + state.url.data + state.url.form_entity_name;
   },
   actionsDataURL(state) {
-    return state.base_url + state.data_url + state.action_entity_name;
+    return state.url.base + state.url.data + state.url.action_entity_name;
   },
   rowsDataURL(state) {
-    return state.base_url + state.data_url + state.row_entity_name;
+    return state.url.base + state.url.data + state.url.row_entity_name;
   },
   sectionsDataURL(state) {
-    return state.base_url + state.data_url + state.section_entity_name;
+    return state.url.base + state.url.data + state.url.section_entity_name;
   },
   fieldsDataURL(state) {
-    return state.base_url + state.data_url + state.field_entity_name;
+    return state.url.base + state.url.data + state.url.field_entity_name;
   },
 };
 
@@ -250,20 +252,8 @@ const actions = {
    * @returns {Promise<AxiosResponse<any>>}
    */
   fetchFields(context, entity_id) {
-    let selectFormat = (format, name) => {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = context.rootState.tools.format_types.find(
-        (element) => element.name === format
-      );
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
-    };
-
     return axios
-      .get(state.base_url + state.info_url + entity_id)
+      .get(state.url.base + state.url.info + entity_id)
       .then((response) => {
         let fields = [];
         response.data.content.columns.forEach((column) => {
@@ -274,7 +264,7 @@ const actions = {
                 ? column
                 : config.col_name === "valid"
                 ? true
-                : selectFormat(config.format, config.name);
+                : context.rootGetters["tools/selectFormat"](config);
           });
 
           fields.push({
@@ -513,7 +503,7 @@ const actions = {
         }
         content[config_id] = [form.local_entity_data];
         return axios.post(
-          state.base_url +
+          state.url.base +
             (form.local_entity_data["id"] ? "entity/update" : "entity"),
           content
         );
@@ -575,7 +565,7 @@ const actions = {
           action_requests.push(
             axios
               .post(
-                state.base_url +
+                state.url.base +
                   (action.local_entity_data["id"] ? "entity/update" : "entity"),
                 content
               )
@@ -608,7 +598,7 @@ const actions = {
           row_requests.push(
             axios
               .post(
-                state.base_url +
+                state.url.base +
                   (row.local_entity_data["id"] ? "entity/update" : "entity"),
                 content
               )
@@ -656,7 +646,7 @@ const actions = {
                   section_requests.push(
                     axios
                       .post(
-                        state.base_url +
+                        state.url.base +
                           (section.local_entity_data["id"]
                             ? "entity/update"
                             : "entity"),
@@ -710,7 +700,7 @@ const actions = {
                           fields_requests.push(
                             axios
                               .post(
-                                state.base_url +
+                                state.url.base +
                                   (field.local_entity_data["id"]
                                     ? "entity/update"
                                     : "entity"),

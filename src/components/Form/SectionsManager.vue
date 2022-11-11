@@ -118,9 +118,6 @@ export default {
         (config) => config.name === "Título de la sección"
       ).id;
     },
-    formatTypes() {
-      return this.$store.state.tools.format_types;
-    },
   },
   data: () => ({}),
 
@@ -152,15 +149,6 @@ export default {
         ).id
       ];
     },
-    selectFormat(format, name) {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = this.formatTypes.find((element) => element.name === format);
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
-    },
     addSection() {
       let section = this.newSection();
       section.idxRow = this.idxRow;
@@ -170,10 +158,8 @@ export default {
     newSection() {
       let config_values = {};
       this.$store.state.api.sections_config.forEach((config) => {
-        config_values[config.id] = this.selectFormat(
-          config.format,
-          config.name
-        );
+        config_values[config.id] =
+          this.$store.getters["tools/selectFormat"](config);
         if(config.col_name === "valid")
           config_values[config.id] = true;
       });

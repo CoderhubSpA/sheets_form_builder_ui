@@ -11,6 +11,19 @@ const state = {
   hover_fields: false,
   actual_tab: "config",
 };
+const getters = {
+  selectFormat:
+    (state) =>
+    ({ format, name }) => {
+      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
+        return "12";
+      }
+      let type = state.format_types.find((element) => element.name === format);
+      if (type) return type.value;
+      console.log("No se encontró el formato" + format);
+      return "";
+    },
+};
 const mutations = {
   change_hover(state, activated) {
     state.hover_fields = activated;
@@ -25,6 +38,7 @@ const actions = {};
 export default {
   namespaced: true,
   state,
+  getters,
   mutations,
   actions,
 };

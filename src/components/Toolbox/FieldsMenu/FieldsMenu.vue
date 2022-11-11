@@ -67,9 +67,6 @@ export default {
         (field) => field.show_in_create_form == 2 && this.checkName(field.name)
       );
     },
-    formatTypes() {
-      return this.$store.state.tools.format_types;
-    },
   },
   data() {
     return {
@@ -87,15 +84,6 @@ export default {
     checkName(name) {
       let search = this.removeAccents(this.search).toUpperCase();
       return this.removeAccents(name.toUpperCase()).includes(search);
-    },
-    selectFormat(format, name) {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
-      }
-      let type = this.formatTypes.find((element) => element.name === format);
-      if (type) return type.value;
-      console.log("No se encontró el formato" + format);
-      return "";
     },
   },
 };
