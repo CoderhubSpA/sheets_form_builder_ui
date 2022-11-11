@@ -736,6 +736,25 @@ const actions = {
         return Promise.all(row_requests);
       })
       .then((response) => {
+        // Delete requests
+        let content = {};
+        let rows_config_valid = state.rows_config.find(
+          (config) => config.col_name === "valid"
+        ).id;
+
+        content[rows_config_id] = [];
+        context.rootState.form.deleted.rows.forEach((row_id) => {
+          let deleted_row = {
+            id: row_id,
+          };
+          deleted_row[rows_config_valid] = false;
+          content[rows_config_id].push(deleted_row);
+        });
+        console.log("delete request");
+        console.log(content);
+        return axios.post(state.url.base + "entity/update", content);
+      })
+      .then((response) => {
         console.log(response);
         console.log("Finished");
         state.status_msg = "";

@@ -135,8 +135,7 @@ export default {
       this.$store.state.api.rows_config.forEach((config) => {
         config_values[config.id] =
           this.$store.getters["tools/selectFormat"](config);
-        if(config.col_name === "valid")
-          config_values[config.id] = true;
+        if (config.col_name === "valid") config_values[config.id] = true;
       });
 
       return {
@@ -150,7 +149,18 @@ export default {
     },
     deleteRow(idx) {
       this.updateFields(idx);
+      console.log(this.rows[idx]);
+      let row_id =
+        this.rows[idx].config_values[
+          this.$store.state.api.rows_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (row_id) {
+        this.$store.state.form.deleted.rows.push(row_id);
+      }
       this.rows.splice(idx, 1);
+      console.log(this.$store.state.form.deleted);
     },
     updateFields(index) {
       this.rows[index].sections.forEach((section) => {

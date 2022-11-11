@@ -92,6 +92,9 @@ const state = {
     local_entity_data: {},
     unfilled_required_values: 0,
   },
+  deleted: {
+    rows: [],
+  },
   current_config: {},
   current_view: "xl",
 };
