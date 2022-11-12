@@ -149,7 +149,6 @@ export default {
     },
     deleteRow(idx) {
       this.updateFields(idx);
-      console.log(this.rows[idx]);
       let row_id =
         this.rows[idx].config_values[
           this.$store.state.api.rows_config.find(
@@ -162,7 +161,6 @@ export default {
         );
       }
       this.rows.splice(idx, 1);
-      console.log(this.$store.state.form.deleted);
     },
     updateFields(index) {
       this.rows[index].sections.forEach((section) => {
