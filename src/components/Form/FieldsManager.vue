@@ -145,6 +145,17 @@ export default {
         this.$store.state.form.current_config = {};
       }
       this.updateFields(index);
+      let field_id =
+        this.fields[index].config_values[
+          this.$store.state.api.fields_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (field_id) {
+        this.$store.state.form.deleted.fields.push(
+          this.fields[index].local_entity_data
+        );
+      }
       this.fields.splice(index, 1);
     },
     updateFields(index) {

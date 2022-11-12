@@ -160,8 +160,7 @@ export default {
       this.$store.state.api.sections_config.forEach((config) => {
         config_values[config.id] =
           this.$store.getters["tools/selectFormat"](config);
-        if(config.col_name === "valid")
-          config_values[config.id] = true;
+        if (config.col_name === "valid") config_values[config.id] = true;
       });
 
       return {
@@ -183,6 +182,17 @@ export default {
         this.$store.state.form.current_section_config = null;
       }
       this.updateFields(idx);
+      let section_id =
+        this.sections[idx].config_values[
+          this.$store.state.api.sections_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (section_id) {
+        this.$store.state.form.deleted.sections.push(
+          this.sections[idx].local_entity_data
+        );
+      }
       this.sections.splice(idx, 1);
       this.sections.forEach((s, sidx) => (s.index = sidx));
     },

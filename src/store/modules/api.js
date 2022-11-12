@@ -738,17 +738,50 @@ const actions = {
       .then((response) => {
         // Delete requests
         let content = {};
-        let rows_config_valid = state.rows_config.find(
-          (config) => config.col_name === "valid"
-        ).id;
 
-        content[rows_config_id] = [];
-        context.rootState.form.deleted.rows.forEach(
-          (deleted_row_entity_data) => {
-            deleted_row_entity_data[rows_config_valid] = false;
-            content[rows_config_id].push(deleted_row_entity_data);
-          }
-        );
+        // Deleted rows
+        if (context.rootState.form.deleted.rows.length > 0) {
+          content[rows_config_id] = [];
+          context.rootState.form.deleted.rows.forEach(
+            (deleted_row_entity_data) => {
+              deleted_row_entity_data[
+                state.rows_config.find(
+                  (config) => config.col_name === "valid"
+                ).id
+              ] = false;
+              content[rows_config_id].push(deleted_row_entity_data);
+            }
+          );
+        }
+        // Deleted sections
+        if (context.rootState.form.deleted.sections.length > 0) {
+          content[sections_config_id] = [];
+          context.rootState.form.deleted.sections.forEach(
+            (deleted_section_entity_data) => {
+              deleted_section_entity_data[
+                state.sections_config.find(
+                  (config) => config.col_name === "valid"
+                ).id
+              ] = false;
+              content[sections_config_id].push(deleted_section_entity_data);
+            }
+          );
+        }
+        // Deleted fields
+        if (context.rootState.form.deleted.fields.length > 0) {
+          content[fields_config_id] = [];
+          context.rootState.form.deleted.fields.forEach(
+            (deleted_field_entity_data) => {
+              deleted_field_entity_data[
+                state.fields_config.find(
+                  (config) => config.col_name === "valid"
+                ).id
+              ] = false;
+              content[fields_config_id].push(deleted_field_entity_data);
+            }
+          );
+        }
+        if (Object.keys(content).length === 0) return response;
         console.log("delete request");
         console.log(content);
         return axios.post(state.url.base + "entity/update", content);

@@ -94,6 +94,8 @@ const state = {
   },
   deleted: {
     rows: [],
+    sections: [],
+    fields: [],
   },
   current_config: {},
   current_view: "xl",
