@@ -743,13 +743,12 @@ const actions = {
         ).id;
 
         content[rows_config_id] = [];
-        context.rootState.form.deleted.rows.forEach((row_id) => {
-          let deleted_row = {
-            id: row_id,
-          };
-          deleted_row[rows_config_valid] = false;
-          content[rows_config_id].push(deleted_row);
-        });
+        context.rootState.form.deleted.rows.forEach(
+          (deleted_row_entity_data) => {
+            deleted_row_entity_data[rows_config_valid] = false;
+            content[rows_config_id].push(deleted_row_entity_data);
+          }
+        );
         console.log("delete request");
         console.log(content);
         return axios.post(state.url.base + "entity/update", content);

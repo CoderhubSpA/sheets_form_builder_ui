@@ -157,7 +157,9 @@ export default {
           ).id
         ];
       if (row_id) {
-        this.$store.state.form.deleted.rows.push(row_id);
+        this.$store.state.form.deleted.rows.push(
+          this.rows[idx].local_entity_data
+        );
       }
       this.rows.splice(idx, 1);
       console.log(this.$store.state.form.deleted);
