@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h5>Primero elige una entidad</h5>
+        <h5>Primero elige una entidad: {{ entitySelected.name }}</h5>
         <b-form-select
           class="form-select"
           :select-size="15"
@@ -19,7 +19,7 @@
         </b-form-select>
       </div>
     </div>
-    <div class="row">
+    <div class="row pt-2">
       <div class="col-6">
         <b-button
           variant="danger"
@@ -29,7 +29,7 @@
           Atrás
         </b-button>
       </div>
-      <div class="col-6">
+      <div class="col-6 d-flex justify-content-end">
         <b-button variant="primary" size="lg" @click="createForm">
           Crear formulario
         </b-button>
@@ -43,7 +43,7 @@ export default {
   name: "SelectEntityComponent",
   data() {
     return {
-      entitySelected: null,
+      entitySelected: [],
     };
   },
   computed: {
