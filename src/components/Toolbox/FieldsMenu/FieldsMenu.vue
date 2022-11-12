@@ -1,23 +1,16 @@
 <template>
-  <div id="sidebarfields" class="flex-shrink-0 custom-side-menu">
+  <div id="sidebarfields" :class="showMenu ? 'show-menu':'hide-menu'" class="flex-shrink-0 custom-side-menu bg-light">
 
-    <div :class="showMenu ? 'hide-fold':'show-fold'">
+
       <b-row class="m-0">
         <b-col class="p-2">
-          <v-icon @click="openMenu" class="float-start" role="button" name="angle-right" scale="1.5"  />
-        </b-col>
-      </b-row> 
-      <b-row class="m-0 p-0 py-3" style="writing-mode: vertical-rl; font-size: 16pt; ">
-        Campos
-      </b-row> 
-    </div>
-    <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
-      <b-row class="m-0">
-        <b-col class="p-2">
-          <v-icon @click="closeMenu" class="float-start" role="button" name="angle-left" scale="1.5"  />
+          <v-icon @click="switchMenu" class="float-end" role="button" :name="showMenu? 'angle-left': 'angle-right'" scale="1.5"  />
         </b-col>
       </b-row>
-      <div class="mx-2">
+      <b-row class="m-0 p-0 py-3" :class="showMenu? 'd-none':'d-block'" style="color:#008a94;writing-mode: vertical-rl; font-size: 16pt;">
+            Campos
+      </b-row> 
+      <b-row class="mx-2" :class="showMenu? 'd-block':'d-none'">
         <b-input
           v-model="search"
           id="section-config-name"
@@ -39,9 +32,7 @@
             :format="element.format"
           />
         </draggable>
-      </div>
-    </div>
-
+      </b-row>
   </div>
 </template>
 
@@ -117,14 +108,10 @@ export default {
       console.log("No se encontró el formato" + format);
       return "";
     },
-    openMenu(){
+    switchMenu(){
       this.showMenu = !this.showMenu;
-      document.getElementById("sidebarfields").style.width = "20%";
     },
-    closeMenu(){
-      this.showMenu = !this.showMenu;
-      document.getElementById("sidebarfields").style.width = "3%";
-    }
+
   },
 };
 </script>
@@ -176,28 +163,29 @@ export default {
 }
 
 .custom-side-menu{
-  width: 3%;
-  /* max-width: 20%; */
+  /* width: 3%;
+  max-width: 20%;
+  height: 100%;
+  max-height: 100%; */
+  overflow-y: auto;
+  transition:width 0.3s ease;
+}
+.show-menu{
+  width: 20%;
+  max-width: 25%;
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-}
-.show-menu{
-  display:block;
+  overflow-x: hidden;
+  transition:width .3s ease;
 }
 .hide-menu{
-  display:none;
-}
-.show-fold{
-  display:block;
-  width: 35px;
+  width: 3%;
+  max-width: 25%;
   height: 100%;
   max-height: 100%;
-  background-color: #eeeef5;
-  color:#008a94;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-.hide-fold{
-  display:none;
 
-}
 </style>

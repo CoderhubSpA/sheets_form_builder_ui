@@ -1,36 +1,20 @@
 <template>
-  <div :id="menu_id" class="flex-shrink-0 custom-side-menu float-end">
-    
-    
-    <div :class="showMenu ? 'hide-fold':'show-fold'" class="float-end">
-      <b-row class="m-0">
-        <b-col class="p-2">
-          <v-icon @click="openMenu" class="float-end" role="button" name="angle-left" scale="1.5"  />
-        </b-col>
-      </b-row> 
+  <div :id="menu_id" :class="showMenu ? 'show-menu':'hide-menu'" class="flex-shrink-0 float-end custom-side-menu bg-light">
 
-      <b-row class="m-0 p-0 py-3" style="writing-mode: vertical-rl; font-size: 16pt;">
-        Configuración
-      </b-row> 
-    </div>
-    <div :class="showMenu ? 'show-menu':'hide-menu'" class="bg-light">
-      <b-row class="m-0">
-        <b-col class="p-2">
-          <v-icon @click="closeMenu" class="float-end" role="button" name="angle-right" scale="1.5"  />
-        </b-col>
-      </b-row>
-      <b-row class="m-0">
-        
-        <b-col cols="2" class="text-center d-none" >
-          
-          <!-- <p class="m-0" style="writing-mode: vertical-rl; text-orientation: mixed;font-size: 16pt;">Configuración</p> -->
-        </b-col>
-      <b-col class="px-3 m-0">
-        <ConfigMenuComponent :menu_id="menu_id"/>
-      </b-col>
-      </b-row>
-    </div>
- 
+        <b-row class="m-0">
+          <b-col class="p-2">
+            <v-icon @click="switchMenu" class="float-start" role="button" :name="showMenu? 'angle-right': 'angle-left'" scale="1.5"  />
+          </b-col>
+        </b-row>
+        <b-row class="m-0 p-0 py-3" :class="showMenu? 'd-none':'d-block'" style="color:#008a94;writing-mode: vertical-rl; font-size: 16pt;">
+            Configuración
+        </b-row> 
+        <b-row class="m-0" :class="showMenu? 'd-block':'d-none'">
+          <b-col class="px-3 m-0">
+            <ConfigMenuComponent :menu_id="menu_id"/>
+          </b-col>
+        </b-row>
+  
     <!--
     <FormConfigMenu
       v-if="currentConfigType === 'form_config'"
@@ -118,22 +102,9 @@ export default {
     };
   },
   methods: {
-    openMenu(){
+    switchMenu(){
       this.showMenu = !this.showMenu;
-      var elements = document.getElementsByClassName("custom-side-menu");
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].style.width=("25%");
-      }
-      console.log("open")
     },
-    closeMenu(){
-      this.showMenu = !this.showMenu;
-      var elements = document.getElementsByClassName("custom-side-menu");
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].style.width=("3%");
-      }
-      console.log("close")
-    }
   },
 };
 </script>
@@ -141,30 +112,31 @@ export default {
 <style lang="scss">
 
 .custom-side-menu{
+  // width: 3%;
+  // max-width: 25%;
+  // height: 100%;
+  // max-height: 1to;00%;
+  overflow-y: auto;
+  transition:width  0.3s ease;
+  // transition: opacity 1s ease-out;
+}
+.show-menu{
+  width: 20%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition:width .3s ease;
+}
+.hide-menu{
   width: 3%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
-}
-.show-menu{
-  display:block;
-  height: 100%;
   overflow-x: hidden;
 }
-.hide-menu{
-  display:none;
-}
-.show-fold{
-  display:block;
-  width: 35px;
-  height: 100%;
-  max-height: 100%;
-  background-color: #eeeef5;
-  color:#008a94;
-}
-.hide-fold{
-  display:none;
-}
+
 
 </style>
