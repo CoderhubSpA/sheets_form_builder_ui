@@ -151,12 +151,14 @@ const mutations = {
     state.sections_config_select = config_select_options;
   },
   SET_FIELDS_CONFIG(state, config) {
+    console.log("set fields config", config)
     state.fields_config = config;
   },
   SET_FIELDS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
     state.fields_config_select = config_select_options;
   },
   SET_FIELDS(state, fields) {
+    console.log("fields", fields)
     state.fields = fields;
   },
   REMOVE_FIELD(state, field) {
@@ -256,9 +258,19 @@ const actions = {
       .get(state.url.base + state.url.info + entity_id)
       .then((response) => {
         let fields = [];
+        console.log("nose", context.state.fields_config)
         response.data.content.columns.forEach((column) => {
           let config_values = {};
+          let format_config;
+          console.log("---------", column.name, "-------------")
+          console.log(column)
           context.state.fields_config.forEach((config) => {
+            // console.log("config", config)
+            // console.log("config", config.id)
+            if (config.col_name == "format") {
+              format_config = config.id;
+              console.log("format_config", format_config);
+            }
             config_values[config.id] =
               config.name === "Columna"
                 ? column
@@ -267,6 +279,14 @@ const actions = {
                 : context.rootGetters["tools/selectFormat"](config);
           });
 
+          config_values[format_config] = {
+            id: column.format,
+            name: null,
+            valid: "1",
+            color: null,
+            text_color: null
+          }
+          
           fields.push({
             index: fields.length,
             idxRow: -1,
@@ -277,7 +297,8 @@ const actions = {
             config_values: config_values,
             show_in_create_form: column.show_in_create_form,
             name: column.name,
-            format: column.format,
+            // format: column.format,
+            format_config_id: format_config
           });
         });
         context.commit("SET_FIELDS", fields); // response.data.content.columns)

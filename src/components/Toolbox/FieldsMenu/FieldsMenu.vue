@@ -19,7 +19,8 @@
           v-for="element in fields"
           :key="element.name"
           :text="element.name"
-          :format="element.format"
+          :format_config_id="element.format_config_id"
+          :config="element.config_values"
         />
       </draggable>
     </div>
