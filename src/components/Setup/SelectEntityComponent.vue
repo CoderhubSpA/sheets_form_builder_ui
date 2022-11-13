@@ -20,17 +20,18 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-6 atras-button">
         <b-button
           variant="danger"
           size="lg"
+          style="color: white"
           @click="$emit('cancel-create-form-event')"
         >
           Atrás
         </b-button>
       </div>
-      <div class="col-6">
-        <b-button variant="primary" size="lg" @click="createForm">
+      <div class="col-6 crear-button">
+        <b-button variant="primary" size="lg" @click="createForm" :disabled="submitDisabled">
           Crear formulario
         </b-button>
       </div>
@@ -56,6 +57,9 @@ export default {
       return this.$store.state.api.form_config_select[this.entityConfigId]
         .options;
     },
+    submitDisabled: function () {
+      return (this.entitySelected == null) ? true : false;
+    }
   },
   methods: {
     createForm() {
@@ -71,3 +75,19 @@ export default {
   },
 };
 </script>
+
+<style>
+
+.atras-button{
+  position:relative; 
+  left: 10px; 
+  top: 7px;
+}
+
+.crear-button{
+  position:relative; 
+  left: 335px; 
+  top: 7px;
+}
+
+</style>
