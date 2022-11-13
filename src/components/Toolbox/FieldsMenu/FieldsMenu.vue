@@ -12,7 +12,7 @@
         @dragend.native="hover_fields = false"
         class="card-deck row"
         style="display: flex; margin: 5px 0 5px 0"
-        :group="{ name: 'Fields', pull: true, put: true }"
+        :group="{ name: 'Fields', pull: true, put: false }"
         :list="fields"
       >
         <FieldMenuComponent
