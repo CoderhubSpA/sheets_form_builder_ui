@@ -176,11 +176,11 @@ export default {
     },
     deleteSection(idx) {
       if (
-        this.$store.state.form.current_section_config?.index ==
+        this.$store.state.tools.current_config.obj?.index ===
         this.sections[idx].index
-      ) {
-        this.$store.state.form.current_section_config = null;
-      }
+      )
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
+
       this.updateFields(idx);
       let section_id =
         this.sections[idx].config_values[

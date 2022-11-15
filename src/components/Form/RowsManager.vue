@@ -148,6 +148,11 @@ export default {
       };
     },
     deleteRow(idx) {
+      if (
+        this.$store.state.tools.current_config.obj?.index ===
+        this.rows[idx].index
+      )
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
       this.updateFields(idx);
       let row_id =
         this.rows[idx].config_values[
