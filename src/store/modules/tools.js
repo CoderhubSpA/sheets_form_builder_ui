@@ -22,7 +22,7 @@ const getters = {
       }
       let type = state.format_types.find((element) => element.name === format);
       if (type) return type.value;
-      console.log("No se encontró el formato" + format);
+      console.warn("No se encontró el formato" + format);
       return "";
     },
 };
