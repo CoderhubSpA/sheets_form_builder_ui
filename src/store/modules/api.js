@@ -260,7 +260,7 @@ const actions = {
           let config_values = {};
           let format_config;
           context.state.fields_config.forEach((config) => {
-            if (config.col_name == "format") {
+            if (config.col_name === "format") {
               format_config = config.id;
             }
             config_values[config.id] =
@@ -632,21 +632,21 @@ const actions = {
                   // Associate the section with the created row and form
                   section.local_entity_data[
                     state.sections_config.find(
-                      (config) => config.name == "Fila del formulario"
+                      (config) => config.name === "Fila del formulario"
                     ).id
                   ] = section.config_values[
                     state.sections_config.find(
-                      (config) => config.name == "Fila del formulario"
+                      (config) => config.name === "Fila del formulario"
                     ).id
                   ] = row_id;
 
                   section.local_entity_data[
                     state.sections_config.find(
-                      (config) => config.name == "Formulario"
+                      (config) => config.name === "Formulario"
                     ).id
                   ] = section.config_values[
                     state.sections_config.find(
-                      (config) => config.name == "Formulario"
+                      (config) => config.name === "Formulario"
                     ).id
                   ] = form_id;
                 });
@@ -686,21 +686,21 @@ const actions = {
                           // Associate the field with the created section and form
                           field.local_entity_data[
                             state.fields_config.find(
-                              (config) => config.name == "Sección formulario"
+                              (config) => config.name === "Sección formulario"
                             ).id
                           ] = field.config_values[
                             state.fields_config.find(
-                              (config) => config.name == "Sección formulario"
+                              (config) => config.name === "Sección formulario"
                             ).id
                           ] = section_id;
 
                           field.local_entity_data[
                             state.fields_config.find(
-                              (config) => config.name == "Formulario"
+                              (config) => config.name === "Formulario"
                             ).id
                           ] = field.config_values[
                             state.fields_config.find(
-                              (config) => config.name == "Formulario"
+                              (config) => config.name === "Formulario"
                             ).id
                           ] = form_id;
                         });

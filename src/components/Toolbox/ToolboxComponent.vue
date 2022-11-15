@@ -4,26 +4,26 @@
       <b-nav-item
         class="col-6 center"
         @click="tabFields"
-        :active="tab == 'fields'"
+        :active="tab === 'fields'"
       >
         <h5><v-icon dense name="list"></v-icon> Campos</h5>
       </b-nav-item>
       <b-nav-item
         class="col-6 center"
         @click="tabConfig"
-        :active="tab == 'config'"
+        :active="tab === 'config'"
       >
         <h5><v-icon dense name="cog"></v-icon> Configuración</h5>
       </b-nav-item>
     </b-nav>
     <div class="ps-0" id="tab">
       <fields
-        v-if="tab == 'fields'"
+        v-if="tab === 'fields'"
         :menu_name="'Fields'"
         :menu_id="'Fields_Menu'"
       />
       <config
-        v-else-if="tab == 'config'"
+        v-else-if="tab === 'config'"
         :menu_name="'Configuración'"
         :menu_id="'Config_Menu'"
       />

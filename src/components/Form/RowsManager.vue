@@ -45,7 +45,7 @@
                 type="button"
                 class="btn btn-primary btn-circle btn-xl"
                 @click="addRow"
-                v-if="view == 'xl'"
+                v-if="view === 'xl'"
               >
                 <v-icon name="plus" scale="1.75" />
               </button>
@@ -53,7 +53,7 @@
                 type="button"
                 class="btn btn-primary btn-circle btn-lg"
                 @click="addRow"
-                v-if="view == 'md'"
+                v-if="view === 'md'"
               >
                 <v-icon name="plus" scale="1.45" />
               </button>
@@ -61,15 +61,15 @@
                 type="button"
                 class="btn btn-primary btn-circle btn-md"
                 @click="addRow"
-                v-if="view == 'sm'"
+                v-if="view === 'sm'"
               >
                 <v-icon name="plus" scale="1.25" />
               </button>
               <p
                 :class="
-                  view == 'xl'
+                  view === 'xl'
                     ? 'normalText'
-                    : view == 'md'
+                    : view === 'md'
                     ? 'mediumText'
                     : 'smallText'
                 "

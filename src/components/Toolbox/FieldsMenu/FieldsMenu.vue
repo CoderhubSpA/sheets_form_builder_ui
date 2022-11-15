@@ -87,7 +87,7 @@ export default {
     },
     fields() {
       return this.$store.state.api.fields.filter(
-        (field) => field.show_in_create_form == 2 && this.checkName(field.name)
+        (field) => field.show_in_create_form === 2 && this.checkName(field.name)
       );
     },
   },

@@ -5,7 +5,7 @@
     <div
       v-for="element in $store.state.api[configType].filter(
         (element) =>
-          element.show_in_create_form == 2 &&
+          element.show_in_create_form === 2 &&
           !hidden_config.includes(element.name)
       )"
       :key="element.id"
@@ -22,7 +22,7 @@
 
       <!--Entity Type-->
 
-      <div v-if="element.name == 'Tipo de Entidad'">
+      <div v-if="element.name === 'Tipo de Entidad'">
         <select
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
@@ -46,7 +46,7 @@
 
       <!--Actions-->
       <multiselect
-        v-else-if="element.name == 'Acciones'"
+        v-else-if="element.name === 'Acciones'"
         :type="element.format"
         v-model="configActions"
         :options="$store.state.api[configType + '_select'][element.id].options"
@@ -66,7 +66,7 @@
       <!--Name-->
 
       <b-input
-        v-else-if="element.col_name == 'name'"
+        v-else-if="element.col_name === 'name'"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
         type="text"
@@ -76,7 +76,7 @@
       <!--Description-->
 
       <b-form-textarea
-        v-else-if="element.col_name == 'description'"
+        v-else-if="element.col_name === 'description'"
         size="lg"
         v-model="configValues[element.id]"
         :id="'menu-' + menu_id + '-element-' + element.id"
@@ -85,7 +85,7 @@
       <!--Customs Sliders-->
 
       <custom-slider
-        v-else-if="element.col_name == 'col_sm'"
+        v-else-if="element.col_name === 'col_sm'"
         min="1"
         max="12"
         step="1"
@@ -94,7 +94,7 @@
       />
 
       <custom-slider
-        v-else-if="element.col_name == 'col_md'"
+        v-else-if="element.col_name === 'col_md'"
         min="1"
         max="12"
         step="1"
@@ -103,7 +103,7 @@
       />
 
       <custom-slider
-        v-else-if="element.col_name == 'col_xl'"
+        v-else-if="element.col_name === 'col_xl'"
         min="1"
         max="12"
         step="1"
@@ -111,7 +111,7 @@
         v-model="configValues[element.id]"
       />
 
-      <div v-else-if="element.col_name == 'format'">
+      <div v-else-if="element.col_name === 'format'">
         <!-- {{element.id}}<br>
         {{configValues[element.id]}} -->
         <select
@@ -136,14 +136,14 @@
       <!--Types from the api-->
 
       <b-form-checkbox
-        v-else-if="element.format == 'SiNo'"
+        v-else-if="element.format === 'SiNo'"
         :id="'menu-' + menu_id + '-element-' + element.name"
         v-model="configValues[element.id]"
       >
       </b-form-checkbox>
 
       <b-form-input
-        v-else-if="element.format == 'TEXT'"
+        v-else-if="element.format === 'TEXT'"
         :id="'menu-' + menu_id + '-element-' + element.name"
         :placeholder="'Ingresa ' + element.name"
         v-model="configValues[element.id]"
@@ -151,19 +151,19 @@
       </b-form-input>
 
       <b-form-input
-        v-else-if="element.format == 'NUMBER'"
+        v-else-if="element.format === 'NUMBER'"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
       ></b-form-input>
 
       <b-form-input
-        v-else-if="element.format == 'URL'"
+        v-else-if="element.format === 'URL'"
         type="url"
         :id="'menu-' + menu_id + '-element-' + element.id"
         v-model="configValues[element.id]"
       ></b-form-input>
 
-      <div v-else-if="element.format == 'SELECTOR'">
+      <div v-else-if="element.format === 'SELECTOR'">
         <select
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
@@ -183,7 +183,7 @@
         </select>
       </div>
 
-      <div v-else-if="element.format == 'SELECTOR[MULTIPLE]'">
+      <div v-else-if="element.format === 'SELECTOR[MULTIPLE]'">
         <multiselect
           :type="element.format"
           v-model="configValues[element.id]"
@@ -206,7 +206,7 @@
 
       <b-form-row
         class="py-1 w-100"
-        v-else-if="element.format == 'DOCUMENT[IMAGE]'"
+        v-else-if="element.format === 'DOCUMENT[IMAGE]'"
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
         <b-form-file

@@ -2,9 +2,9 @@
   <div @click.self="$emit('open-row-config-event', row)">
     <div
       :class="
-        view == 'xl'
+        view === 'xl'
           ? 'form-group col-md-4 flex'
-          : view == 'md'
+          : view === 'md'
           ? 'form-group col-md-6 flex'
           : 'form-group col-md-8 flex'
       "

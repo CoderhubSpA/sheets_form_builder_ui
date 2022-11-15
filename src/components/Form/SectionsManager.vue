@@ -14,11 +14,11 @@
               :key="section.index"
               :id="`section-${section.index}`"
               :cols="
-                view == 'xl'
+                view === 'xl'
                   ? getColXl(section)
                     ? getColXl(section)
                     : 12
-                  : view == 'md'
+                  : view === 'md'
                   ? getColMd(section)
                     ? getColMd(section)
                     : 12
@@ -49,7 +49,7 @@
               type="button"
               class="btn-primary btn btn-circle btn-lg"
               @click="addSection"
-              v-if="view == 'xl'"
+              v-if="view === 'xl'"
             >
               <v-icon name="plus" scale="1.45" />
             </button>
@@ -57,7 +57,7 @@
               type="button"
               class="btn-primary btn btn-circle btn-md"
               @click="addSection"
-              v-if="view == 'md'"
+              v-if="view === 'md'"
             >
               <v-icon name="plus" scale="1.25" />
             </button>
@@ -65,15 +65,15 @@
               type="button"
               class="btn-primary btn btn-circle btn-sm"
               @click="addSection"
-              v-if="view == 'sm'"
+              v-if="view === 'sm'"
             >
               <v-icon name="plus" scale="1" />
             </button>
             <p
               :class="
-                view == 'xl'
+                view === 'xl'
                   ? 'normalText'
-                  : view == 'md'
+                  : view === 'md'
                   ? 'mediumText'
                   : 'smallText'
               "
