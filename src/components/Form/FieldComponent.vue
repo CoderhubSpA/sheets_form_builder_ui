@@ -59,7 +59,7 @@
         v-model="field.config_values[name_config_id]"
         type="text"
         class="form-control"
-        placeholder="Nombre Campo"
+        placeholder="Nombre de campo"
       />
     </div>
   </div>
