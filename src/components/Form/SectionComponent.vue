@@ -2,7 +2,7 @@
   <div
     class="p-3 rounded panel-resizable"
     :style="
-      $store.state.form.current_config.obj === section
+      $store.state.tools.current_config.obj === section
         ? 'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;'
         : 'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'
     "
@@ -15,7 +15,8 @@
           type="text"
           class="border-0"
           placeholder="Nombre Sección"
-          v-b-tooltip.hover.bottom title="Cambiar nombre sección"
+          v-b-tooltip.hover.bottom
+          title="Cambiar nombre sección"
         />
         <button
           type="button"
@@ -86,10 +87,10 @@ export default {
 </script>
 
 <style>
-.border-0{
+.border-0 {
   background: transparent !important;
 }
-.border-0:hover{
+.border-0:hover {
   border: solid !important;
   border-width: 0.1px !important;
 }

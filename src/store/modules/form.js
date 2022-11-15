@@ -97,7 +97,6 @@ const state = {
     sections: [],
     fields: [],
   },
-  current_config: {},
   current_view: "xl",
 };
 const mutations = {

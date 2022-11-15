@@ -260,7 +260,7 @@ export default {
   },
   computed: {
     currentConfig() {
-      return this.$store.state.form.current_config;
+      return this.$store.state.tools.current_config;
     },
     configType() {
       return this.currentConfig.config_type;

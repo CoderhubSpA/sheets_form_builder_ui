@@ -176,11 +176,11 @@ export default {
     },
     deleteSection(idx) {
       if (
-        this.$store.state.form.current_section_config?.index ==
+        this.$store.state.tools.current_config.obj?.index ===
         this.sections[idx].index
-      ) {
-        this.$store.state.form.current_section_config = null;
-      }
+      )
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
+
       this.updateFields(idx);
       let section_id =
         this.sections[idx].config_values[
@@ -209,12 +209,7 @@ export default {
       }
     },
     openSectionConfig(section) {
-      this.$store.state.form.current_config = {
-        obj: section,
-        title: "Configuración de la sección",
-        config_type: "sections_config",
-        name_id: "Título de la sección",
-      };
+      this.$store.dispatch("tools/openSectionConfig", section);
       this.$store.commit("tools/setActivatedTab", "config");
     },
     setForm(section, id) {
