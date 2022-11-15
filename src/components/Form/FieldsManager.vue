@@ -139,12 +139,23 @@ export default {
     },
     deleteField(index) {
       if (
-        this.$store.state.form.current_config.obj?.index ==
+        this.$store.state.tools.current_config.obj?.index ==
         this.fields[index].index
       ) {
-        this.$store.state.form.current_config = {};
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
       }
       this.updateFields(index);
+      let field_id =
+        this.fields[index].config_values[
+          this.$store.state.api.fields_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (field_id) {
+        this.$store.state.form.deleted.fields.push(
+          this.fields[index].local_entity_data
+        );
+      }
       this.fields.splice(index, 1);
     },
     updateFields(index) {
@@ -166,13 +177,8 @@ export default {
       }
     },
     openFieldConfig(newField) {
-      this.$store.state.form.current_config = {
-        obj: newField,
-        title: "Configuración del campo",
-        config_type: "fields_config",
-        name_id: "Columna",
-      };
-      this.$store.commit("tools/switchConfigSlide", true);
+      this.$store.dispatch("tools/openFieldConfig", newField);
+      this.$store.commit("tools/setActivatedTab", "config");
     },
     dragleave() {
       this.$store.commit("tools/change_hover", false);

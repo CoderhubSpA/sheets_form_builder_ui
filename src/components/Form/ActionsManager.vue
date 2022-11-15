@@ -28,12 +28,7 @@ export default {
   },
   methods: {
     openActionConfig(action) {
-      this.$store.state.form.current_config = {
-        obj: action,
-        title: "Configuración de la acción",
-        config_type: "actions_config",
-        name_id: "Acción",
-      };
+      this.$store.dispatch("tools/openActionConfig", action);
     },
   },
 };

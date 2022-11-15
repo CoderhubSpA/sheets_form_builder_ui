@@ -92,7 +92,11 @@ const state = {
     local_entity_data: {},
     unfilled_required_values: 0,
   },
-  current_config: {},
+  deleted: {
+    rows: [],
+    sections: [],
+    fields: [],
+  },
   current_view: "xl",
 };
 const mutations = {

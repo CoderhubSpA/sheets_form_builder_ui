@@ -14,7 +14,7 @@
               >
                 <div
                   :style="
-                    $store.state.form.current_config.obj === row
+                    $store.state.tools.current_config.obj === row
                       ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
                       : ''
                   "
@@ -135,8 +135,7 @@ export default {
       this.$store.state.api.rows_config.forEach((config) => {
         config_values[config.id] =
           this.$store.getters["tools/selectFormat"](config);
-        if(config.col_name === "valid")
-          config_values[config.id] = true;
+        if (config.col_name === "valid") config_values[config.id] = true;
       });
 
       return {
@@ -149,7 +148,23 @@ export default {
       };
     },
     deleteRow(idx) {
+      if (
+        this.$store.state.tools.current_config.obj?.index ===
+        this.rows[idx].index
+      )
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
       this.updateFields(idx);
+      let row_id =
+        this.rows[idx].config_values[
+          this.$store.state.api.rows_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (row_id) {
+        this.$store.state.form.deleted.rows.push(
+          this.rows[idx].local_entity_data
+        );
+      }
       this.rows.splice(idx, 1);
     },
     updateFields(index) {
@@ -160,13 +175,8 @@ export default {
       });
     },
     openRowConfig(row) {
-      this.$store.state.form.current_config = {
-        obj: row,
-        title: "Configuración de la fila",
-        config_type: "rows_config",
-        name_id: "Nombre",
-      };
-      this.$store.commit("tools/switchConfigSlide", true);
+      this.$store.dispatch("tools/openRowConfig", row);
+      this.$store.commit("tools/setActivatedTab", "config");
     },
   },
 };

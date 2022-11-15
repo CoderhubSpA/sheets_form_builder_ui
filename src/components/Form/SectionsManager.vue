@@ -160,8 +160,7 @@ export default {
       this.$store.state.api.sections_config.forEach((config) => {
         config_values[config.id] =
           this.$store.getters["tools/selectFormat"](config);
-        if(config.col_name === "valid")
-          config_values[config.id] = true;
+        if (config.col_name === "valid") config_values[config.id] = true;
       });
 
       return {
@@ -177,12 +176,23 @@ export default {
     },
     deleteSection(idx) {
       if (
-        this.$store.state.form.current_section_config?.index ==
+        this.$store.state.tools.current_config.obj?.index ===
         this.sections[idx].index
-      ) {
-        this.$store.state.form.current_section_config = null;
-      }
+      )
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
+
       this.updateFields(idx);
+      let section_id =
+        this.sections[idx].config_values[
+          this.$store.state.api.sections_config.find(
+            (config) => config.col_name === "id"
+          ).id
+        ];
+      if (section_id) {
+        this.$store.state.form.deleted.sections.push(
+          this.sections[idx].local_entity_data
+        );
+      }
       this.sections.splice(idx, 1);
       this.sections.forEach((s, sidx) => (s.index = sidx));
     },
@@ -199,13 +209,8 @@ export default {
       }
     },
     openSectionConfig(section) {
-      this.$store.state.form.current_config = {
-        obj: section,
-        title: "Configuración de la sección",
-        config_type: "sections_config",
-        name_id: "Título de la sección",
-      };
-      this.$store.commit("tools/switchConfigSlide", true);
+      this.$store.dispatch("tools/openSectionConfig", section);
+      this.$store.commit("tools/setActivatedTab", "config");
     },
     setForm(section, id) {
       section.form_id = id;

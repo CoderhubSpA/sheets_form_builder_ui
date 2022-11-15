@@ -14,7 +14,8 @@
         type="text"
         class="border-0"
         placeholder="Nombre Fila"
-        v-b-tooltip.hover.bottom title="Cambiar nombre fila"
+        v-b-tooltip.hover.bottom
+        title="Cambiar nombre fila"
       />
       <button
         type="button"
