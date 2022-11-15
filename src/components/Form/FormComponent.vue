@@ -12,8 +12,8 @@
       class="row justify-content-center mx-auto"
     >
       <b-col
-        :xl="view == 'xl' ? 12 : view == 'md' ? 8 : 5"
-        :md="view == 'xl' || view == 'md' ? 12 : 8"
+        :xl="view === 'xl' ? 12 : view === 'md' ? 8 : 5"
+        :md="view === 'xl' || view === 'md' ? 12 : 8"
         :sm="12"
         class="border rounded p-3"
         @click.self="openFormConfig(form)"

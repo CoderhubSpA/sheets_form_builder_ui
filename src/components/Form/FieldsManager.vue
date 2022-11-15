@@ -14,11 +14,11 @@
       <transition-group tag="b-row" class="sections">
         <b-col
           :cols="
-            view == 'xl'
+            view === 'xl'
               ? getColXl(field)
                 ? getColXl(field)
                 : 12
-              : view == 'md'
+              : view === 'md'
               ? getColMd(field)
                 ? getColMd(field)
                 : 12
@@ -139,7 +139,7 @@ export default {
     },
     deleteField(index) {
       if (
-        this.$store.state.tools.current_config.obj?.index ==
+        this.$store.state.tools.current_config.obj?.index ===
         this.fields[index].index
       ) {
         this.$store.commit("tools/SET_CURRENT_CONFIG", {});

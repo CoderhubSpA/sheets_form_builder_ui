@@ -5,21 +5,21 @@
         <b-button
           class="btn m-1"
           @click="viewXl"
-          :variant="view == 'xl' ? 'secondary' : 'dark'"
+          :variant="view === 'xl' ? 'secondary' : 'dark'"
         >
           <v-icon class="custom-icon" name="laptop"></v-icon>
         </b-button>
         <b-button
           class="btn m-1"
           @click="viewMd"
-          :variant="view == 'md' ? 'secondary' : 'dark'"
+          :variant="view === 'md' ? 'secondary' : 'dark'"
         >
           <v-icon class="custom-icon" name="tablet"></v-icon>
         </b-button>
         <b-button
           class="btn m-1"
           @click="viewSm"
-          :variant="view == 'sm' ? 'secondary' : 'dark'"
+          :variant="view === 'sm' ? 'secondary' : 'dark'"
         >
           <v-icon class="custom-icon" name="mobile"></v-icon>
         </b-button>
