@@ -34,14 +34,15 @@
         @dragend.native="hover_fields = false"
         class="card-deck row"
         style="display: flex; margin: 5px 0 5px 0"
-        :group="{ name: 'Fields', pull: true, put: true }"
+        :group="{ name: 'Fields', pull: true, put: false }"
         :list="fields"
       >
         <FieldMenuComponent
           v-for="element in fields"
           :key="element.name"
           :text="element.name"
-          :format="element.format"
+          :format_config_id="element.format_config_id"
+          :config="element.config_values"
         />
       </draggable>
     </b-row>

@@ -111,6 +111,28 @@
         v-model="configValues[element.id]"
       />
 
+      <div v-else-if="element.col_name == 'format'">
+        <!-- {{element.id}}<br>
+        {{configValues[element.id]}} -->
+        <select
+          class="form-select"
+          :id="'menu-' + menu_id + '-element-' + element.name"
+          v-model="configValues[element.id]"
+        >
+          <option
+            v-for="option in $store.state.api[configType + '_select'][
+              element.id
+            ].options"
+            :value="option"
+            :key="option.id"
+          >
+            {{
+              element.col_name_fk ? option[element.col_name_fk] : option.name
+            }}
+          </option>
+        </select>
+      </div>
+
       <!--Types from the api-->
 
       <b-form-checkbox

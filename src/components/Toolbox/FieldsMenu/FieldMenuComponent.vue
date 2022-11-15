@@ -144,10 +144,19 @@ export default {
       type: String,
       required: true,
     },
-    format: {
+    format_config_id: {
       type: String,
-      required: false,
+      required: true,
     },
+    config: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    format() {
+      return this.config[this.format_config_id].id;
+    }
   },
   data() {
     return {};
