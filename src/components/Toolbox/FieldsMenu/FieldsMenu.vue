@@ -1,6 +1,28 @@
 <template>
-  <div>
-    <div>
+  <div
+    id="sidebarfields"
+    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    class="flex-shrink-0 custom-side-menu bg-light"
+  >
+    <b-row class="m-0">
+      <b-col class="p-2">
+        <v-icon
+          @click="switchMenu"
+          class="float-end"
+          role="button"
+          :name="showMenu ? 'angle-left' : 'angle-right'"
+          scale="1.5"
+        />
+      </b-col>
+    </b-row>
+    <b-row
+      class="m-0 p-0 py-3"
+      :class="showMenu ? 'd-none' : 'd-block'"
+      style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
+    >
+      Campos
+    </b-row>
+    <b-row class="mx-2" :class="showMenu ? 'd-block' : 'd-none'">
       <b-input
         v-model="search"
         id="section-config-name"
@@ -22,7 +44,7 @@
           :format="element.format"
         />
       </draggable>
-    </div>
+    </b-row>
   </div>
 </template>
 
@@ -72,6 +94,7 @@ export default {
     return {
       field_n: 0,
       search: "",
+      showMenu: false,
     };
   },
   methods: {
@@ -84,6 +107,9 @@ export default {
     checkName(name) {
       let search = this.removeAccents(this.search).toUpperCase();
       return this.removeAccents(name.toUpperCase()).includes(search);
+    },
+    switchMenu() {
+      this.showMenu = !this.showMenu;
     },
   },
 };
@@ -133,5 +159,31 @@ export default {
   margin-bottom: 10px;
 
   padding: 5px;
+}
+
+.custom-side-menu {
+  /* width: 3%;
+  max-width: 20%;
+  height: 100%;
+  max-height: 100%; */
+  overflow-y: auto;
+  transition: width 0.3s ease;
+}
+.show-menu {
+  width: 20%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.3s ease;
+}
+.hide-menu {
+  width: 3%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

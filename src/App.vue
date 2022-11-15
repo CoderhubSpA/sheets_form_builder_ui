@@ -7,8 +7,10 @@
       class="d-flex flex-row"
     >
       <SetupModalComponent />
-      <ToolboxComponent />
-      <FormComponent />
+      <FieldsMenu/>
+      <!-- <ToolboxComponent /> -->
+      <FormComponent/>
+      <ConfigMenu/>
     </div>
   </div>
 </template>
@@ -38,17 +40,21 @@ $body-bg: #ffffff;
 </style>
 <script>
 import FormComponent from "./components/Form/FormComponent.vue";
-import ToolboxComponent from "./components/Toolbox/ToolboxComponent.vue";
+// import ToolboxComponent from "./components/Toolbox/ToolboxComponent.vue";
 import NavbarComponent from "./components/NavbarComponent.vue";
 import SetupModalComponent from "./components/Setup/SetupModalComponent.vue";
+import ConfigMenu from "./components/Toolbox/ConfigMenu/ConfigMenu.vue"; 
+import FieldsMenu from "./components/Toolbox/FieldsMenu/FieldsMenu.vue"; 
 
 export default {
   name: "App",
   components: {
     FormComponent,
-    ToolboxComponent,
+    // ToolboxComponent,
     NavbarComponent,
     SetupModalComponent,
+    ConfigMenu,
+    FieldsMenu
   },
   data: () => ({}),
   created: function () {},

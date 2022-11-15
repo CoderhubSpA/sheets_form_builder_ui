@@ -166,7 +166,7 @@ export default {
         config_type: "rows_config",
         name_id: "Nombre",
       };
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

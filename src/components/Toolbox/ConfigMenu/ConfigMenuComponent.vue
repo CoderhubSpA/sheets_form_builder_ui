@@ -223,7 +223,7 @@
 import multiselect from "vue-multiselect";
 
 export default {
-  name: "ConfigMenuCompoent",
+  name: "ConfigMenuComponent",
   components: {
     multiselect,
   },
