@@ -3,7 +3,7 @@
     <NavbarComponent />
     <div
       id="app"
-      style="min-height: 600px; height: 91vh"
+      style="min-height: 600px; height: 95vh"
       class="d-flex flex-row"
     >
       <SetupModalComponent />
