@@ -290,6 +290,7 @@ const actions = {
             unfilled_required_values: 0,
             config_values: config_values,
             show_in_create_form: column.show_in_create_form,
+            show_in_edit_form: column.show_in_edit_form,
             name: column.name,
             // format: column.format,
             format_config_id: format_config,

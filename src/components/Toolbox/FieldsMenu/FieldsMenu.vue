@@ -86,8 +86,14 @@ export default {
       },
     },
     fields() {
+      let on_edit =
+        this.$store.state.form.form.local_entity_data?.id?.length > 0;
+
       return this.$store.state.api.fields.filter(
-        (field) => field.show_in_create_form === 2 && this.checkName(field.name)
+        (field) =>
+          ((!on_edit && field.show_in_create_form === 2) ||
+            (on_edit && field.show_in_edit_form === 2)) &&
+          this.checkName(field.name)
       );
     },
   },

@@ -3,11 +3,7 @@
     <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in $store.state.api[configType].filter(
-        (element) =>
-          element.show_in_create_form === 2 &&
-          !hidden_config.includes(element.name)
-      )"
+      v-for="element in configurations"
       :key="element.id"
       style="padding: 0.5em"
     >
@@ -309,6 +305,17 @@ export default {
         ] = val;
         this.$store.dispatch("form/updateActions");
       },
+    },
+    configurations() {
+      let on_edit =
+        this.$store.state.form.form.local_entity_data?.id?.length > 0;
+
+      return this.$store.state.api[this.configType].filter(
+        (element) =>
+          !this.hidden_config.includes(element.name) &&
+          ((!on_edit && element.show_in_create_form === 2) ||
+            (on_edit && element.show_in_edit_form === 2))
+      );
     },
     name() {
       let name =
