@@ -276,6 +276,8 @@ const actions = {
                 ? column
                 : config.col_name === "valid"
                 ? true
+                : config.col_name === "name"
+                ? column.name
                 : context.rootGetters["tools/selectFormat"](config);
           });
 
