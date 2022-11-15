@@ -24,13 +24,19 @@
         <b-button
           variant="danger"
           size="lg"
+          style="color: white"
           @click="$emit('cancel-create-form-event')"
         >
           Atrás
         </b-button>
       </div>
       <div class="col-6 d-flex justify-content-end">
-        <b-button variant="primary" size="lg" @click="createForm">
+        <b-button
+          variant="primary"
+          size="lg"
+          @click="createForm"
+          :disabled="submitDisabled"
+        >
           Crear formulario
         </b-button>
       </div>
@@ -56,6 +62,9 @@ export default {
       return this.$store.state.api.form_config_select[this.entityConfigId]
         .options;
     },
+    submitDisabled: function () {
+      return this.entitySelected.length === 0 ? true : false;
+    },
   },
   methods: {
     createForm() {
@@ -71,3 +80,17 @@ export default {
   },
 };
 </script>
+
+<style>
+.atras-button {
+  position: relative;
+  left: 10px;
+  top: 7px;
+}
+
+.crear-button {
+  position: relative;
+  left: 335px;
+  top: 7px;
+}
+</style>
