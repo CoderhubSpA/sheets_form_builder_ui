@@ -7,7 +7,7 @@
       :no-close-on-esc="true"
       :hide-header-close="true"
       :hide-footer="true"
-      size="xl"
+      size="lg"
     >
       <SelectEntityComponent
         v-if="create"
