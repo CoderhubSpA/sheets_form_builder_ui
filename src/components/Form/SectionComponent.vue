@@ -17,8 +17,9 @@
           placeholder="Nombre Sección"
           v-b-tooltip.hover.bottom
           title="Cambiar nombre sección"
+          style="color: #757575; font-size: 1.125rem"
         />
-        <button
+        <!-- <button
           type="button"
           class="close"
           aria-label="Close"
@@ -26,7 +27,22 @@
           @click="$emit('open-section-config-event', section)"
         >
           ×
+        </button> -->
+        <button
+          class="close-button"
+          type="button"
+          v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
+          @click="$emit('open-section-config-event', section)"
+        >
+          <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
         </button>
+        <font-awesome-icon
+          v-model="section.config_values[description_config_id]"
+          icon="fa-solid fa-circle-info"
+          size="lg"
+          class="info-icon"
+          :title="section.config_values[description_config_id]"
+        />
         <b-modal
           :id="`modal-borrar-seccion-${idxRow}-${index}`"
           centered
@@ -66,6 +82,10 @@ export default {
       required: true,
     },
     name_config_id: {
+      type: String,
+      required: true,
+    },
+    description_config_id: {
       type: String,
       required: true,
     },

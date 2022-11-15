@@ -243,9 +243,9 @@ export default {
   top: -26px;
   right: -18px;
   border-radius: 10em;
-  padding: 4px 7px 5px;
+  padding: 0px 8px 0px;
   text-decoration: none;
-  font: 700 18px/16px sans-serif;
+  /* font: 700 18px/16px sans-serif; */
   background: rgb(250, 10, 10);
   border: 2px solid rgb(255, 255, 255);
   color: #fff;
@@ -258,10 +258,10 @@ export default {
 .config {
   display: none;
   position: absolute;
-  top: -26.5px;
-  right: 13px;
+  top: -26px;
+  right: 14px;
   border-radius: 10em;
-  padding: 0px 5px 1px;
+  padding: 0px 6px 0px;
   background: #079a90;
   border: 2px solid rgb(255, 255, 255);
   color: #fff;

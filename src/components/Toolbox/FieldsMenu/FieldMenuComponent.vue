@@ -150,13 +150,13 @@ export default {
     },
     config: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     format() {
       return this.config[this.format_config_id].id;
-    }
+    },
   },
   data() {
     return {};

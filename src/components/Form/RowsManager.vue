@@ -28,7 +28,7 @@
                   />
                   <br />
                   <div
-                    class="p-3 border-solid bg-light rounded container"
+                    class="p-3 border-solid bg-white container shadow-section"
                     v-bind="row"
                   >
                     <Sections :idxRow="index" />
@@ -253,5 +253,9 @@ export default {
 
 .cursor-move:hover {
   cursor: move;
+}
+
+.shadow-section {
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
 }
 </style>

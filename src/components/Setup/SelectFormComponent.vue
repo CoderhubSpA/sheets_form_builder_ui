@@ -25,7 +25,12 @@
       </b-button> -->
     </div>
     <div class="row edit-button">
-      <b-button variant="secondary" size="lg" @click="editForm" style="color: white">
+      <b-button
+        variant="secondary"
+        size="lg"
+        @click="editForm"
+        style="color: white"
+      >
         Editar formulario
       </b-button>
     </div>
@@ -52,10 +57,8 @@ export default {
 </script>
 
 <style>
-
 .edit-button {
-  position:relative; 
+  position: relative;
   top: 6px;
 }
-
 </style>

@@ -5,7 +5,7 @@
         ? 'onclick-form rounded'
         : 'border rounded'
     "
-    style="overflow-y: auto; width: 100%"
+    style="overflow-y: auto; width: 100%; color: #424242"
   >
     <b-form-row
       v-if="$store.state.form.form.is_loaded"
@@ -20,7 +20,7 @@
       >
         <!--<b-input v-model="currentFormName" v-if="editingName" class="text-left w-50 d-inline-block"
                     @keyup.enter="editingName = false"/>-->
-        <div class="h4 d-inline-block">{{ currentFormName }}</div>
+        <div class="h3 d-inline-block">{{ currentFormName }}</div>
         <!--<v-icon class="d-inline-block ml-2 mb-1"
                     :name="editingName? 'check': 'pencil-alt'"
                     @click="editingName=!editingName"

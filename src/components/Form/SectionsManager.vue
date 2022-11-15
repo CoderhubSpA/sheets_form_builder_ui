@@ -31,6 +31,7 @@
               <SectionComponent
                 :view="view"
                 :name_config_id="sectionNameConfigId"
+                :description_config_id="sectionDescriptionConfigId"
                 :index="index"
                 :idxRow="idxRow"
                 @delete-section-event="deleteSection"
@@ -116,6 +117,11 @@ export default {
     sectionNameConfigId() {
       return this.$store.state.api.sections_config.find(
         (config) => config.name === "Título de la sección"
+      ).id;
+    },
+    sectionDescriptionConfigId() {
+      return this.$store.state.api.sections_config.find(
+        (config) => config.name === "Descripción de la sección"
       ).id;
     },
   },
@@ -296,7 +302,7 @@ export default {
   cursor: move;
 }
 
-.close {
+/* .close {
   cursor: pointer;
   right: 0%;
   width: 32px;
@@ -312,6 +318,33 @@ export default {
 .close:hover {
   color: red;
   opacity: 1;
+} */
+
+.close {
+  cursor: pointer;
+  top: 23%;
+  color: #ff4949;
+  border: none;
+  background: none;
+  opacity: 0.8;
+  margin-left: 1%;
+  margin-top: 1.4%;
+}
+
+.close:hover {
+  color: red;
+  opacity: 1;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+}
+
+.info-icon {
+  margin-top: 1.2%;
+  margin-left: 0.3%;
+  color: #9e9e9e;
 }
 
 .panel-resizable {

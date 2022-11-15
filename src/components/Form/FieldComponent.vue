@@ -5,8 +5,11 @@
     @mouseleave="field.show = false"
     style="
       margin-bottom: 15px;
-      background-color: gainsboro;
+      background-color: white;
       border-radius: 5px;
+      border-style: solid;
+      border-color: gainsboro;
+      border-width: 3px;
       padding: 8px;
     "
   >
@@ -20,7 +23,7 @@
               style="display: inline"
               v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
             >
-              ×
+              <font-awesome-icon icon="fa-solid fa-xmark" size="xs" />
             </button>
           </div>
           <div class="area">
@@ -30,7 +33,8 @@
               style="display: inline"
               @click="$emit('open-field-config-event', field)"
             >
-              <v-icon class="d-inline-block mb-1" name="cog" />
+              <!-- <v-icon class="d-inline-block mb-1" name="cog" /> -->
+              <font-awesome-icon icon="fa-solid fa-gear" size="xs" />
             </button>
           </div>
         </div>
@@ -58,9 +62,21 @@
       <b-input
         v-model="field.config_values[name_config_id]"
         type="text"
-        class="form-control"
-        placeholder="Nombre Campo"
+        class="border-0"
+        v-b-tooltip.hover.bottom
+        title="Cambiar nombre campo"
+        :placeholder="field.name"
       />
+
+      <div class="card mt-2">
+        <div class="card-body"></div>
+      </div>
+      <!-- <td style="padding-top: 8px;"></td>
+      <b-input
+        type="text"
+        class="form-control"
+        readonly
+      /> -->
     </div>
   </div>
 </template>
