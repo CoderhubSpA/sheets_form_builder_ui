@@ -118,8 +118,10 @@ export default {
   data: () => ({}),
 
   created() {
-    let newRow = this.newRow();
-    this.rows.push(newRow);
+    if (this.rows.length === 0) {
+      let newRow = this.newRow();
+      this.rows.push(newRow);
+    }
   },
 
   mounted() {},

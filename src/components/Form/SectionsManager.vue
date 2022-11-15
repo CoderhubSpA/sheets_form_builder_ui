@@ -128,9 +128,11 @@ export default {
   data: () => ({}),
 
   created() {
-    let section = this.newSection();
-    section.idxRow = this.idxRow;
-    this.sections.push(section);
+    if (this.sections.length === 0) {
+      let section = this.newSection();
+      section.idxRow = this.idxRow;
+      this.sections.push(section);
+    }
   },
 
   methods: {
