@@ -211,7 +211,7 @@ export default {
         config_type: "sections_config",
         name_id: "Título de la sección",
       };
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
     setForm(section, id) {
       section.form_id = id;

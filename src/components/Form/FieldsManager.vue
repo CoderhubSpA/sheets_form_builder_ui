@@ -172,7 +172,7 @@ export default {
         config_type: "fields_config",
         name_id: "Columna",
       };
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
     dragleave() {
       this.$store.commit("tools/change_hover", false);

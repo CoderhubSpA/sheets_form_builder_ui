@@ -94,16 +94,20 @@ export default {
         ).id
       ];
     },
+    showMenu(){
+      return this.$store.state.tools.show_config;
+    }
   },
   data() {
     return {
       collapse:true,
-      showMenu:false,
+      // showMenu:false,
     };
   },
   methods: {
     switchMenu(){
-      this.showMenu = !this.showMenu;
+      this.$store.commit("tools/switchConfigSlide", !this.showMenu)
+      // this.showMenu = !this.showMenu;
     },
   },
 };

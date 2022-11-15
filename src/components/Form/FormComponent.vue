@@ -74,7 +74,7 @@ export default {
         config_type: "form_config",
         name_id: "Nombre",
       };
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
   watch: {

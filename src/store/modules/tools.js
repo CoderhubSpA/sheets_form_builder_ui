@@ -10,6 +10,7 @@ const state = {
   ],
   hover_fields: false,
   actual_tab: "config",
+  show_config:false,
 };
 const mutations = {
   change_hover(state, activated) {
@@ -18,6 +19,9 @@ const mutations = {
   setActivatedTab(state, tab) {
     state.actual_tab = tab;
   },
+  switchConfigSlide(state, val){
+    state.show_config = val;
+  }
 };
 
 const actions = {};
