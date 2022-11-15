@@ -7,10 +7,10 @@
       class="d-flex flex-row"
     >
       <SetupModalComponent />
-      <FieldsMenu/>
+      <FieldsMenu />
       <!-- <ToolboxComponent /> -->
-      <FormComponent/>
-      <ConfigMenu/>
+      <FormComponent />
+      <ConfigMenu />
     </div>
   </div>
 </template>
@@ -43,8 +43,8 @@ import FormComponent from "./components/Form/FormComponent.vue";
 // import ToolboxComponent from "./components/Toolbox/ToolboxComponent.vue";
 import NavbarComponent from "./components/NavbarComponent.vue";
 import SetupModalComponent from "./components/Setup/SetupModalComponent.vue";
-import ConfigMenu from "./components/Toolbox/ConfigMenu/ConfigMenu.vue"; 
-import FieldsMenu from "./components/Toolbox/FieldsMenu/FieldsMenu.vue"; 
+import ConfigMenu from "./components/Toolbox/ConfigMenu/ConfigMenu.vue";
+import FieldsMenu from "./components/Toolbox/FieldsMenu/FieldsMenu.vue";
 
 export default {
   name: "App",
@@ -54,7 +54,7 @@ export default {
     NavbarComponent,
     SetupModalComponent,
     ConfigMenu,
-    FieldsMenu
+    FieldsMenu,
   },
   data: () => ({}),
   created: function () {},
