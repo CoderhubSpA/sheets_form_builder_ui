@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="$store.state.form.form.is_loaded"
     :class="
       $store.state.form.current_config.obj === form
         ? 'onclick-form rounded'
@@ -8,7 +7,7 @@
     "
     style="overflow-y: auto; width: 100%"
   >
-    <b-form-row class="row justify-content-center mx-auto">
+    <b-form-row  v-if="$store.state.form.form.is_loaded" class="row justify-content-center mx-auto">
       <b-col
         :xl="view == 'xl' ? 12 : view == 'md' ? 8 : 5"
         :md="view == 'xl' || view == 'md' ? 12 : 8"
