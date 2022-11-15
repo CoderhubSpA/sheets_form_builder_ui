@@ -1,20 +1,33 @@
 <template>
-  <div :id="menu_id" :class="showMenu ? 'show-menu':'hide-menu'" class="flex-shrink-0 float-end custom-side-menu bg-light">
+  <div
+    :id="menu_id"
+    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    class="flex-shrink-0 float-end custom-side-menu bg-light"
+  >
+    <b-row class="m-0">
+      <b-col class="p-2">
+        <v-icon
+          @click="switchMenu"
+          class="float-start"
+          role="button"
+          :name="showMenu ? 'angle-right' : 'angle-left'"
+          scale="1.5"
+        />
+      </b-col>
+    </b-row>
+    <b-row
+      class="m-0 p-0 py-3"
+      :class="showMenu ? 'd-none' : 'd-block'"
+      style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
+    >
+      Configuración
+    </b-row>
+    <b-row class="m-0" :class="showMenu ? 'd-block' : 'd-none'">
+      <b-col class="px-3 m-0">
+        <ConfigMenuComponent :menu_id="menu_id" />
+      </b-col>
+    </b-row>
 
-        <b-row class="m-0">
-          <b-col class="p-2">
-            <v-icon @click="switchMenu" class="float-start" role="button" :name="showMenu? 'angle-right': 'angle-left'" scale="1.5"  />
-          </b-col>
-        </b-row>
-        <b-row class="m-0 p-0 py-3" :class="showMenu? 'd-none':'d-block'" style="color:#008a94;writing-mode: vertical-rl; font-size: 16pt;">
-            Configuración
-        </b-row> 
-        <b-row class="m-0" :class="showMenu? 'd-block':'d-none'">
-          <b-col class="px-3 m-0">
-            <ConfigMenuComponent :menu_id="menu_id"/>
-          </b-col>
-        </b-row>
-  
     <!--
     <FormConfigMenu
       v-if="currentConfigType === 'form_config'"
@@ -94,19 +107,19 @@ export default {
         ).id
       ];
     },
-    showMenu(){
+    showMenu() {
       return this.$store.state.tools.show_config;
-    }
+    },
   },
   data() {
     return {
-      collapse:true,
+      collapse: true,
       // showMenu:false,
     };
   },
   methods: {
-    switchMenu(){
-      this.$store.commit("tools/switchConfigSlide", !this.showMenu)
+    switchMenu() {
+      this.$store.commit("tools/switchConfigSlide", !this.showMenu);
       // this.showMenu = !this.showMenu;
     },
   },
@@ -114,26 +127,25 @@ export default {
 </script>
 
 <style lang="scss">
-
-.custom-side-menu{
+.custom-side-menu {
   // width: 3%;
   // max-width: 25%;
   // height: 100%;
   // max-height: 1to;00%;
   overflow-y: auto;
-  transition:width  0.3s ease;
+  transition: width 0.3s ease;
   // transition: opacity 1s ease-out;
 }
-.show-menu{
+.show-menu {
   width: 20%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  transition:width .3s ease;
+  transition: width 0.3s ease;
 }
-.hide-menu{
+.hide-menu {
   width: 3%;
   max-width: 25%;
   height: 100%;
@@ -141,6 +153,4 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
 }
-
-
 </style>

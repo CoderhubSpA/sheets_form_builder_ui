@@ -23,7 +23,11 @@
               name="file-image"
             ></v-icon>
             <!-- <v-icon v-else-if="format == 'FORM'" dense name="file"></v-icon> -->
-            <v-icon v-else-if="format == 'INFO'" dense name="circle-info"></v-icon>
+            <v-icon
+              v-else-if="format == 'INFO'"
+              dense
+              name="circle-info"
+            ></v-icon>
             <v-icon
               v-else-if="format == 'LATITUDE'"
               dense
@@ -48,7 +52,11 @@
               dense
               name="percent"
             ></v-icon>
-            <v-icon v-else-if="format == 'QUESTION'" dense name="question"></v-icon>
+            <v-icon
+              v-else-if="format == 'QUESTION'"
+              dense
+              name="question"
+            ></v-icon>
             <v-icon
               v-else-if="format == 'RADIO'"
               dense
@@ -79,7 +87,10 @@
               dense
               name="square-check"
             ></v-icon>
-            <v-icon v-else-if="format == 'SELECTOR[MULTIPLE]'" name="list"></v-icon>
+            <v-icon
+              v-else-if="format == 'SELECTOR[MULTIPLE]'"
+              name="list"
+            ></v-icon>
             <!-- <v-icon v-else-if="format == 'SELECTOR[MULTIPLE]'" dense name="square-check"></v-icon> -->
             <v-icon
               v-else-if="format == 'SELECTOR[MULTIPLE][ADVANCED]'"
@@ -101,16 +112,24 @@
               dense
               name="square-check"
             ></v-icon>
-            <v-icon v-else-if="format == 'SiNo'" dense name="square-check"></v-icon>
+            <v-icon
+              v-else-if="format == 'SiNo'"
+              dense
+              name="square-check"
+            ></v-icon>
             <v-icon v-else-if="format == 'TEXT'" name="edit"></v-icon>
             <!-- <v-icon v-else-if="format == 'TEXT'" name="input-text"></v-icon> -->
-            <v-icon v-else-if="format == 'TEXT[AREA]'" dense name="edit"></v-icon>
+            <v-icon
+              v-else-if="format == 'TEXT[AREA]'"
+              dense
+              name="edit"
+            ></v-icon>
             <v-icon v-else-if="format == 'URL'" dense name="link"></v-icon>
             <v-icon v-else dense name="file"></v-icon>
           </b-col>
           <b-col>
             <div class="card-title">{{ text }}</div>
-          </b-col> 
+          </b-col>
         </b-row>
       </div>
     </div>

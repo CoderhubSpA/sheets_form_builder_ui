@@ -1,38 +1,50 @@
 <template>
-  <div id="sidebarfields" :class="showMenu ? 'show-menu':'hide-menu'" class="flex-shrink-0 custom-side-menu bg-light">
-
-
-      <b-row class="m-0">
-        <b-col class="p-2">
-          <v-icon @click="switchMenu" class="float-end" role="button" :name="showMenu? 'angle-left': 'angle-right'" scale="1.5"  />
-        </b-col>
-      </b-row>
-      <b-row class="m-0 p-0 py-3" :class="showMenu? 'd-none':'d-block'" style="color:#008a94;writing-mode: vertical-rl; font-size: 16pt;">
-            Campos
-      </b-row> 
-      <b-row class="mx-2" :class="showMenu? 'd-block':'d-none'">
-        <b-input
-          v-model="search"
-          id="section-config-name"
-          type="text"
-          placeholder="Busca un campo aquí..."
+  <div
+    id="sidebarfields"
+    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    class="flex-shrink-0 custom-side-menu bg-light"
+  >
+    <b-row class="m-0">
+      <b-col class="p-2">
+        <v-icon
+          @click="switchMenu"
+          class="float-end"
+          role="button"
+          :name="showMenu ? 'angle-left' : 'angle-right'"
+          scale="1.5"
         />
-        <draggable
-          @dragstart.native="hover_fields = true"
-          @dragend.native="hover_fields = false"
-          class="card-deck row"
-          style="display: flex; margin: 5px 0 5px 0"
-          :group="{ name: 'Fields', pull: true, put: true }"
-          :list="fields"
-        >
-          <FieldMenuComponent
-            v-for="element in fields"
-            :key="element.name"
-            :text="element.name"
-            :format="element.format"
-          />
-        </draggable>
-      </b-row>
+      </b-col>
+    </b-row>
+    <b-row
+      class="m-0 p-0 py-3"
+      :class="showMenu ? 'd-none' : 'd-block'"
+      style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
+    >
+      Campos
+    </b-row>
+    <b-row class="mx-2" :class="showMenu ? 'd-block' : 'd-none'">
+      <b-input
+        v-model="search"
+        id="section-config-name"
+        type="text"
+        placeholder="Busca un campo aquí..."
+      />
+      <draggable
+        @dragstart.native="hover_fields = true"
+        @dragend.native="hover_fields = false"
+        class="card-deck row"
+        style="display: flex; margin: 5px 0 5px 0"
+        :group="{ name: 'Fields', pull: true, put: true }"
+        :list="fields"
+      >
+        <FieldMenuComponent
+          v-for="element in fields"
+          :key="element.name"
+          :text="element.name"
+          :format="element.format"
+        />
+      </draggable>
+    </b-row>
   </div>
 </template>
 
@@ -85,7 +97,7 @@ export default {
     return {
       field_n: 0,
       search: "",
-      showMenu:false,
+      showMenu: false,
     };
   },
   methods: {
@@ -108,10 +120,9 @@ export default {
       console.log("No se encontró el formato" + format);
       return "";
     },
-    switchMenu(){
+    switchMenu() {
       this.showMenu = !this.showMenu;
     },
-
   },
 };
 </script>
@@ -162,24 +173,24 @@ export default {
   padding: 5px;
 }
 
-.custom-side-menu{
+.custom-side-menu {
   /* width: 3%;
   max-width: 20%;
   height: 100%;
   max-height: 100%; */
   overflow-y: auto;
-  transition:width 0.3s ease;
+  transition: width 0.3s ease;
 }
-.show-menu{
+.show-menu {
   width: 20%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  transition:width .3s ease;
+  transition: width 0.3s ease;
 }
-.hide-menu{
+.hide-menu {
   width: 3%;
   max-width: 25%;
   height: 100%;
@@ -187,5 +198,4 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
 }
-
 </style>
