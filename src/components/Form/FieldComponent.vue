@@ -64,8 +64,13 @@
         type="text"
         class="border-0"
         v-b-tooltip.hover.bottom title="Cambiar nombre campo"
-        :placeholder="'Nombre del campo -'+[[field.name]]+'-'"
+        :placeholder="[[field.name]]"
       />
+
+      <div class="card mt-2">
+        <div class="card-body">
+        </div>
+      </div>
       <!-- <td style="padding-top: 8px;"></td>
       <b-input
         type="text"
