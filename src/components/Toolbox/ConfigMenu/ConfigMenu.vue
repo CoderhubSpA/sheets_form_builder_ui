@@ -1,6 +1,9 @@
 <template>
   <div visible :id="menu_id" style="padding: 1em">
-    <ConfigMenuComponent :menu_id="menu_id" />
+    <ConfigMenuComponent
+      v-if="this.$store.state.tools.current_config.obj"
+      :menu_id="menu_id"
+    />
     <!--
     <FormConfigMenu
       v-if="currentConfigType === 'form_config'"
