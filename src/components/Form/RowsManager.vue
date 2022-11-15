@@ -14,7 +14,7 @@
               >
                 <div
                   :style="
-                    $store.state.form.current_config.obj === row
+                    $store.state.tools.current_config.obj === row
                       ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
                       : ''
                   "
@@ -170,12 +170,7 @@ export default {
       });
     },
     openRowConfig(row) {
-      this.$store.state.form.current_config = {
-        obj: row,
-        title: "Configuración de la fila",
-        config_type: "rows_config",
-        name_id: "Nombre",
-      };
+      this.$store.dispatch("tools/openRowConfig", row);
       this.$store.commit("tools/setActivatedTab", "config");
     },
   },

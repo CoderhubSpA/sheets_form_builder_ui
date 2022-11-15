@@ -209,12 +209,7 @@ export default {
       }
     },
     openSectionConfig(section) {
-      this.$store.state.form.current_config = {
-        obj: section,
-        title: "Configuración de la sección",
-        config_type: "sections_config",
-        name_id: "Título de la sección",
-      };
+      this.$store.dispatch("tools/openSectionConfig", section);
       this.$store.commit("tools/setActivatedTab", "config");
     },
     setForm(section, id) {

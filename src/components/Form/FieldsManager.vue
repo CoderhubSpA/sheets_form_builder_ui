@@ -139,10 +139,10 @@ export default {
     },
     deleteField(index) {
       if (
-        this.$store.state.form.current_config.obj?.index ==
+        this.$store.state.tools.current_config.obj?.index ==
         this.fields[index].index
       ) {
-        this.$store.state.form.current_config = {};
+        this.$store.commit("tools/SET_CURRENT_CONFIG", {});
       }
       this.updateFields(index);
       let field_id =
@@ -177,12 +177,7 @@ export default {
       }
     },
     openFieldConfig(newField) {
-      this.$store.state.form.current_config = {
-        obj: newField,
-        title: "Configuración del campo",
-        config_type: "fields_config",
-        name_id: "Columna",
-      };
+      this.$store.dispatch("tools/openFieldConfig", newField);
       this.$store.commit("tools/setActivatedTab", "config");
     },
     dragleave() {

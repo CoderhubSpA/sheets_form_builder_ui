@@ -53,10 +53,10 @@ export default {
       return this.$store.state.form.form;
     },
     currentConfigType() {
-      return this.$store.state.form.current_config.config_type;
+      return this.$store.state.tools.current_config.config_type;
     },
     currentConfig() {
-      return this.$store.state.form.current_config;
+      return this.$store.state.tools.current_config;
     },
 
     currentFieldName() {

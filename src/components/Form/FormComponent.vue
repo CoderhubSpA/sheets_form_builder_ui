@@ -2,7 +2,7 @@
   <div
     v-if="$store.state.form.form.is_loaded"
     :class="
-      $store.state.form.current_config.obj === form
+      $store.state.tools.current_config.obj === form
         ? 'onclick-form rounded'
         : 'border rounded'
     "
@@ -68,12 +68,7 @@ export default {
   },
   methods: {
     openFormConfig(form) {
-      this.$store.state.form.current_config = {
-        obj: form,
-        title: "Configuración del formulario",
-        config_type: "form_config",
-        name_id: "Nombre",
-      };
+      this.$store.dispatch("tools/openFormConfig", form);
       this.$store.commit("tools/setActivatedTab", "config");
     },
   },
