@@ -8,7 +8,7 @@
           <b-col cols="2">
             <v-icon v-if="format == 'CLP'" dense name="dollar-sign"></v-icon>
             <!-- <v-icon v-else-if="format == 'DATE'" dense name="calendar"></v-icon> -->
-            <v-icon v-else-if="format == 'DATE'" name="event"></v-icon>
+            <v-icon v-else-if="format == 'DATE'" name="calendar"></v-icon>
             <v-icon v-else-if="format == 'DATETIME'" name="clock"></v-icon>
             <!-- <v-icon v-else-if="format == 'DATETIME'" dense name="fa-calendar-clock"></v-icon> -->
             <v-icon v-else-if="format == 'DOCUMENT'" dense name="file"></v-icon>
@@ -70,52 +70,52 @@
             <v-icon
               v-else-if="format == 'SELECTOR[1XN][ALL]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[1XN][AVAILABLES]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[1XN][ONLYNEW]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[IMAGELIST]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[MULTIPLE]'"
               name="list"
             ></v-icon>
-            <!-- <v-icon v-else-if="format == 'SELECTOR[MULTIPLE]'" dense name="square-check"></v-icon> -->
+            <!-- <v-icon v-else-if="format == 'SELECTOR[MULTIPLE]'" dense name="check-square"></v-icon> -->
             <v-icon
               v-else-if="format == 'SELECTOR[MULTIPLE][ADVANCED]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[REMOTE]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[REMOTE][MULTIPLE]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SELECTOR[REMOTE][MULTIPLE][ALL]'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon
               v-else-if="format == 'SiNo'"
               dense
-              name="square-check"
+              name="check-square"
             ></v-icon>
             <v-icon v-else-if="format == 'TEXT'" name="edit"></v-icon>
             <!-- <v-icon v-else-if="format == 'TEXT'" name="input-text"></v-icon> -->
