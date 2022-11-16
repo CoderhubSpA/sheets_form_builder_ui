@@ -164,6 +164,11 @@ const actions = {
           ? "Nuevo Formulario"
           : config.format === "TEXT"
           ? ""
+          : config.name === "Tipo"
+          ? {
+              id: config.default_value,
+              name: JSON.parse(config.options)[config.default_value],
+            }
           : [];
     });
 
@@ -391,8 +396,6 @@ const actions = {
             ? selected_action // Associate the button to the action
             : config.col_name === "name"
             ? selected_action.name // Default button's name is the action name
-            : config.col_name === "valid"
-            ? true
             : rootGetters["tools/selectFormat"](config);
       });
 

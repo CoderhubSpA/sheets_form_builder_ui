@@ -168,7 +168,6 @@ export default {
       this.$store.state.api.sections_config.forEach((config) => {
         config_values[config.id] =
           this.$store.getters["tools/selectFormat"](config);
-        if (config.col_name === "valid") config_values[config.id] = true;
       });
 
       return {

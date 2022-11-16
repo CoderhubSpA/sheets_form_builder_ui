@@ -8,11 +8,11 @@
       style="padding: 0.5em"
     >
       <label :for="'menu-' + menu_id + '-element-' + element.id">
-        <div v-if="element.required_in_create_form === 1">
-          {{ element.name }} <span class="text-danger">*</span>
-        </div>
-        <div v-else>
+        <div>
           {{ element.name }}
+          <span v-if="element.required_in_create_form === 1" class="text-danger"
+            >*</span
+          >
         </div>
       </label>
 

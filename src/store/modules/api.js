@@ -266,8 +266,6 @@ const actions = {
             config_values[config.id] =
               config.name === "Columna"
                 ? column
-                : config.col_name === "valid"
-                ? true
                 : config.col_name === "name"
                 ? column.name
                 : context.rootGetters["tools/selectFormat"](config);
