@@ -35,6 +35,7 @@
             :field="field"
             :view="view"
             :name_config_id="fieldNameConfigId"
+            :description_config_id="fieldDescriptionConfigId"
             :index="index"
             :idxRow="idxRow"
             :idxSection="idxSection"
@@ -100,6 +101,11 @@ export default {
     fieldNameConfigId() {
       return this.$store.state.api.fields_config.find(
         (config) => config.name === "Título del campo"
+      ).id;
+    },
+    fieldDescriptionConfigId() {
+      return this.$store.state.api.fields_config.find(
+        (config) => config.name === "Descripción del campo"
       ).id;
     },
     draggingField: {
@@ -265,5 +271,11 @@ export default {
   background: #079a90;
   border: 2px solid rgb(255, 255, 255);
   color: #fff;
+}
+
+.info-icon-field {
+  margin-top: 0.8%;
+  margin-left: 0.3%;
+  color: #9e9e9e;
 }
 </style>

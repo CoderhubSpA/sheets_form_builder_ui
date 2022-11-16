@@ -59,14 +59,24 @@
           </template>
         </b-modal>
       </div>
-      <b-input
-        v-model="field.config_values[name_config_id]"
-        type="text"
-        class="border-0"
-        v-b-tooltip.hover.bottom
-        title="Cambiar nombre campo"
-        :placeholder="field.name"
-      />
+      <div class="form-group flex">
+        <b-input
+          v-model="field.config_values[name_config_id]"
+          type="text"
+          class="border-0"
+          v-b-tooltip.hover.bottom
+          title="Cambiar nombre campo"
+          :placeholder="field.name"
+        />
+
+        <font-awesome-icon
+          v-model="field.config_values[description_config_id]"
+          icon="fa-solid fa-circle-info"
+          size="lg"
+          class="info-icon-field"
+          :title="field.config_values[description_config_id]"
+        />
+      </div>
 
       <div class="card mt-2">
         <div class="card-body"></div>
@@ -98,6 +108,10 @@ export default {
       required: true,
     },
     name_config_id: {
+      type: String,
+      required: true,
+    },
+    description_config_id: {
       type: String,
       required: true,
     },
