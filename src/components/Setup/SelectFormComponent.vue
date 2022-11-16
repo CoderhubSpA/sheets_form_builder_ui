@@ -3,6 +3,11 @@
     <div class="row">
       <div class="col-12">
         <h5>O elige un formulario existente</h5>
+        <b-input
+          v-model="search"
+          style="margin-bottom: 5px"
+          :placeholder="'Busque un formulario existente...'"
+        ></b-input>
         <b-form-select
           class="form-select"
           :select-size="15"
@@ -10,7 +15,7 @@
           v-model="selectedFormId"
         >
           <option
-            v-for="option in $store.state.api.form_list_options"
+            v-for="option in filteredFormList"
             :value="option.value"
             :key="'form-' + option.value"
           >
@@ -43,6 +48,7 @@ export default {
   data() {
     return {
       selectedFormId: null,
+      search: "",
     };
   },
   methods: {
@@ -51,6 +57,26 @@ export default {
         this.$store
           .dispatch("api/fetchForm", this.selectedFormId)
           .then(this.$bvModal.hide("setup-modal"));
+    },
+    removeAccents(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    },
+  },
+  computed: {
+    options() {
+      return this.$store.state.api.form_list_options;
+    },
+    filteredFormList() {
+      if (this.search) {
+        let search = this.removeAccents(this.search).toUpperCase();
+        return this.options.filter(
+          (form) =>
+            form.name &&
+            (this.removeAccents(form.name.toUpperCase()).includes(search) ||
+              form.value.toUpperCase() === search)
+        );
+      }
+      return this.options;
     },
   },
 };
