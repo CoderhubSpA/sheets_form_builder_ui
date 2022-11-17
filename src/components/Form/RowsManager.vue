@@ -178,7 +178,7 @@ export default {
     },
     openRowConfig(row) {
       this.$store.dispatch("tools/openRowConfig", row);
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

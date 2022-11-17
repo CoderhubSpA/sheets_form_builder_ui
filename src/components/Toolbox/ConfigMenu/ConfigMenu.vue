@@ -24,10 +24,7 @@
     </b-row>
     <b-row class="m-0" :class="showMenu ? 'd-block' : 'd-none'">
       <b-col class="px-3 m-0">
-        <ConfigMenuComponent
-          v-if="this.$store.state.tools.current_config.obj"
-          :menu_id="menu_id"
-        />
+        <ConfigMenuComponent :menu_id="menu_id" />
       </b-col>
     </b-row>
 
@@ -83,10 +80,10 @@ export default {
       return this.$store.state.form.form;
     },
     currentConfigType() {
-      return this.$store.state.tools.current_config.config_type;
+      return this.$store.state.form.current_config.config_type;
     },
     currentConfig() {
-      return this.$store.state.tools.current_config;
+      return this.$store.state.form.current_config;
     },
 
     currentFieldName() {
@@ -137,8 +134,9 @@ export default {
   // max-height: 1to;00%;
   overflow-y: auto;
   transition: width 0.3s ease;
-  // transition: opacity 1s ease-out;
+  white-space: nowrap;
 }
+
 .show-menu {
   width: 20%;
   max-width: 25%;
@@ -146,7 +144,6 @@ export default {
   max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  transition: width 0.3s ease;
 }
 .hide-menu {
   width: 3%;

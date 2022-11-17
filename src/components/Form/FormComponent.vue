@@ -71,7 +71,7 @@ export default {
   methods: {
     openFormConfig(form) {
       this.$store.dispatch("tools/openFormConfig", form);
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
   watch: {

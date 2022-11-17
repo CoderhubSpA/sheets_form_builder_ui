@@ -178,7 +178,7 @@ export default {
     },
     openFieldConfig(newField) {
       this.$store.dispatch("tools/openFieldConfig", newField);
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
     dragleave() {
       this.$store.commit("tools/change_hover", false);

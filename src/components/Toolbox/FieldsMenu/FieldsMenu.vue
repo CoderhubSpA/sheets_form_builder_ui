@@ -175,22 +175,19 @@ export default {
   max-height: 100%; */
   overflow-y: auto;
   transition: width 0.3s ease;
+  overflow-x: hidden;
+  white-space: nowrap;
 }
 .show-menu {
   width: 20%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: width 0.3s ease;
 }
 .hide-menu {
   width: 3%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 </style>

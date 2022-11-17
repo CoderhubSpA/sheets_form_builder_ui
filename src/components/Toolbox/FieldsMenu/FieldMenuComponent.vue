@@ -1,11 +1,11 @@
 <template>
   <div class="fieldMenuComponent col-12">
-    <div class="card text-center h-100">
-      <div class="card-body" style="padding: 0.25em 0.5em">
+    <div class="text-center h-100">
+      <div class="" style="padding: 0.25em 0.5em">
         <!-- commented fields have a fontawesome icon that doesn't display correctly right now, 
         uncommented fields have a placeholder icon -->
-        <b-row>
-          <b-col cols="2">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item">
             <v-icon v-if="format === 'CLP'" dense name="dollar-sign"></v-icon>
             <!-- <v-icon v-else-if="format === 'DATE'" dense name="calendar"></v-icon> -->
             <v-icon v-else-if="format === 'DATE'" name="calendar"></v-icon>
@@ -134,11 +134,11 @@
             ></v-icon>
             <v-icon v-else-if="format === 'URL'" dense name="link"></v-icon>
             <v-icon v-else dense name="file"></v-icon>
-          </b-col>
-          <b-col>
+          </li>
+          <li class="list-group-item w-100">
             <div class="card-title">{{ text }}</div>
-          </b-col>
-        </b-row>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

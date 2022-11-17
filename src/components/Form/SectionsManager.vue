@@ -218,7 +218,7 @@ export default {
     },
     openSectionConfig(section) {
       this.$store.dispatch("tools/openSectionConfig", section);
-      this.$store.commit("tools/setActivatedTab", "config");
+      this.$store.commit("tools/switchConfigSlide", true);
     },
     setForm(section, id) {
       section.form_id = id;
