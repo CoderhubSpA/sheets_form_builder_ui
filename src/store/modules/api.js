@@ -317,6 +317,10 @@ const actions = {
             form[
               state.form_config.find((config) => config.col_name === "id").id
             ],
+          state:
+            form[
+              state.form_config.find((config) => config.col_name === "valid").id
+            ],
         });
       });
       state.form_list_options = form_options;
