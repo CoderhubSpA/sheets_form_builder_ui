@@ -67,6 +67,13 @@ const state = {
     section_entity_name: "form_section",
     field_entity_name: "form_field",
   },
+  axios_no_cache_config: {
+    headers: {
+      "Cache-Control": "no-cache",
+      Pragma: "no-cache",
+      Expires: "0",
+    },
+  },
   form_list_options: [],
   form_config: [],
   form_config_select: {},
@@ -306,21 +313,23 @@ const actions = {
    * @returns {Promise<AxiosResponse<any>>}
    */
   fetchFormList({ state, getters }) {
-    return axios.get(getters.formDataURL).then((response) => {
-      let form_options = [];
-      response.data.content.data.forEach((form) => {
-        form_options.push({
-          name: form[
-            state.form_config.find((config) => config.col_name === "name").id
-          ],
-          value:
-            form[
-              state.form_config.find((config) => config.col_name === "id").id
+    return axios
+      .get(getters.formDataURL, state.axios_no_cache_config)
+      .then((response) => {
+        let form_options = [];
+        response.data.content.data.forEach((form) => {
+          form_options.push({
+            name: form[
+              state.form_config.find((config) => config.col_name === "name").id
             ],
+            value:
+              form[
+                state.form_config.find((config) => config.col_name === "id").id
+              ],
+          });
         });
+        state.form_list_options = form_options;
       });
-      state.form_list_options = form_options;
-    });
   },
   /**
    * Fetch a whole existing form, with all of its elements (rows, etc)
@@ -333,49 +342,65 @@ const actions = {
     let form, rows, sections, fields, actions;
     let requests = [
       // Form
-      axios.get(context.getters.formDataURL).then((response) => {
-        form = response.data.content.data.find((form) => form.id === form_id);
-        parseJSONValues(form);
-      }),
+      axios
+        .get(context.getters.formDataURL, context.state.axios_no_cache_config)
+        .then((response) => {
+          form = response.data.content.data.find((form) => form.id === form_id);
+          parseJSONValues(form);
+        }),
       // Rows
-      axios.get(context.getters.rowsDataURL).then((response) => {
-        let form_id_config = context.state.rows_config.find(
-          (config) => config.col_name === "form_id"
-        ).id;
-        rows = response.data.content.data.filter(
-          (row) => row[form_id_config] === form_id
-        );
-        parseJSONValues(rows);
-      }),
+      axios
+        .get(context.getters.rowsDataURL, context.state.axios_no_cache_config)
+        .then((response) => {
+          let form_id_config = context.state.rows_config.find(
+            (config) => config.col_name === "form_id"
+          ).id;
+          rows = response.data.content.data.filter(
+            (row) => row[form_id_config] === form_id
+          );
+          parseJSONValues(rows);
+        }),
       // Sections
-      axios.get(context.getters.sectionsDataURL).then((response) => {
-        let form_id_config = context.state.sections_config.find(
-          (config) => config.col_name === "form_id"
-        ).id;
-        sections = response.data.content.data.filter(
-          (section) => section[form_id_config] === form_id
-        );
-        parseJSONValues(sections);
-      }),
+      axios
+        .get(
+          context.getters.sectionsDataURL,
+          context.state.axios_no_cache_config
+        )
+        .then((response) => {
+          let form_id_config = context.state.sections_config.find(
+            (config) => config.col_name === "form_id"
+          ).id;
+          sections = response.data.content.data.filter(
+            (section) => section[form_id_config] === form_id
+          );
+          parseJSONValues(sections);
+        }),
       // Fields
-      axios.get(context.getters.fieldsDataURL).then((response) => {
-        let form_id_config = context.state.fields_config.find(
-          (config) => config.col_name === "form_id"
-        ).id;
-        fields = response.data.content.data.filter(
-          (field) => field[form_id_config] === form_id
-        );
-        parseJSONValues(fields);
-      }),
+      axios
+        .get(context.getters.fieldsDataURL, context.state.axios_no_cache_config)
+        .then((response) => {
+          let form_id_config = context.state.fields_config.find(
+            (config) => config.col_name === "form_id"
+          ).id;
+          fields = response.data.content.data.filter(
+            (field) => field[form_id_config] === form_id
+          );
+          parseJSONValues(fields);
+        }),
       // Actions
-      axios.get(context.getters.actionsDataURL).then((response) => {
-        let form_id_config = context.state.actions_config.find(
-          (config) => config.col_name === "form_id"
-        ).id;
-        actions = response.data.content.data.filter(
-          (action) => action[form_id_config] === form_id
-        );
-      }),
+      axios
+        .get(
+          context.getters.actionsDataURL,
+          context.state.axios_no_cache_config
+        )
+        .then((response) => {
+          let form_id_config = context.state.actions_config.find(
+            (config) => config.col_name === "form_id"
+          ).id;
+          actions = response.data.content.data.filter(
+            (action) => action[form_id_config] === form_id
+          );
+        }),
     ];
 
     // Calls to fetch the form's possible fields, and then calls for loading the form with all the info
