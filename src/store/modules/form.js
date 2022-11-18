@@ -197,6 +197,14 @@ const actions = {
 
     let form_actions = [];
     actions.forEach((action) => {
+      // Skip inactive/deleted (not valid) actions
+      if (
+        !action[
+          api_state.actions_config.find((config) => config.col_name === "valid")
+            .id
+        ]
+      )
+        return;
       let action_config_values = getValuesFromRemoteEntityData(
         api_state.actions_config,
         api_state.actions_config_select,
@@ -213,6 +221,13 @@ const actions = {
 
     let form_rows = [];
     rows.forEach((row) => {
+      // Skip inactive/deleted (not valid) rows
+      if (
+        !row[
+          api_state.rows_config.find((config) => config.col_name === "valid").id
+        ]
+      )
+        return;
       let row_config_values = getValuesFromRemoteEntityData(
         api_state.rows_config,
         api_state.rows_config_select,
@@ -226,6 +241,15 @@ const actions = {
       sections
         .filter((section) => section[row_id_config] === row.id)
         .forEach((section) => {
+          // Skip inactive/deleted (not valid) sections
+          if (
+            !section[
+              api_state.sections_config.find(
+                (config) => config.col_name === "valid"
+              ).id
+            ]
+          )
+            return;
           let section_config_values = getValuesFromRemoteEntityData(
             api_state.sections_config,
             api_state.sections_config_select,
@@ -239,6 +263,14 @@ const actions = {
           fields
             .filter((field) => field[section_id_config] === section.id)
             .forEach((field) => {
+              if (
+                !field[
+                  api_state.fields_config.find(
+                    (config) => config.col_name === "valid"
+                  ).id
+                ]
+              )
+                return;
               let field_config_values = getValuesFromRemoteEntityData(
                 api_state.fields_config,
                 api_state.fields_config_select,
