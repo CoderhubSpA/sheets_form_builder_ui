@@ -17,9 +17,16 @@ const state = {
 const getters = {
   selectFormat:
     (state) =>
-    ({ format, name }) => {
-      if (name === "col_sm" || name === "col_md" || name === "col_xl") {
-        return "12";
+    ({ format, default_value, options, col_name }) => {
+      if (default_value) {
+        if (format === "SELECTOR") {
+          if (options)
+            return {
+              id: default_value,
+              name: JSON.parse(options)[default_value],
+            };
+        } else if (format === "SiNo") return default_value === 1;
+        else if (col_name !== "id") return String(default_value);
       }
       let type = state.format_types.find((element) => element.name === format);
       if (type) return type.value;
