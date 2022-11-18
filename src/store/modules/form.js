@@ -3,29 +3,29 @@ function fillObjLocalEntityData(configurations, obj) {
   let values = obj.config_values;
 
   let data_values = {};
+
+  // Store the id as 'id' in data_values, if it exists.
+  // The id configuration is stored twice in the database, one with key 'id' and the other as usual with config.id
+  let id_val =
+    values[configurations.find((config) => config.col_name === "id").id];
+  if (id_val) data_values["id"] = id_val;
+
   configurations.forEach((config) => {
     let value = values[config.id];
-    if (value || value === false || value === 0) {
-      // check it has a truthy value, but counting 0 as valid
-      if (config.name === "id") {
-        // The id configuration is stored twice, one with key 'id' and the other as usual with config.id
-        data_values["id"] = values[config.id];
-        // DO NOT RETURN HERE, it's stored twice in the database so we need to do it here
-      }
-      if (!Array.isArray(value)) {
-        // If it's not an array, we store that id
-        data_values[config.id] = values[config.id].id
-          ? values[config.id].id
-          : values[config.id];
-        return;
-      } else if (value.length > 0) {
-        // If it's a filled array, we store the array but with the ids
-        data_values[config.id] = [];
-        values[config.id].forEach((value) =>
-          data_values[config.id].push(value.id)
-        );
-        return;
-      }
+    // Skip undefined and null values (other falsy values like false or "" are considered and not skipped)
+    if (value === undefined || value === null) return;
+
+    if (!Array.isArray(value)) {
+      // If it's not an array, we store that id
+      data_values[config.id] = values[config.id].id
+        ? values[config.id].id // store the id if it's an object
+        : values[config.id]; // otherwise store the whole value
+    } else if (value.length > 0) {
+      // If it's a filled array (or maybe empty but of Acciones), we store the array but of ids
+      data_values[config.id] = [];
+      values[config.id].forEach((value) =>
+        data_values[config.id].push(value.id)
+      );
     }
   });
   return data_values;
@@ -45,6 +45,7 @@ function getValuesFromRemoteEntityData(
       ? entity_data[config.id]
       : selectFormat(config);
 
+    // Additional parsing to data
     if (Array.isArray(config_values[config.id]))
       config_values[config.id].forEach((id_val, index) => {
         config_values[config.id][index] = configurations_select[
@@ -57,6 +58,8 @@ function getValuesFromRemoteEntityData(
       );
     else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
       config_values[config.id] = config_values[config.id].toString();
+    else if (["valid"].includes(config.col_name))
+      config_values[config.id] = !!config_values[config.id]; // to boolean
   });
 
   return config_values;
@@ -96,6 +99,7 @@ const state = {
     rows: [],
     sections: [],
     fields: [],
+    actions: [],
   },
   current_view: "xl",
 };
@@ -396,6 +400,9 @@ const actions = {
     let action_id_config = rootState.api.actions_config.find(
       (config) => config.col_name === "action_id"
     ).id;
+    let action_active_config = rootState.api.actions_config.find(
+      (config) => config.col_name === "valid"
+    ).id;
 
     // Move all form.actions to form.unlisted_actions, then move back only the selected ones.
     state.form.actions.forEach((action) =>
@@ -409,7 +416,8 @@ const actions = {
           action.config_values[action_id_config].id === selected_action.id
       );
       if (form_action) {
-        // This selected action was ever configured , so we move it back to form.actions
+        // This selected action was ever configured, so we move it back to form.actions and put it active
+        form_action.config_values[action_active_config] = true;
         state.form.actions.push(form_action);
         let to_remove_idx = state.form.actions_unlisted.indexOf(form_action);
         state.form.actions_unlisted.splice(to_remove_idx, 1);

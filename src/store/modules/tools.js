@@ -3,6 +3,7 @@ const state = {
     { name: "TEXT", value: "" },
     { name: "NUMBER", value: null },
     { name: "SELECTOR", value: [] },
+    { name: "SELECTOR[MULTIPLE]", value: [] },
     { name: "SELECTOR[1XN][ONLYNEW]", value: [] },
     { name: "SiNo", value: false },
     { name: "DOCUMENT[IMAGE]", value: [] },
