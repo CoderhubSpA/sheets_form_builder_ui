@@ -10,7 +10,7 @@
           v-model="selectedFormId"
         >
           <option
-            v-for="option in $store.state.api.form_list_options"
+            v-for="option in $store.state.api.form_list_options.filter(option => option.state === 1)"
             :value="option.value"
             :key="'form-' + option.value"
           >
