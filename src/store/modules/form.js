@@ -45,6 +45,7 @@ function getValuesFromRemoteEntityData(
       ? entity_data[config.id]
       : selectFormat(config);
 
+    // Additional parsing to data
     if (Array.isArray(config_values[config.id]))
       config_values[config.id].forEach((id_val, index) => {
         config_values[config.id][index] = configurations_select[
@@ -57,6 +58,8 @@ function getValuesFromRemoteEntityData(
       );
     else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
       config_values[config.id] = config_values[config.id].toString();
+    else if (["valid"].includes(config.col_name))
+      config_values[config.id] = !!config_values[config.id]; // to boolean
   });
 
   return config_values;
