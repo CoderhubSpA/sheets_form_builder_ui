@@ -43,6 +43,15 @@
           class="info-icon"
           :title="section.config_values[description_config_id]"
         />
+        <div class="pl-2">
+          <img
+            v-if="img_url"
+            :src="img_url"
+            alt="section image"
+            width="50"
+            height="50"
+          />
+        </div>
         <b-modal
           :id="`modal-borrar-seccion-${idxRow}-${index}`"
           centered
@@ -89,6 +98,10 @@ export default {
       type: String,
       required: true,
     },
+    image_config_id: {
+      type: String,
+      required: true,
+    },
     index: {
       type: Number,
       required: true,
@@ -101,6 +114,13 @@ export default {
   computed: {
     section() {
       return this.$store.state.form.form.rows[this.idxRow].sections[this.index];
+    },
+    img_url() {
+      console.log();
+      let file =
+        this.$store.state.form.form.rows[this.idxRow].sections[this.index]
+          .config_values[this.image_config_id];
+      return file instanceof Blob ? window.URL.createObjectURL(file) : "";
     },
   },
 };
