@@ -36,22 +36,18 @@
         >
           <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
         </button>
+        <div v-if="img_url" class="px-1 mx-1">
+          <img :src="img_url" alt="section image" width="50" height="50" />
+        </div>
         <font-awesome-icon
+          v-if="section.config_values[description_config_id]"
           v-model="section.config_values[description_config_id]"
           icon="fa-solid fa-circle-info"
           size="lg"
           class="info-icon"
           :title="section.config_values[description_config_id]"
         />
-        <div class="pl-2">
-          <img
-            v-if="img_url"
-            :src="img_url"
-            alt="section image"
-            width="50"
-            height="50"
-          />
-        </div>
+
         <b-modal
           :id="`modal-borrar-seccion-${idxRow}-${index}`"
           centered
