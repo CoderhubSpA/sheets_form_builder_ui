@@ -32,6 +32,7 @@
                 :view="view"
                 :name_config_id="sectionNameConfigId"
                 :description_config_id="sectionDescriptionConfigId"
+                :image_config_id="sectionImageConfigId"
                 :index="index"
                 :idxRow="idxRow"
                 @delete-section-event="deleteSection"
@@ -122,6 +123,11 @@ export default {
     sectionDescriptionConfigId() {
       return this.$store.state.api.sections_config.find(
         (config) => config.name === "Descripción de la sección"
+      ).id;
+    },
+    sectionImageConfigId() {
+      return this.$store.state.api.sections_config.find(
+        (config) => config.name === "Imagen de la sección"
       ).id;
     },
   },

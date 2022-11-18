@@ -206,28 +206,11 @@
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
         <b-form-file
-          v-model="configObject.image"
+          v-model="configValues[element.id]"
           :id="'section-config-image' + element.id"
-          @input="handleImage(configObject)"
           accept="image/jpeg, image/png, image/gif"
           plain
         ></b-form-file>
-
-        <b-modal
-          class="modal-img"
-          id="modal-1"
-          title="BootstrapVue"
-          hide-footer
-          hide-header
-          centered
-        >
-          <b-img
-            :src="configObject.image_url"
-            alt="image-section"
-            width="320px"
-          />
-        </b-modal>
-        <b-button v-b-modal.modal-1 variant="primary">Ver imagen</b-button>
       </b-form-row>
 
       <b-list-group-item v-else>
