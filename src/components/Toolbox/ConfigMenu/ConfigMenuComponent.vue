@@ -114,6 +114,7 @@
           class="form-select"
           :id="'menu-' + menu_id + '-element-' + element.name"
           v-model="configValues[element.id]"
+          disabled
         >
           <option
             v-for="option in $store.state.api[configType + '_select'][
