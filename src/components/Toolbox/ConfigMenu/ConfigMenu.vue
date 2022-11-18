@@ -24,7 +24,10 @@
     </b-row>
     <b-row class="m-0" :class="showMenu ? 'd-block' : 'd-none'">
       <b-col class="px-3 m-0">
-        <ConfigMenuComponent :menu_id="menu_id" />
+        <ConfigMenuComponent
+          v-if="this.$store.state.tools.current_config.obj"
+          :menu_id="menu_id"
+        />
       </b-col>
     </b-row>
 
