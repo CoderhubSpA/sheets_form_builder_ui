@@ -821,6 +821,33 @@ const actions = {
             }
           );
         }
+        // Deleted actions
+        context.rootState.form.deleted.actions = [];
+        context.rootState.form.form.actions_unlisted.forEach((action) => {
+          let action_id =
+            action.config_values[
+              state.actions_config.find((config) => config.col_name === "id").id
+            ];
+          if (action_id) {
+            action.local_entity_data[
+              state.actions_config.find(
+                (config) => config.col_name === "valid"
+              ).id
+            ] = false;
+            context.rootState.form.deleted.actions.push(
+              action.local_entity_data
+            );
+          }
+        });
+        if (context.rootState.form.deleted.actions.length > 0) {
+          content[actions_config_id] = [];
+          context.rootState.form.deleted.actions.forEach(
+            (deleted_action_entity_data) => {
+              content[actions_config_id].push(deleted_action_entity_data);
+            }
+          );
+        }
+
         if (Object.keys(content).length === 0) return response;
         console.log("delete");
         return axios.post(state.url.base + "entity/update", content);

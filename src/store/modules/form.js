@@ -96,6 +96,7 @@ const state = {
     rows: [],
     sections: [],
     fields: [],
+    actions: [],
   },
   current_view: "xl",
 };
@@ -364,6 +365,9 @@ const actions = {
     let action_id_config = rootState.api.actions_config.find(
       (config) => config.col_name === "action_id"
     ).id;
+    let action_active_config = rootState.api.actions_config.find(
+      (config) => config.col_name === "valid"
+    ).id;
 
     // Move all form.actions to form.unlisted_actions, then move back only the selected ones.
     state.form.actions.forEach((action) =>
@@ -377,7 +381,8 @@ const actions = {
           action.config_values[action_id_config].id === selected_action.id
       );
       if (form_action) {
-        // This selected action was ever configured , so we move it back to form.actions
+        // This selected action was ever configured, so we move it back to form.actions and put it active
+        form_action.config_values[action_active_config] = true;
         state.form.actions.push(form_action);
         let to_remove_idx = state.form.actions_unlisted.indexOf(form_action);
         state.form.actions_unlisted.splice(to_remove_idx, 1);
