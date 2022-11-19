@@ -76,6 +76,13 @@
           class="info-icon-field"
           :title="field.config_values[description_config_id]"
         />
+
+        <a v-if="field.config_values[url_info_config_id] && field.config_values[text_info_config_id]" 
+          :href="field.config_values[url_info_config_id]"
+          class="url-style"
+          >
+            {{field.config_values[text_info_config_id]}}
+        </a>
       </div>
 
       <div class="card mt-2">
@@ -112,6 +119,14 @@ export default {
       required: true,
     },
     description_config_id: {
+      type: String,
+      required: true,
+    },
+    text_info_config_id: {
+      type: String,
+      required: true,
+    },
+    url_info_config_id: {
       type: String,
       required: true,
     },
