@@ -278,4 +278,14 @@ export default {
   margin-left: 0.3%;
   color: #9e9e9e;
 }
+
+.field-class{
+  margin-bottom: 15px;
+  background-color: white;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: gainsboro;
+  border-width: 3px;
+  padding: 8px;
+}
 </style>
