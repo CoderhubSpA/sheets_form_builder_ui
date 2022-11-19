@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
     "bootstrap-vue": "^2.22.0",
+    "skeleton-loader-vue": "^1.0.10",
     "vue": "^2.7.10",
     "vue-awesome": "^4.5.0",
     "vue-axios": "^3.4.1",
