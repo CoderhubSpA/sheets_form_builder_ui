@@ -8,13 +8,12 @@
           style="margin-bottom: 5px"
           :placeholder="'Busque un formulario existente...'"
         ></b-input>
-        <vue-skeleton-loader
-            v-if="this.options.length <= 0"
-            class="loader-size mt-3 mb-3"
-            type="rect"
-            rounded
-            animation="wave"
-        />
+        <div class="card"
+        v-if="options.length <= 0">
+          <b-skeleton
+          v-for="n in 15"
+          class="m-1"></b-skeleton>
+      </div>
         <b-form-select
           v-if="this.options.length > 0"
           class="form-select"
@@ -51,12 +50,8 @@
 </template>
 
 <script>
-import VueSkeletonLoader from "skeleton-loader-vue";
 export default {
   name: "SelectFormComponent",
-  components: {
-    VueSkeletonLoader,
-  },
   data() {
     return {
       selectedFormId: null,
@@ -104,6 +99,6 @@ export default {
 
 .loader-size{
   width: auto !important;
-  height: 1vw !important;
+  height: 0.9em !important;
 }
 </style>
