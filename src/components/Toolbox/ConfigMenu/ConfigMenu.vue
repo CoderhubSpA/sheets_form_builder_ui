@@ -1,7 +1,10 @@
 <template>
   <div
     :id="menu_id"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="[
+      showMenu ? 'show-menu' : 'hide-menu',
+      inTransition ? 'text-nowrap' : '',
+    ]"
     class="flex-shrink-0 float-end custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -114,10 +117,20 @@ export default {
       return this.$store.state.tools.show_config;
     },
   },
+  mounted() {
+    let menu = document.querySelector(".custom-side-menu");
+    menu.addEventListener("transitionend", () => {
+      console.log("Transition ended");
+      this.inTransition = false;
+    });
+    menu.addEventListener("transitionstart", () => {
+      this.inTransition = true;
+    });
+  },
   data() {
     return {
       collapse: true,
-      // showMenu:false,
+      inTransition: false,
     };
   },
   methods: {
@@ -129,15 +142,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .custom-side-menu {
   // width: 3%;
   // max-width: 25%;
   // height: 100%;
   // max-height: 1to;00%;
   overflow-y: auto;
+  overflow-x: hidden;
   transition: width 0.3s ease;
-  white-space: nowrap;
+  // white-space: nowrap;
 }
 
 .show-menu {
@@ -145,15 +159,10 @@ export default {
   max-width: 25%;
   height: 100%;
   max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 .hide-menu {
   width: 3%;
   max-width: 25%;
   height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 </style>

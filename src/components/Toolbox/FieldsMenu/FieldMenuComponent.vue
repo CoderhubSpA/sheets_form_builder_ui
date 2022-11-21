@@ -5,7 +5,7 @@
         <!-- commented fields have a fontawesome icon that doesn't display correctly right now, 
         uncommented fields have a placeholder icon -->
         <ul class="list-group list-group-horizontal">
-          <li class="list-group-item">
+          <li class="list-group-item d-flex align-items-center">
             <v-icon v-if="format === 'CLP'" dense name="dollar-sign"></v-icon>
             <!-- <v-icon v-else-if="format === 'DATE'" dense name="calendar"></v-icon> -->
             <v-icon v-else-if="format === 'DATE'" name="calendar"></v-icon>

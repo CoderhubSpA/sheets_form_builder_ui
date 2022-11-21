@@ -1,7 +1,10 @@
 <template>
   <div
     id="sidebarfields"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="[
+      showMenu ? 'show-menu' : 'hide-menu',
+      inTransition ? 'text-nowrap' : '',
+    ]"
     class="flex-shrink-0 custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -97,11 +100,22 @@ export default {
       );
     },
   },
+  mounted() {
+    let menu = document.querySelector(".custom-side-menu");
+    menu.addEventListener("transitionend", () => {
+      console.log("Transition ended");
+      this.inTransition = false;
+    });
+    menu.addEventListener("transitionstart", () => {
+      this.inTransition = true;
+    });
+  },
   data() {
     return {
       field_n: 0,
       search: "",
       showMenu: false,
+      inTransition: false,
     };
   },
   methods: {
@@ -122,7 +136,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .btn-toggle {
   width: 100%;
   display: inline-flex;
@@ -176,7 +190,7 @@ export default {
   overflow-y: auto;
   transition: width 0.3s ease;
   overflow-x: hidden;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 .show-menu {
   width: 20%;
