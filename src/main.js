@@ -23,6 +23,8 @@ library.add(faCircleInfo, faXmark, faGear, faCircleXmark);
 
 import './assets/main.css'
 import './assets/bootstrap-colors.scss'
+import './assets/multiselect.scss'
+
 
 Vue.component("v-icon", Icon);
 Vue.use(BootstrapVue);
