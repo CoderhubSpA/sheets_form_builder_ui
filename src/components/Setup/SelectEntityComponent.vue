@@ -80,17 +80,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.atras-button {
-  position: relative;
-  left: 10px;
-  top: 7px;
-}
-
-.crear-button {
-  position: relative;
-  left: 335px;
-  top: 7px;
-}
-</style>

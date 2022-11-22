@@ -1,5 +1,5 @@
 <template>
-  <div class="fieldMenuComponent col-12">
+  <div class="field-menu-component col-12">
     <div class="text-center h-100">
       <div class="" style="padding: 0.25em 0.5em">
         <!-- commented fields have a fontawesome icon that doesn't display correctly right now, 
@@ -171,17 +171,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.fieldMenuComponent {
-  color: #000000;
-
-  padding: 5px 10px;
-  cursor: pointer;
-
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
-}
-</style>

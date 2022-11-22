@@ -3,7 +3,7 @@
     <div class="form-row">
       <div class="row row-cols-1 row-cols">
         <div class="col">
-          <draggable :list="rows" :animation="200" ghost-class="moving-section">
+          <draggable :list="rows" :animation="200" ghost-class="moving-element">
             <transition-group>
               <div
                 v-for="(row, index) in rows"
@@ -68,10 +68,10 @@
               <p
                 :class="
                   view === 'xl'
-                    ? 'normalText'
+                    ? 'row-normal-text-size'
                     : view === 'md'
-                    ? 'mediumText'
-                    : 'smallText'
+                    ? 'row-medium-text-size'
+                    : 'row-small-text-size'
                 "
               >
                 Añadir Fila
@@ -182,81 +182,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.btn-circle.btn-xl {
-  width: 70px;
-  height: 70px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.btn-circle.btn-lg {
-  width: 58px;
-  height: 58px;
-  padding: 7px 13px;
-  border-radius: 30px;
-  font-size: 11px;
-  text-align: center;
-}
-
-.btn-circle.btn-md {
-  width: 50px;
-  height: 50px;
-  padding: 7px 10px;
-  border-radius: 25px;
-  font-size: 10px;
-  text-align: center;
-}
-
-.normalText {
-  font-size: 16px;
-}
-
-.mediumText {
-  font-size: 14px;
-}
-
-.smallText {
-  font-size: 12px;
-}
-
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited {
-  background-color: #008a94 !important;
-}
-
-.border-dotted {
-  border-style: dotted;
-  border-color: #bdbbbb;
-}
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  text-align: right;
-}
-
-.custom-icon {
-  fill: white;
-}
-
-.moving-section {
-  opacity: 0.5;
-  background: #f7fafc;
-  border: 2px solid #008a94;
-  border-radius: 5px;
-}
-
-.cursor-move:hover {
-  cursor: move;
-}
-
-.shadow-section {
-  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
-}
-</style>
