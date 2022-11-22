@@ -8,7 +8,11 @@
           style="margin-bottom: 5px"
           :placeholder="'Busque un formulario existente...'"
         ></b-input>
+        <div class="card" v-if="options.length <= 0">
+          <b-skeleton v-for="n in 15" class="m-1"></b-skeleton>
+        </div>
         <b-form-select
+          v-if="this.options.length > 0"
           class="form-select"
           :select-size="15"
           :data-live-search="true"

@@ -820,6 +820,7 @@ const actions = {
                   (config) => config.col_name === "valid"
                 ).id
               ] = false;
+              console.log(deleted_field_entity_data);
               content[fields_config_id].push(deleted_field_entity_data);
             }
           );

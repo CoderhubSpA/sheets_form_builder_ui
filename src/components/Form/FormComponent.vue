@@ -32,6 +32,16 @@
         <Actions />
       </b-col>
     </b-form-row>
+    <div
+      v-if="!$store.state.form.form.is_loaded"
+      class="d-flex justify-content-center"
+    >
+      <div
+        class="spinner-border d-flex justify-content-center"
+        style="width: 10vh; height: 10vh; margin-top: 40vh; color: #008a94"
+        role="status"
+      ></div>
+    </div>
   </div>
 </template>
 
