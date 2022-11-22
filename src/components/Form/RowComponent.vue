@@ -12,7 +12,6 @@
       <b-input
         v-model="row.config_values[name_config_id]"
         type="text"
-        class="border-0"
         placeholder="Nombre Fila"
         v-b-tooltip.hover.bottom
         title="Cambiar nombre fila"

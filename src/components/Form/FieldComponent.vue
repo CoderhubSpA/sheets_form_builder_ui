@@ -59,7 +59,6 @@
         <b-input
           v-model="field.config_values[name_config_id]"
           type="text"
-          class="border-0"
           v-b-tooltip.hover.bottom
           title="Cambiar nombre campo"
           :placeholder="field.name"

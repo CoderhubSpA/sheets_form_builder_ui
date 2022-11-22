@@ -10,7 +10,11 @@
   >
     <div
       class="p-3 border rounded"
-      :class="$store.state.tools.current_config.obj === section ? '' : 'transparent-border'"
+      :class="
+        $store.state.tools.current_config.obj === section
+          ? ''
+          : 'transparent-border'
+      "
       @click.self="$emit('open-section-config-event', section)"
     >
       <b-form-row>
@@ -18,7 +22,6 @@
           <b-input
             v-model="section.config_values[name_config_id]"
             type="text"
-            class="border-0"
             placeholder="Nombre Sección"
             v-b-tooltip.hover.bottom
             title="Cambiar nombre sección"
