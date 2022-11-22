@@ -30,29 +30,6 @@
         />
       </b-col>
     </b-row>
-
-    <!--
-    <FormConfigMenu
-      v-if="currentConfigType === 'form_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <RowConfigMenu
-      v-else-if="currentConfigType === 'rows_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <SectionConfigMenu
-      v-else-if="currentConfigType === 'sections_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <FieldConfigMenu
-      v-else-if="currentConfigType === 'fields_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-      -->
   </div>
 </template>
 
@@ -128,32 +105,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.custom-side-menu {
-  // width: 3%;
-  // max-width: 25%;
-  // height: 100%;
-  // max-height: 1to;00%;
-  overflow-y: auto;
-  transition: width 0.3s ease;
-  white-space: nowrap;
-}
-
-.show-menu {
-  width: 20%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.hide-menu {
-  width: 3%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-</style>

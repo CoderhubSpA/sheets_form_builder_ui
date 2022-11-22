@@ -1,17 +1,8 @@
 <template>
   <div
-    class="flex"
+    class="flex field-component"
     @mouseover="field.show = true"
     @mouseleave="field.show = false"
-    style="
-      margin-bottom: 15px;
-      background-color: white;
-      border-radius: 5px;
-      border-style: solid;
-      border-color: gainsboro;
-      border-width: 3px;
-      padding: 8px;
-    "
   >
     <div class="form-group col-12">
       <div v-if="field.show">
@@ -39,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div style="text-align: left !important; margin-bottom: 5px">
+      <div class="text-left" style="margin-bottom: 5px">
         <b-modal
           :id="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
           centered
@@ -81,12 +72,6 @@
       <div class="card mt-2">
         <div class="card-body"></div>
       </div>
-      <!-- <td style="padding-top: 8px;"></td>
-      <b-input
-        type="text"
-        class="form-control"
-        readonly
-      /> -->
     </div>
   </div>
 </template>
