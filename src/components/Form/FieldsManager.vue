@@ -52,21 +52,11 @@
           @dragleave="dragleaveDropZone"
         >
           <div
-            v-if="draggingField"
+            :style="draggingField ? 'opacity: 1' : 'opacity: 0'"
             class="p-3 my-2 border-dotted rounded text-center text-secondary"
             :class="{ 'drop-zone': overDropZone }"
           >
             Suelta el campo acá
-          </div>
-          <div
-            v-else
-            class="p-3 my-2 border-dotted rounded text-center text-secondary"
-            style="border-color: transparent"
-          >
-            <!--
-            TODO: Aquí hay un carácter invisible (alt+256) que hay que eliminar
-          -->
-            ­
           </div>
         </b-col>
       </transition-group>
