@@ -1,10 +1,7 @@
 <template>
   <div
     id="sidebarfields"
-    :class="[
-      showMenu ? 'show-menu' : 'hide-menu',
-      inTransition ? 'text-nowrap' : '',
-    ]"
+    :class="showMenu ? 'show-menu' : 'hide-menu'"
     class="flex-shrink-0 custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -19,7 +16,7 @@
       </b-col>
     </b-row>
     <b-row
-      class="m-0 p-0 py-3"
+      class="m-0 p-0 py-3 float-end"
       :class="showMenu ? 'd-none' : 'd-block'"
       style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
     >
@@ -99,23 +96,14 @@ export default {
           this.checkName(field.name)
       );
     },
-  },
-  mounted() {
-    let menu = document.querySelector(".custom-side-menu");
-    menu.addEventListener("transitionend", () => {
-      console.log("Transition ended");
-      this.inTransition = false;
-    });
-    menu.addEventListener("transitionstart", () => {
-      this.inTransition = true;
-    });
+    showMenu() {
+      return this.$store.state.tools.show_fields;
+    },
   },
   data() {
     return {
       field_n: 0,
       search: "",
-      showMenu: false,
-      inTransition: false,
     };
   },
   methods: {
@@ -130,13 +118,13 @@ export default {
       return this.removeAccents(name.toUpperCase()).includes(search);
     },
     switchMenu() {
-      this.showMenu = !this.showMenu;
+      this.$store.commit("tools/switchFieldsSlide", !this.showMenu);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .btn-toggle {
   width: 100%;
   display: inline-flex;
@@ -183,25 +171,20 @@ export default {
 }
 
 .custom-side-menu {
-  /* width: 3%;
-  max-width: 20%;
-  height: 100%;
-  max-height: 100%; */
-  overflow-y: auto;
-  transition: width 0.3s ease;
-  overflow-x: hidden;
-  /* white-space: nowrap; */
-}
-.show-menu {
   width: 20%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
+  position: absolute;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  overflow-x: hidden;
+  /* white-space: nowrap; */
+}
+.show-menu {
+  left: 0;
 }
 .hide-menu {
-  width: 3%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
+  left: -18%;
 }
 </style>

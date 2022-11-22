@@ -37,6 +37,9 @@ $body-bg: #ffffff;
   background-color: #03676e;
   border-radius: 20px;
 }
+body {
+  overflow: hidden;
+}
 </style>
 <script>
 import FormComponent from "./components/Form/FormComponent.vue";

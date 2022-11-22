@@ -1,10 +1,7 @@
 <template>
   <div
     :id="menu_id"
-    :class="[
-      showMenu ? 'show-menu' : 'hide-menu',
-      inTransition ? 'text-nowrap' : '',
-    ]"
+    :class="showMenu ? 'show-menu' : 'hide-menu'"
     class="flex-shrink-0 float-end custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -119,18 +116,17 @@ export default {
   },
   mounted() {
     let menu = document.querySelector(".custom-side-menu");
-    menu.addEventListener("transitionend", () => {
-      console.log("Transition ended");
-      this.inTransition = false;
-    });
-    menu.addEventListener("transitionstart", () => {
-      this.inTransition = true;
-    });
+    // menu.addEventListener("transitionend", () => {
+    //   console.log("Transition ended");
+    //   this.inTransition = false;
+    // });
+    // menu.addEventListener("transitionstart", () => {
+    //   this.inTransition = true;
+    // });
   },
   data() {
     return {
       collapse: true,
-      inTransition: false,
     };
   },
   methods: {
@@ -144,25 +140,20 @@ export default {
 
 <style scoped lang="scss">
 .custom-side-menu {
-  // width: 3%;
-  // max-width: 25%;
-  // height: 100%;
-  // max-height: 1to;00%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: width 0.3s ease;
-  // white-space: nowrap;
-}
-
-.show-menu {
   width: 20%;
   max-width: 25%;
   height: 100%;
   max-height: 100%;
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: right 0.3s ease;
+}
+
+.show-menu {
+  right: 0;
 }
 .hide-menu {
-  width: 3%;
-  max-width: 25%;
-  height: 100%;
+  right: -18%;
 }
 </style>

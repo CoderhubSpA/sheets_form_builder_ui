@@ -13,6 +13,7 @@ const state = {
   actual_tab: "config",
   current_config: {},
   show_config: false,
+  show_fields: false,
 };
 const getters = {
   selectFormat:
@@ -43,6 +44,9 @@ const mutations = {
   },
   switchConfigSlide(state, val) {
     state.show_config = val;
+  },
+  switchFieldsSlide(state, val) {
+    state.show_fields = val;
   },
   SET_CURRENT_CONFIG(state, config) {
     state.current_config = config;
