@@ -79,11 +79,9 @@
   color: var(--dark-2);
 }
 
-.panel-resizable {
-  resize: horizontal;
+.section-component {
   max-width: 100%;
   min-width: 25%;
-  overflow: hidden;
 }
 
 .onclick-form {
