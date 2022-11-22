@@ -184,7 +184,7 @@ fieldset[disabled] .multiselect {
   position: absolute;
   right: 0;
   top: -3px;
-  bottom: 0;
+  bottom: -3px;
   font-style: initial;
   width: $vue-multiselect-tag-icon-size;
   text-align: center;
@@ -476,6 +476,16 @@ fieldset[disabled] .multiselect {
     right: auto;
     left: 1px;
   }
+}
+
+// @see https://github.com/shentao/vue-multiselect/issues/718#issuecomment-471195859
+
+.multiselect__placeholder {
+  color: $vue-multiselect-placeholder-color;
+  display: inline-block;
+  margin-bottom: 0;
+  padding-top: 0;
+  margin-left: 12px;
 }
 
 // @see https://github.com/shentao/vue-multiselect/issues/718#issuecomment-471195859
