@@ -297,6 +297,7 @@ const actions = {
                     ).id
                   ].name
               );
+              delete field["form_id"];
               if (!api_field) {
                 console.warn(
                   "Possible duplicated field in the form. Column: " +
@@ -327,6 +328,7 @@ const actions = {
               section_fields.push(api_field);
             });
 
+          delete section["form_id"];
           row_sections.push({
             fields: section_fields,
             index: -1,
@@ -336,6 +338,8 @@ const actions = {
             unfilled_required_values: 0,
           });
         });
+
+      delete row["form_id"];
       form_rows.push({
         sections: row_sections,
         config_values: row_config_values,
