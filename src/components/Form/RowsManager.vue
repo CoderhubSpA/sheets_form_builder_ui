@@ -13,10 +13,10 @@
                 @click.self="openRowConfig(row)"
               >
                 <div
-                  :style="
+                  :class="
                     $store.state.tools.current_config.obj === row
-                      ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
-                      : ''
+                      ? 'selected-element rounded'
+                      : 'selected-element rounded transparent-border'
                   "
                 >
                   <RowComponent

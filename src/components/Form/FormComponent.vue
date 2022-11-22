@@ -2,8 +2,8 @@
   <div
     :class="
       $store.state.tools.current_config.obj === form
-        ? 'onclick-form rounded'
-        : 'border rounded'
+        ? 'selected-element rounded'
+        : 'selected-element rounded transparent-border'
     "
     style="overflow-y: auto; width: 100%; color: #424242"
   >

@@ -84,7 +84,7 @@
   min-width: 25%;
 }
 
-.onclick-form {
+.selected-element {
   border-style: solid;
   border-width: medium;
   border-color: var(--main-color);
@@ -247,4 +247,8 @@
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
+}
+
+.transparent-border {
+  border-color: transparent;
 }
