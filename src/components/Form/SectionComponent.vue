@@ -73,13 +73,20 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
+
 <script>
 import Fields from "./FieldsManager.vue";
+import BorderlessInputVue from "../Others/BorderlessInput.vue";
 
 export default {
   name: "SectionComponent",
   components: {
     Fields,
+    BorderlessInputVue,
   },
   props: {
     view: {

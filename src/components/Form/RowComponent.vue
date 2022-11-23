@@ -47,6 +47,11 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
+
 <script>
 export default {
   name: "RowComponent",
