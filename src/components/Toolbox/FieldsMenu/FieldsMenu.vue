@@ -29,6 +29,7 @@
         type="text"
         placeholder="Busca un campo aquí..."
       />
+      <p class="drag-message" > Arrastra los campos al formulario </p>
       <draggable
         @dragstart.native="hover_fields = true"
         @dragend.native="hover_fields = false"

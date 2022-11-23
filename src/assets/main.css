@@ -248,3 +248,11 @@
   -ms-hyphens: auto;
   hyphens: auto;
 }
+
+.drag-message {
+  font-size: 14px; 
+  text-align: center; 
+  color: #9F9E9E; 
+  font-style: italic;
+  padding-top: 8px;
+}
