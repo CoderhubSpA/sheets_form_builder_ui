@@ -18,6 +18,7 @@
           v-b-tooltip.hover.bottom
           title="Cambiar nombre sección"
           style="color: #757575; font-size: 1.125rem"
+          v-on:keyup.enter="$event.target.blur()"
         />
         <button
           class="close-button"

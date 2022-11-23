@@ -63,6 +63,7 @@
           v-b-tooltip.hover.bottom
           title="Cambiar nombre campo"
           :placeholder="field.name"
+          v-on:keyup.enter="$event.target.blur()"
         />
 
         <font-awesome-icon
