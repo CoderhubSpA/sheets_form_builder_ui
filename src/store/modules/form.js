@@ -52,11 +52,12 @@ function getValuesFromRemoteEntityData(
           config.id
         ].options.find((option) => option.id === id_val);
       });
-    else if (config.format === "SELECTOR")
+    else if (config.format === "SELECTOR") {
+      config_values[config.id] = config_values[config.id].toString();
       config_values[config.id] = configurations_select[config.id].options.find(
         (option) => option.id === config_values[config.id]
       );
-    else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
+    } else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
       config_values[config.id] = config_values[config.id].toString();
     else if (["valid"].includes(config.col_name))
       config_values[config.id] = !!config_values[config.id]; // to boolean
@@ -296,6 +297,7 @@ const actions = {
                     ).id
                   ].name
               );
+              delete field["form_id"];
               if (!api_field) {
                 console.warn(
                   "Possible duplicated field in the form. Column: " +
@@ -326,6 +328,7 @@ const actions = {
               section_fields.push(api_field);
             });
 
+          delete section["form_id"];
           row_sections.push({
             fields: section_fields,
             index: -1,
@@ -335,6 +338,8 @@ const actions = {
             unfilled_required_values: 0,
           });
         });
+
+      delete row["form_id"];
       form_rows.push({
         sections: row_sections,
         config_values: row_config_values,

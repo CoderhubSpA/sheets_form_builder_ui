@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-3 rounded panel-resizable"
+    class="p-3 rounded section-component"
     :style="
       $store.state.tools.current_config.obj === section
         ? 'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;'
@@ -19,15 +19,6 @@
           title="Cambiar nombre sección"
           style="color: #757575; font-size: 1.125rem"
         />
-        <!-- <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
-          @click="$emit('open-section-config-event', section)"
-        >
-          ×
-        </button> -->
         <button
           class="close-button"
           type="button"
@@ -44,7 +35,7 @@
           v-model="section.config_values[description_config_id]"
           icon="fa-solid fa-circle-info"
           size="lg"
-          class="info-icon"
+          class="info-icon-section"
           :title="section.config_values[description_config_id]"
         />
 
@@ -121,13 +112,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.border-0 {
-  background: transparent !important;
-}
-.border-0:hover {
-  border: solid !important;
-  border-width: 0.1px !important;
-}
-</style>

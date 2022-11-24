@@ -33,9 +33,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.justify {
-  justify-content: space-between;
-}
-</style>

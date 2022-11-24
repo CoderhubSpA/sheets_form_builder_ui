@@ -1,35 +1,250 @@
-@import "./base.css";
+@import "base.css";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+*::-webkit-scrollbar {
+  width: 1vh;
+  height: 1vh;
 }
 
-a,
-.green {
+*::-webkit-scrollbar-thumb {
+  background-color: var(--main-color-2);
+  border-radius: 20px;
+}
+
+.field-component {
+  margin-bottom: 15px;
+  background-color: var(--white);
+  border-radius: 5px;
+  border-style: solid;
+  border-color: var(--gainsboro);
+  border-width: 3px;
+  padding: 8px;
+}
+
+.border-dotted {
+  border-style: dotted;
+  border-color: var(--border-dotted);
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.ghost {
+  display: none;
+}
+
+.area {
+  position: relative;
+}
+
+.config {
+  display: none;
+  position: absolute;
+  top: -26px;
+  right: 14px;
+  border-radius: 10em;
+  padding: 0px 6px 0px;
+  background: #079a90;
+  border: 2px solid var(--white);
+  color: var(--white);
+}
+.remove {
+  display: none;
+  position: absolute;
+  top: -26px;
+  right: -18px;
+  border-radius: 10em;
+  padding: 0px 8px 0px;
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+  background: var(--red);
+  border: 2px solid var(--white);
+  color: var(--white);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.drop-zone {
+  background-color: #85dbe1;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+.info-icon-field {
+  margin-top: 0.8%;
+  margin-left: 0.3%;
+  color: var(--dark-2);
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.info-icon-section {
+  margin-top: 1.2%;
+  margin-left: 0.3%;
+  color: var(--dark-2);
+}
+
+.section-component {
+  max-width: 100%;
+  min-width: 25%;
+}
+
+.onclick-form {
+  border-style: solid;
+  border-width: medium;
+  border-color: var(--main-color);
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.btn-circle.btn-lg {
+  width: 58px;
+  height: 58px;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.btn-circle.btn-md {
+  width: 50px;
+  height: 50px;
+  padding: 7px 10px;
+  border-radius: 25px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.btn-circle.btn-sm {
+  width: 40px;
+  height: 40px;
+  padding: 6px 0px;
+  border-radius: 20px;
+  font-size: 8px;
+  text-align: center;
+}
+
+.row-normal-text-size {
+  font-size: 16px;
+}
+
+.row-medium-text-size {
+  font-size: 14px;
+}
+
+.row-small-text-size {
+  font-size: 12px;
+}
+
+.section-normal-text-size {
+  font-size: 15px;
+}
+
+.section-medium-text-size {
+  font-size: 13px;
+}
+
+.section-small-text-size {
+  font-size: 11px;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: var(--main-color) !important;
+}
+
+.custom-icon {
+  fill: var(--white);
+}
+
+.moving-element {
+  opacity: 0.5;
+  background: var(--white);
+  border: 2px solid var(--main-color);
+  border-radius: 5px;
+}
+
+.cursor-move,
+.cursor-move:hover {
+  cursor: move;
+}
+
+.shadow-section {
+  box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+}
+
+.border-0 {
+  background: transparent !important;
+}
+
+.border-0:hover {
+  border: 1px solid !important;
+}
+
+.close {
+  cursor: pointer;
+  top: 23%;
+  color: var(--pink);
+  border: none;
+  background: none;
+  opacity: 0.8;
+  margin-left: 1%;
+  margin-top: 1.4%;
+}
+
+.close:hover {
+  color: var(--red);
+  opacity: 1;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+}
+
+.select-form-edit-button {
+  position: relative;
+  top: 6px;
+}
+.slider {
+  margin-top: 1em !important;
+  margin-bottom: 0 !important;
+}
+
+.custom-side-menu {
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.3s ease;
+  white-space: nowrap;
+}
+
+.show-menu {
+  width: 20%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.hide-menu {
+  width: 3%;
+  max-width: 25%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.field-menu-component {
+  color: var(--black);
+  padding: 5px 10px;
+  cursor: pointer;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }

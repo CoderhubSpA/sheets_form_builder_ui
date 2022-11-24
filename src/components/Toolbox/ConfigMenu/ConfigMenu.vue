@@ -30,29 +30,6 @@
         />
       </b-col>
     </b-row>
-
-    <!--
-    <FormConfigMenu
-      v-if="currentConfigType === 'form_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <RowConfigMenu
-      v-else-if="currentConfigType === 'rows_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <SectionConfigMenu
-      v-else-if="currentConfigType === 'sections_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-    <FieldConfigMenu
-      v-else-if="currentConfigType === 'fields_config'"
-      :menu_id="menu_id"
-      :hidden_config="columns_hidden"
-    />
-      -->
   </div>
 </template>
 
@@ -114,16 +91,7 @@ export default {
       return this.$store.state.tools.show_config;
     },
   },
-  mounted() {
-    let menu = document.querySelector(".custom-side-menu");
-    // menu.addEventListener("transitionend", () => {
-    //   console.log("Transition ended");
-    //   this.inTransition = false;
-    // });
-    // menu.addEventListener("transitionstart", () => {
-    //   this.inTransition = true;
-    // });
-  },
+
   data() {
     return {
       collapse: true,

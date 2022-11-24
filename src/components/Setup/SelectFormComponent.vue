@@ -8,7 +8,11 @@
           style="margin-bottom: 5px"
           :placeholder="'Busque un formulario existente...'"
         ></b-input>
+        <div class="card" v-if="options.length <= 0">
+          <b-skeleton v-for="n in 15" class="m-1"></b-skeleton>
+        </div>
         <b-form-select
+          v-if="this.options.length > 0"
           class="form-select"
           :select-size="15"
           :data-live-search="true"
@@ -25,11 +29,8 @@
       </div>
 
       <br />
-      <!-- <b-button variant="secondary" size="lg" @click="editForm">
-        Editar formulario
-      </b-button> -->
     </div>
-    <div class="row edit-button">
+    <div class="row select-form-edit-button">
       <b-button
         variant="secondary"
         size="lg"
@@ -83,10 +84,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.edit-button {
-  position: relative;
-  top: 6px;
-}
-</style>

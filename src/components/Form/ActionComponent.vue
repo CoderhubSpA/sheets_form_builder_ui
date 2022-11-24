@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-2 col-3 center"
+    class="p-2 col-3 text-center"
     @click.self="$emit('open-action-config-event', action)"
   >
     <button class="btn btn-block btn-success" disabled>{{ text }}</button>
@@ -43,9 +43,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.center {
-  text-align: center;
-}
-</style>

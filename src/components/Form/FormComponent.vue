@@ -23,20 +23,23 @@
         class="border rounded p-3"
         @click.self="openFormConfig(form)"
       >
-        <!--<b-input v-model="currentFormName" v-if="editingName" class="text-left w-50 d-inline-block"
-                    @keyup.enter="editingName = false"/>-->
         <div class="h3 d-inline-block">{{ currentFormName }}</div>
-        <!--<v-icon class="d-inline-block ml-2 mb-1"
-                    :name="editingName? 'check': 'pencil-alt'"
-                    @click="editingName=!editingName"
-                    style="cursor: pointer"   
-                />-->
         <div class="m-2 y-2">
           <Rows />
         </div>
         <Actions />
       </b-col>
     </b-form-row>
+    <div
+      v-if="!$store.state.form.form.is_loaded"
+      class="d-flex justify-content-center"
+    >
+      <div
+        class="spinner-border d-flex justify-content-center"
+        style="width: 10vh; height: 10vh; margin-top: 40vh; color: #008a94"
+        role="status"
+      ></div>
+    </div>
   </div>
 </template>
 

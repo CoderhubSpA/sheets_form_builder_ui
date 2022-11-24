@@ -1,6 +1,8 @@
 <template>
   <b-navbar type="dark" variant="dark" style="height: 5vh">
-    <b-navbar-nav style="left: 50%; transform: translateX(-50%); position: fixed">
+    <b-navbar-nav
+      style="left: 50%; transform: translateX(-50%); position: fixed"
+    >
       <b-button
         class="btn m-1"
         @click="viewXl"
@@ -23,10 +25,15 @@
         <v-icon class="custom-icon" name="mobile"></v-icon>
       </b-button>
     </b-navbar-nav>
-    <b-navbar-nav style="left: 99%; transform: translateX(-99%); position: fixed">
-      <div v-if="$store.state.api.status_msg.length > 0">
-        <b-spinner variant="info" style="margin-right: 2em"> </b-spinner>
-      </div>
+    <b-navbar-nav
+      style="left: 99%; transform: translateX(-99%); position: fixed"
+    >
+      <b-spinner
+        v-if="$store.state.api.status_msg.length > 0"
+        variant="info"
+        style="margin-right: 2em"
+      >
+      </b-spinner>
       <b-button
         class="btn btn-success text-white"
         @click="$store.dispatch('api/postForm')"

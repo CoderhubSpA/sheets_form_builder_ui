@@ -125,51 +125,6 @@ export default {
 </script>
 
 <style scoped>
-.btn-toggle {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.65);
-  background-color: transparent;
-  border: 0;
-}
-.btn-toggle:hover,
-.btn-toggle:focus {
-  color: rgba(0, 0, 0, 0.85);
-}
-
-.btn-toggle::before {
-  width: 1.25em;
-  line-height: 0;
-  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
-  transition: transform 0.35s ease;
-  transform-origin: 0.5em 50%;
-}
-
-.btn-toggle[aria-expanded="true"] {
-  color: rgba(0, 0, 0, 0.85);
-}
-.btn-toggle[aria-expanded="true"]::before {
-  transform: rotate(90deg);
-}
-
-.menu-button {
-  font-size: 20pt !important;
-}
-.drop-zone {
-  background-color: #eee;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-.drag-el {
-  background-color: #fff;
-  margin-bottom: 10px;
-
-  padding: 5px;
-}
-
 .custom-side-menu {
   width: 20%;
   max-width: 25%;

@@ -36,6 +36,8 @@
             :view="view"
             :name_config_id="fieldNameConfigId"
             :description_config_id="fieldDescriptionConfigId"
+            :text_info_config_id="fieldTextInfoConfigId"
+            :url_info_config_id="fieldUrlInfoConfigId"
             :index="index"
             :idxRow="idxRow"
             :idxSection="idxSection"
@@ -106,6 +108,16 @@ export default {
     fieldDescriptionConfigId() {
       return this.$store.state.api.fields_config.find(
         (config) => config.name === "Descripción del campo"
+      ).id;
+    },
+    fieldTextInfoConfigId() {
+      return this.$store.state.api.fields_config.find(
+        (config) => config.name === "Más Información Texto"
+      ).id;
+    },
+    fieldUrlInfoConfigId() {
+      return this.$store.state.api.fields_config.find(
+        (config) => config.name === "Más Información URL"
       ).id;
     },
     draggingField: {
@@ -198,84 +210,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.btn-circle.btn-lg {
-  width: 55px;
-  height: 55px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 12px;
-  text-align: center;
-  background: #008a94;
-}
-
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited {
-  background-color: #008a94 !important;
-}
-
-.h1-button {
-  color: black;
-}
-
-.border-dotted {
-  border-style: dotted;
-  border-color: #bdbbbb;
-}
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  text-align: right;
-}
-
-.close-rounded {
-  width: 2rem;
-  height: 2rem;
-}
-
-.ghost {
-  display: none;
-}
-.area {
-  position: relative;
-}
-.remove {
-  display: none;
-  position: absolute;
-  top: -26px;
-  right: -18px;
-  border-radius: 10em;
-  padding: 0px 8px 0px;
-  text-decoration: none;
-  /* font: 700 18px/16px sans-serif; */
-  background: rgb(250, 10, 10);
-  border: 2px solid rgb(255, 255, 255);
-  color: #fff;
-}
-
-.drop-zone {
-  background-color: #85dbe1;
-}
-
-.config {
-  display: none;
-  position: absolute;
-  top: -26px;
-  right: 14px;
-  border-radius: 10em;
-  padding: 0px 6px 0px;
-  background: #079a90;
-  border: 2px solid rgb(255, 255, 255);
-  color: #fff;
-}
-
-.info-icon-field {
-  margin-top: 0.8%;
-  margin-left: 0.3%;
-  color: #9e9e9e;
-}
-</style>

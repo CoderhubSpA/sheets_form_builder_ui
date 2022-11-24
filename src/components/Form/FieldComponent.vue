@@ -1,17 +1,14 @@
 <template>
   <div
-    class="flex"
+    class="flex field-component"
     @mouseover="field.show = true"
     @mouseleave="field.show = false"
-    style="
-      margin-bottom: 15px;
-      background-color: white;
-      border-radius: 5px;
-      border-style: solid;
-      border-color: gainsboro;
-      border-width: 3px;
-      padding: 8px;
+    :style="
+      $store.state.tools.current_config.obj === field
+        ? 'border-style: solid; border-radius: 5px; border-width: medium; border-color: #008A94;'
+        : ''
     "
+    @click.self="$emit('open-field-config-event', field)"
   >
     <div class="form-group col-12">
       <div v-if="field.show">
@@ -26,20 +23,19 @@
               <font-awesome-icon icon="fa-solid fa-xmark" size="xs" />
             </button>
           </div>
-          <div class="area">
+          <!-- <div class="area">
             <button
               type="button"
               class="config"
               style="display: inline"
               @click="$emit('open-field-config-event', field)"
             >
-              <!-- <v-icon class="d-inline-block mb-1" name="cog" /> -->
               <font-awesome-icon icon="fa-solid fa-gear" size="xs" />
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
-      <div style="text-align: left !important; margin-bottom: 5px">
+      <div class="text-left" style="margin-bottom: 5px">
         <b-modal
           :id="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
           centered
@@ -70,23 +66,30 @@
         />
 
         <font-awesome-icon
+          v-if="field.config_values[description_config_id]"
           v-model="field.config_values[description_config_id]"
           icon="fa-solid fa-circle-info"
           size="lg"
           class="info-icon-field"
           :title="field.config_values[description_config_id]"
         />
+
+        <a
+          v-if="
+            field.config_values[url_info_config_id] &&
+            field.config_values[text_info_config_id]
+          "
+          :href="field.config_values[url_info_config_id]"
+          target="_blank"
+          class="url-style"
+        >
+          {{ field.config_values[text_info_config_id] }}
+        </a>
       </div>
 
       <div class="card mt-2">
         <div class="card-body"></div>
       </div>
-      <!-- <td style="padding-top: 8px;"></td>
-      <b-input
-        type="text"
-        class="form-control"
-        readonly
-      /> -->
     </div>
   </div>
 </template>
@@ -112,6 +115,14 @@ export default {
       required: true,
     },
     description_config_id: {
+      type: String,
+      required: true,
+    },
+    text_info_config_id: {
+      type: String,
+      required: true,
+    },
+    url_info_config_id: {
       type: String,
       required: true,
     },

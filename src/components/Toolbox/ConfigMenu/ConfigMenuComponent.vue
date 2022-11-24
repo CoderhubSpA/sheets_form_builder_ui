@@ -3,7 +3,7 @@
     <h5>{{ currentConfig.title }}:</h5>
     <h6>"{{ name }}"</h6>
     <div
-      v-for="element in configurations"
+      v-for="element in filterConfig"
       :key="element.id"
       style="padding: 0.5em"
     >
@@ -82,6 +82,7 @@
 
       <custom-slider
         v-else-if="element.col_name === 'col_sm'"
+        v-show="view === 'sm'"
         min="1"
         max="12"
         step="1"
@@ -91,6 +92,7 @@
 
       <custom-slider
         v-else-if="element.col_name === 'col_md'"
+        v-show="view === 'md'"
         min="1"
         max="12"
         step="1"
@@ -100,6 +102,7 @@
 
       <custom-slider
         v-else-if="element.col_name === 'col_xl'"
+        v-show="view === 'xl'"
         min="1"
         max="12"
         step="1"
@@ -273,6 +276,9 @@ export default {
     configValues() {
       return this.configObject.config_values;
     },
+    view() {
+      return this.$store.state.form.current_view;
+    },
     configActions: {
       get() {
         return this.configObject.config_values[
@@ -310,15 +316,19 @@ export default {
         ];
       return name.name ? name.name : name;
     },
+    filterConfig(){
+      const config = this.configurations
+      const list = []
+      const col = ['col_xl', 'col_md', 'col_sm']
+      config.forEach(element => {
+        if (element.name.includes(this.view) || !col.includes(element.name)){
+          list.push(element)
+        }
+      });
+      return list
+    }
   },
 };
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
-<style>
-.slider {
-  margin-top: 1em !important;
-  margin-bottom: 0 !important;
-}
-</style>
