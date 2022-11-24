@@ -1,7 +1,7 @@
 <template>
   <div
     id="sidebarfields"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="showMenu ? 'show-fields-menu' : 'hide-fields-menu'"
     class="flex-shrink-0 custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -16,7 +16,7 @@
       </b-col>
     </b-row>
     <b-row
-      class="m-0 p-0 py-3"
+      class="m-0 p-0 py-3 float-end"
       :class="showMenu ? 'd-none' : 'd-block'"
       style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
     >
@@ -96,12 +96,14 @@ export default {
           this.checkName(field.name)
       );
     },
+    showMenu() {
+      return this.$store.state.tools.show_fields;
+    },
   },
   data() {
     return {
       field_n: 0,
       search: "",
-      showMenu: false,
     };
   },
   methods: {
@@ -116,7 +118,7 @@ export default {
       return this.removeAccents(name.toUpperCase()).includes(search);
     },
     switchMenu() {
-      this.showMenu = !this.showMenu;
+      this.$store.commit("tools/switchFieldsSlide", !this.showMenu);
     },
   },
 };

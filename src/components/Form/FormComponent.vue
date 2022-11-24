@@ -1,11 +1,16 @@
 <template>
   <div
-    :class="
+    :class="[
       $store.state.tools.current_config.obj === form
         ? 'onclick-form rounded'
-        : 'border rounded'
-    "
-    style="overflow-y: auto; width: 100%; color: #424242"
+        : 'border rounded',
+      menuState === 'config' ? 'show-config-form-component' : '',
+      menuState === 'fields' ? 'show-fields-form-component' : '',
+      menuState === 'both' ? 'show-both-menus-form-component' : '',
+      menuState === 'hidden' ? 'hide-both-menus-form-component' : '',
+    ]"
+    class="custom-form-component"
+    style="overflow-y: scroll; color: #424242"
   >
     <b-form-row
       v-if="$store.state.form.form.is_loaded"
@@ -64,6 +69,15 @@ export default {
     isLoaded() {
       return this.$store.state.form.form.is_loaded;
     },
+    menuState() {
+      return this.$store.state.tools.show_config
+        ? this.$store.state.tools.show_fields
+          ? "both"
+          : "config"
+        : this.$store.state.tools.show_fields
+        ? "fields"
+        : "hidden";
+    },
   },
   data() {
     return {
@@ -81,6 +95,18 @@ export default {
     isLoaded() {
       this.openFormConfig(this.form);
     },
+
+    menuState(newVal) {
+      console.log(newVal);
+    },
   },
 };
 </script>
+
+<style>
+.onclick-form {
+  border-style: solid;
+  border-width: medium;
+  border-color: #008a94;
+}
+</style>

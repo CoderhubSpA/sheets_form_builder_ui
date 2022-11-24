@@ -1,19 +1,18 @@
 <template>
   <div style="max-height: 100vh">
-    <NavbarComponent/>
+    <NavbarComponent />
     <div
-        id="app"
-        style="min-height: 600px; height: 95vh"
-        class="d-flex flex-row"
+      id="app"
+      style="min-height: 600px; height: 95vh"
+      class="d-flex flex-row"
     >
-      <SetupModalComponent/>
-      <FieldsMenu/>
-      <FormComponent/>
-      <ConfigMenu/>
+      <SetupModalComponent />
+      <FieldsMenu />
+      <FormComponent />
+      <ConfigMenu />
     </div>
   </div>
 </template>
-
 
 <script>
 import FormComponent from "./components/Form/FormComponent.vue";
@@ -32,8 +31,7 @@ export default {
     FieldsMenu,
   },
   data: () => ({}),
-  created: function () {
-  },
+  created: function () {},
   mounted: function () {
     this.$bvModal.show("setup-modal");
     this.$store.dispatch("api/fetchFormConfig").then(() => {

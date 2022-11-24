@@ -1,7 +1,7 @@
 <template>
   <div
     :id="menu_id"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="showMenu ? 'show-config-menu' : 'hide-config-menu'"
     class="flex-shrink-0 float-end custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -91,10 +91,10 @@ export default {
       return this.$store.state.tools.show_config;
     },
   },
+
   data() {
     return {
       collapse: true,
-      // showMenu:false,
     };
   },
   methods: {
