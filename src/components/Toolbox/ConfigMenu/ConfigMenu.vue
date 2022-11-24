@@ -1,7 +1,7 @@
 <template>
   <div
     :id="menu_id"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="showMenu ? 'show-config-menu' : 'hide-config-menu'"
     class="flex-shrink-0 float-end custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -105,23 +105,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.custom-side-menu {
-  width: 20%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  position: absolute;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: right 0.3s ease;
-}
-
-.show-menu {
-  right: 0;
-}
-.hide-menu {
-  right: -18%;
-}
-</style>

@@ -216,29 +216,48 @@
 }
 
 .custom-side-menu {
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: width 0.3s ease;
-  white-space: nowrap;
-}
-
-.show-menu {
   width: 20%;
-  max-width: 25%;
+  max-width: 20%;
   height: 100%;
   max-height: 100%;
+  position: absolute;
   overflow-y: auto;
-  overflow-x: hidden;
-}
-.hide-menu {
-  width: 3%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  overflow-y: auto;
+  transition: all 0.3s ease;
   overflow-x: hidden;
 }
 
+.show-fields-menu {
+  left: 0;
+}
+.hide-fields-menu {
+  left: -18%;
+}
+.show-config-menu {
+  right: 0;
+}
+.hide-config-menu {
+  right: -18%;
+}
+.show-fields-form-component {
+  width: 78%;
+  left: 20%;
+  right: 2%;
+}
+.show-config-form-component {
+  width: 78%;
+  left: 2%;
+  right: 20%;
+}
+.show-both-menus-form-component {
+  width: 60%;
+  left: 20%;
+  right: 20%;
+}
+.hide-both-menus-form-component {
+  width: 96%;
+  left: 2%;
+  right: 2%;
+}
 .field-menu-component {
   color: var(--black);
   padding: 5px 10px;
@@ -247,4 +266,11 @@
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
+}
+.custom-form-component {
+  position: relative;
+  transition: all 0.3s ease;
+}
+body {
+  overflow: hidden;
 }

@@ -4,13 +4,13 @@
       $store.state.tools.current_config.obj === form
         ? 'onclick-form rounded'
         : 'border rounded',
-      menuState === 'config' ? 'show-config' : '',
-      menuState === 'fields' ? 'show-fields' : '',
-      menuState === 'both' ? 'show-both-menus' : '',
-      menuState === 'hidden' ? 'hide-both-menus' : '',
+      menuState === 'config' ? 'show-config-form-component' : '',
+      menuState === 'fields' ? 'show-fields-form-component' : '',
+      menuState === 'both' ? 'show-both-menus-form-component' : '',
+      menuState === 'hidden' ? 'hide-both-menus-form-component' : '',
     ]"
-    class="custom-form"
-    style="overflow-y: auto; color: #424242"
+    class="custom-form-component"
+    style="overflow-y: scroll; color: #424242"
   >
     <b-form-row
       v-if="$store.state.form.form.is_loaded"
@@ -104,35 +104,9 @@ export default {
 </script>
 
 <style>
-.custom-form {
-  position: absolute;
-  /* transition: left 0.3s ease;
-  transition: right 0.3s ease; */
-  transition: all 0.3s ease;
-}
 .onclick-form {
   border-style: solid;
   border-width: medium;
   border-color: #008a94;
-}
-.show-fields {
-  width: 78%;
-  left: 20%;
-  right: 2%;
-}
-.show-config {
-  width: 78%;
-  left: 2%;
-  right: 20%;
-}
-.show-both-menus {
-  width: 60%;
-  left: 20%;
-  right: 20%;
-}
-.hide-both-menus {
-  width: 96%;
-  left: 2%;
-  right: 2%;
 }
 </style>

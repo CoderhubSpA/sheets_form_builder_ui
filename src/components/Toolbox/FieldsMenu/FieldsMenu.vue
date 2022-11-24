@@ -1,7 +1,7 @@
 <template>
   <div
     id="sidebarfields"
-    :class="showMenu ? 'show-menu' : 'hide-menu'"
+    :class="showMenu ? 'show-fields-menu' : 'hide-fields-menu'"
     class="flex-shrink-0 custom-side-menu bg-light"
   >
     <b-row class="m-0">
@@ -123,23 +123,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.custom-side-menu {
-  width: 20%;
-  max-width: 25%;
-  height: 100%;
-  max-height: 100%;
-  position: absolute;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  overflow-x: hidden;
-  /* white-space: nowrap; */
-}
-.show-menu {
-  left: 0;
-}
-.hide-menu {
-  left: -18%;
-}
-</style>
