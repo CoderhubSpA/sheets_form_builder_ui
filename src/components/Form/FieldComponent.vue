@@ -20,7 +20,8 @@
               style="display: inline"
               v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
             >
-              <font-awesome-icon icon="fa-solid fa-xmark" size="xs" />
+              <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="lg" />
+              <!-- <font-awesome-icon icon="fa-solid fa-xmark" size="xs" /> -->
             </button>
           </div>
           <!-- <div class="area">

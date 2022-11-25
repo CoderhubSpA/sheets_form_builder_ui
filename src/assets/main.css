@@ -53,14 +53,16 @@
 .remove {
   display: none;
   position: absolute;
-  top: -26px;
-  right: -18px;
-  border-radius: 10em;
+  top: -28px;
+  right: -23px;
+  border: none;
+  background: transparent;
+  /* border-radius: 10em;
   padding: 0px 8px 0px;
   text-decoration: none;
   background: var(--red);
   border: 2px solid var(--white);
-  color: var(--white);
+  color: var(--white); */
 }
 
 .drop-zone {

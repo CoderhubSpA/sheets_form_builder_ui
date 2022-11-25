@@ -24,8 +24,9 @@
           type="button"
           v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
           @click="$emit('open-section-config-event', section)"
-        >
-          <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
+        > 
+          <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="lg" />
+          <!-- <font-awesome-icon icon="fa-solid fa-xmark" class="close" /> -->
         </button>
         <div v-if="img_url" class="px-1 mx-1">
           <img :src="img_url" alt="section image" width="50" height="50" />

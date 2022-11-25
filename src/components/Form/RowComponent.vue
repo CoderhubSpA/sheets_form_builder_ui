@@ -20,11 +20,11 @@
       />
       <button
         type="button"
-        class="btn btn-danger btn-sm delete"
+        class="close-button"
         v-b-modal="`modal-borrar-fila-${index}`"
         @click="$emit('open-row-config-event', row)"
       >
-        <v-icon class="custom-icon" name="trash"></v-icon>
+        <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="xl" />
       </button>
       <b-modal
         :id="`modal-borrar-fila-${index}`"
