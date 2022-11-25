@@ -73,10 +73,6 @@ export default {
     Fields,
   },
   props: {
-    view: {
-      type: String,
-      required: true,
-    },
     name_config_id: {
       type: String,
       required: true,
@@ -101,6 +97,9 @@ export default {
   computed: {
     section() {
       return this.$store.state.form.form.rows[this.idxRow].sections[this.index];
+    },
+    view() {
+      return this.$store.getters["tools/currentView"];
     },
     img_url() {
       console.log();

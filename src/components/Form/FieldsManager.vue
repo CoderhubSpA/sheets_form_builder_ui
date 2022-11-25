@@ -33,7 +33,6 @@
         >
           <FieldComponent
             :field="field"
-            :view="view"
             :name_config_id="fieldNameConfigId"
             :description_config_id="fieldDescriptionConfigId"
             :text_info_config_id="fieldTextInfoConfigId"

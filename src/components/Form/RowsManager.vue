@@ -20,7 +20,6 @@
                   "
                 >
                   <RowComponent
-                    :view="view"
                     :name_config_id="rowNameConfigId"
                     :index="index"
                     @delete-row-event="deleteRow"

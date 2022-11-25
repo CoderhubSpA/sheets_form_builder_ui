@@ -52,10 +52,6 @@
 export default {
   name: "RowComponent",
   props: {
-    view: {
-      type: String,
-      required: true,
-    },
     name_config_id: {
       type: String,
       required: true,
@@ -68,6 +64,9 @@ export default {
   computed: {
     row() {
       return this.$store.state.form.form.rows[this.index];
+    },
+    view() {
+      return this.$store.getters["tools/currentView"];
     },
   },
 };
