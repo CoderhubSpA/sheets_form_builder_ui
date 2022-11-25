@@ -43,9 +43,11 @@
         </draggable>
         <!-- pa debuguear -->
         <!-- {{sections}} -->
-        <div class="pt-3 border-dotted bg-light rounded">
+        <div class="mt-1">
           <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
-          <div class="container text-center">
+          <div
+            class="container pt-3 text-center border-dotted bg-light rounded"
+          >
             <button
               type="button"
               class="btn-primary btn btn-circle btn-lg"
