@@ -1,8 +1,6 @@
 <template>
-  <b-navbar type="dark" variant="dark" style="height: 5vh">
-    <b-navbar-nav
-      style="left: 50%; transform: translateX(-50%); position: fixed"
-    >
+  <b-navbar type="dark" variant="dark" class="justify-content-center w-100">
+    <b-navbar-nav>
       <b-button
         class="btn m-1"
         @click="viewXl"
