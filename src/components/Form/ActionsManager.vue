@@ -29,6 +29,7 @@ export default {
   methods: {
     openActionConfig(action) {
       this.$store.dispatch("tools/openActionConfig", action);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };
