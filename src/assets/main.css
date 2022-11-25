@@ -157,6 +157,10 @@
   background-color: var(--main-color) !important;
 }
 
+.create-form-button {
+  border: none !important;
+}
+
 .custom-icon {
   fill: var(--white);
 }

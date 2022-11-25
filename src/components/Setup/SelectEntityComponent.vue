@@ -32,6 +32,7 @@
       </div>
       <div class="col-6 d-flex justify-content-end">
         <b-button
+          class="create-form-button"
           variant="primary"
           size="lg"
           @click="createForm"
