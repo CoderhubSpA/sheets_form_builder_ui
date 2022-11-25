@@ -33,7 +33,6 @@
         >
           <FieldComponent
             :field="field"
-            :view="view"
             :name_config_id="fieldNameConfigId"
             :description_config_id="fieldDescriptionConfigId"
             :text_info_config_id="fieldTextInfoConfigId"
@@ -98,7 +97,7 @@ export default {
       ].fields;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     fieldNameConfigId() {
       return this.$store.state.api.fields_config.find(

@@ -72,7 +72,7 @@ export default {
       return this.$store.state.form.form;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     formNameId() {
       return this.$store.state.api.form_config.find(

@@ -102,7 +102,6 @@ const state = {
     fields: [],
     actions: [],
   },
-  current_view: "xl",
 };
 const mutations = {
   SET_FORM(state, payload) {

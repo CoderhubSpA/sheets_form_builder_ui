@@ -66,18 +66,18 @@ export default {
   name: "NavbarComponent",
   computed: {
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
   },
   methods: {
     viewXl() {
-      this.$store.state.form.current_view = "xl";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "xl");
     },
     viewMd() {
-      this.$store.state.form.current_view = "md";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "md");
     },
     viewSm() {
-      this.$store.state.form.current_view = "sm";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
     },
   },
 };

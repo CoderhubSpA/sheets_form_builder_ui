@@ -111,10 +111,6 @@ export default {
       type: Number,
       required: true,
     },
-    view: {
-      type: String,
-      required: true,
-    },
     name_config_id: {
       type: String,
       required: true,
