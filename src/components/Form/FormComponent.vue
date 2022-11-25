@@ -27,11 +27,11 @@
           <b-input
             v-model="form.config_values[formNameId]"
             type="text"
-            class="border-0"
             placeholder="Nombre Formulario"
             v-b-tooltip.hover.bottom
             title="Cambiar nombre formulario"
             style="font: inherit"
+            v-on:keyup.enter="$event.target.blur()"
           />
         </div>
         <div class="m-2 y-2">
@@ -52,6 +52,11 @@
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
 
 <script>
 import Rows from "./RowsManager.vue";
