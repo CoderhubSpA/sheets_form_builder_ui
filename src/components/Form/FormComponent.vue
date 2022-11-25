@@ -23,7 +23,17 @@
         class="border rounded p-3"
         @click.self="openFormConfig(form)"
       >
-        <div class="h3 d-inline-block">{{ currentFormName }}</div>
+        <div class="h3">
+          <b-input
+            v-model="form.config_values[formNameId]"
+            type="text"
+            class="border-0"
+            placeholder="Nombre Formulario"
+            v-b-tooltip.hover.bottom
+            title="Cambiar nombre formulario"
+            style="font: inherit"
+          />
+        </div>
         <div class="m-2 y-2">
           <Rows />
         </div>
@@ -59,12 +69,10 @@ export default {
     view() {
       return this.$store.state.form.current_view;
     },
-    currentFormName() {
-      return this.$store.state.form.form.config_values[
-        this.$store.state.api.form_config.find(
-          (config) => config.name === "Nombre"
-        ).id
-      ];
+    formNameId() {
+      return this.$store.state.api.form_config.find(
+        (config) => config.name === "Nombre"
+      ).id;
     },
     isLoaded() {
       return this.$store.state.form.form.is_loaded;
