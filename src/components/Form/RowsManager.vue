@@ -107,7 +107,7 @@ export default {
       return this.$store.state.form.form.rows;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     rowNameConfigId() {
       return this.$store.state.api.rows_config.find(

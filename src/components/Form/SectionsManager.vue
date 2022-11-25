@@ -113,7 +113,7 @@ export default {
       return this.$store.state.form.form.rows[this.idxRow].sections;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     sectionNameConfigId() {
       return this.$store.state.api.sections_config.find(

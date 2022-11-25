@@ -277,7 +277,7 @@ export default {
       return this.configObject.config_values;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     configActions: {
       get() {
