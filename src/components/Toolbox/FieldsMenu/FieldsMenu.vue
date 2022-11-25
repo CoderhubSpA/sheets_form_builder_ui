@@ -23,12 +23,21 @@
       Campos
     </b-row>
     <b-row class="mx-2" :class="showMenu ? 'd-block' : 'd-none'">
-      <b-input
-        v-model="search"
-        id="section-config-name"
-        type="text"
-        placeholder="Busca un campo aquí..."
-      />
+      <div class="form-group flex">
+        <b-input
+          v-model="search"
+          id="section-config-name"
+          type="text"
+          placeholder="Busca un campo aquí..."
+        />
+        <button
+          type="button"
+          class="btn btn-danger btn-sm delete"
+          @click="clearSearchBar"
+        >
+          <v-icon class="custom-icon" name="trash"></v-icon>
+        </button>
+      </div>
       <draggable
         @dragstart.native="hover_fields = true"
         @dragend.native="hover_fields = false"
@@ -119,6 +128,9 @@ export default {
     },
     switchMenu() {
       this.$store.commit("tools/switchFieldsSlide", !this.showMenu);
+    },
+    clearSearchBar() {
+      this.search = "";
     },
   },
 };
