@@ -1,14 +1,6 @@
 <template>
   <div @click.self="$emit('open-row-config-event', row)">
-    <div
-      :class="
-        view === 'xl'
-          ? 'form-group col-md-4 flex'
-          : view === 'md'
-          ? 'form-group col-md-6 flex'
-          : 'form-group col-md-8 flex'
-      "
-    >
+    <div class="form-group flex" :class="colClass[view]">
       <b-input
         v-model="row.config_values[name_config_id]"
         type="text"
@@ -61,6 +53,13 @@ export default {
       required: true,
     },
   },
+  data: () => ({
+    colClass: {
+      xl: "col-md-4",
+      md: "col-md-6",
+      sm: "col-md-8",
+    },
+  }),
   computed: {
     row() {
       return this.$store.state.form.form.rows[this.index];

@@ -47,39 +47,13 @@
           <div class="container text-center">
             <button
               type="button"
-              class="btn-primary btn btn-circle btn-lg"
+              class="btn-primary btn btn-circle"
+              :class="addButtonClass[view]"
               @click="addSection"
-              v-if="view === 'xl'"
             >
-              <v-icon name="plus" scale="1.45" />
+              <v-icon name="plus" :scale="addButtonIconScale[view]" />
             </button>
-            <button
-              type="button"
-              class="btn-primary btn btn-circle btn-md"
-              @click="addSection"
-              v-if="view === 'md'"
-            >
-              <v-icon name="plus" scale="1.25" />
-            </button>
-            <button
-              type="button"
-              class="btn-primary btn btn-circle btn-sm"
-              @click="addSection"
-              v-if="view === 'sm'"
-            >
-              <v-icon name="plus" scale="1" />
-            </button>
-            <p
-              :class="
-                view === 'xl'
-                  ? 'normalText'
-                  : view === 'md'
-                  ? 'mediumText'
-                  : 'smallText'
-              "
-            >
-              Añadir Sección
-            </p>
+            <p :class="addButtonTextClass[view]">Añadir Sección</p>
           </div>
         </div>
       </b-row>
@@ -130,7 +104,23 @@ export default {
       ).id;
     },
   },
-  data: () => ({}),
+  data: () => ({
+    addButtonClass: {
+      xl: "btn-lg",
+      md: "btn-md",
+      sm: "btn-sm",
+    },
+    addButtonIconScale: {
+      xl: "1.45",
+      md: "1.25",
+      sm: "1",
+    },
+    addButtonTextClass: {
+      xl: "normalText",
+      md: "mediumText",
+      sm: "smallText",
+    },
+  }),
 
   created() {
     if (this.sections.length === 0) {
