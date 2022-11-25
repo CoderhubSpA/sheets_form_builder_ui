@@ -46,13 +46,13 @@
           />
         </b-col>
         <b-col
-          v-if="draggingField"
           key="drop"
           cols="12"
           @dragover="dragoverDropZone"
           @dragleave="dragleaveDropZone"
         >
           <div
+            :style="draggingField ? 'opacity: 1' : 'opacity: 0'"
             class="p-3 my-2 border-dotted rounded text-center text-secondary"
             :class="{ 'drop-zone': overDropZone }"
           >
