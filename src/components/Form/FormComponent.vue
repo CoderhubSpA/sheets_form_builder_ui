@@ -2,8 +2,8 @@
   <div
     :class="[
       $store.state.tools.current_config.obj === form
-        ? 'onclick-form rounded'
-        : 'border rounded',
+        ? 'selected-element rounded'
+        : 'selected-element rounded transparent-border',
       menuState === 'config' ? 'show-config-form-component' : '',
       menuState === 'fields' ? 'show-fields-form-component' : '',
       menuState === 'both' ? 'show-both-menus-form-component' : '',
@@ -102,11 +102,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.onclick-form {
-  border-style: solid;
-  border-width: medium;
-  border-color: #008a94;
-}
-</style>

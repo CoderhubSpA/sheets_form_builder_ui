@@ -84,7 +84,7 @@
   min-width: 25%;
 }
 
-.onclick-form {
+.selected-element {
   border-style: solid;
   border-width: medium;
   border-color: var(--main-color);
@@ -273,4 +273,12 @@
 }
 body {
   overflow: hidden;
+}
+
+.transparent-border {
+  border-color: transparent;
+}
+
+.transparent-input {
+  background-color:transparent;
 }

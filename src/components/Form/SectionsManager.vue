@@ -73,10 +73,10 @@
             <p
               :class="
                 view === 'xl'
-                  ? 'normalText'
+                  ? 'section-normal-text-size'
                   : view === 'md'
-                  ? 'mediumText'
-                  : 'smallText'
+                  ? 'section-medium-text-size'
+                  : 'section-small-text-size'
               "
             >
               Añadir Sección
