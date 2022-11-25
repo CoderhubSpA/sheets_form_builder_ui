@@ -16,6 +16,7 @@
         v-b-tooltip.hover.bottom
         title="Cambiar nombre fila"
         style="color: #007672; font-size: 1.2rem"
+        v-on:keyup.enter="$event.target.blur()"
       />
       <button
         type="button"

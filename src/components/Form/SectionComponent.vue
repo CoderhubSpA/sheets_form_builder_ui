@@ -26,12 +26,14 @@
             v-b-tooltip.hover.bottom
             title="Cambiar nombre sección"
             style="color: #757575; font-size: 1.125rem"
+            v-on:keyup.enter="$event.target.blur()"
           />
           <button
             class="close-button"
             type="button"
             v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
             @click="$emit('open-section-config-event', section)"
+            v-on:keyup.enter="$event.target.blur()"
           >
             <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
           </button>
