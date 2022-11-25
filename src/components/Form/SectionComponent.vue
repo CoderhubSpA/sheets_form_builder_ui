@@ -20,13 +20,12 @@
           style="color: #757575; font-size: 1.125rem"
         />
         <button
-          class="close-button"
           type="button"
+          class="close-button-section"
           v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
           @click="$emit('open-section-config-event', section)"
-        > 
-          <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="lg" />
-          <!-- <font-awesome-icon icon="fa-solid fa-xmark" class="close" /> -->
+        >
+          <font-awesome-icon icon="fa-solid fa-xmark" class="xmark-delete-section" size="xs" />
         </button>
         <div v-if="img_url" class="px-1 mx-1">
           <img :src="img_url" alt="section image" width="50" height="50" />
