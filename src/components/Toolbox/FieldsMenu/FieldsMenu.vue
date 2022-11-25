@@ -38,6 +38,7 @@
           <v-icon class="custom-icon" name="trash"></v-icon>
         </button>
       </div>
+      <p class="drag-message">Arrastra los campos al formulario</p>
       <draggable
         @dragstart.native="hover_fields = true"
         @dragend.native="hover_fields = false"

@@ -280,5 +280,13 @@ body {
 }
 
 .transparent-input {
-  background-color:transparent;
+  background-color: transparent;
+}
+
+.drag-message {
+  font-size: 14px;
+  text-align: center;
+  color: #9f9e9e;
+  font-style: italic;
+  padding-top: 8px;
 }
