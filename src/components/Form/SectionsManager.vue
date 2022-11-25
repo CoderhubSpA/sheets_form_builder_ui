@@ -35,7 +35,6 @@
                 :index="index"
                 :idxRow="idxRow"
                 @delete-section-event="deleteSection"
-                @open-section-config-event="openSectionConfig"
               />
             </b-col>
           </transition-group>

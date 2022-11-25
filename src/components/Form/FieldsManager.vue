@@ -41,7 +41,6 @@
             :idxRow="idxRow"
             :idxSection="idxSection"
             @delete-field-event="deleteField"
-            @open-field-config-event="openFieldConfig"
           />
         </b-col>
         <b-col
@@ -49,6 +48,7 @@
           cols="12"
           @dragover="dragoverDropZone"
           @dragleave="dragleaveDropZone"
+          @click="$emit('open-section-config')"
         >
           <div
             :style="draggingField ? 'opacity: 1' : 'opacity: 0'"

@@ -4,7 +4,6 @@
       v-for="(button, index) in getAction"
       :index="index"
       :key="index"
-      @open-action-config-event="openActionConfig"
     />
   </div>
 </template>
@@ -26,11 +25,6 @@ export default {
       return this.$store.state.form.form.actions;
     },
   },
-  methods: {
-    openActionConfig(action) {
-      this.$store.dispatch("tools/openActionConfig", action);
-      this.$store.commit("tools/switchConfigSlide", true);
-    },
-  },
+  methods: {},
 };
 </script>

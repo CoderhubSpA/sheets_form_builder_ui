@@ -8,7 +8,7 @@
         ? 'border-style: solid; border-radius: 5px; border-width: medium; border-color: #008A94;'
         : ''
     "
-    @click.self="$emit('open-field-config-event', field)"
+    @click="openFieldConfig"
   >
     <div class="form-group col-12">
       <div v-if="field.show">
@@ -137,6 +137,12 @@ export default {
       return this.$store.state.form.form.rows[this.idxRow].sections[
         this.idxSection
       ].fields[this.index];
+    },
+  },
+  methods: {
+    openFieldConfig() {
+      this.$store.dispatch("tools/openFieldConfig", this.field);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

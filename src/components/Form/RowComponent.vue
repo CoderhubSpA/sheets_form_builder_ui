@@ -1,5 +1,5 @@
 <template>
-  <div @click.self="$emit('open-row-config-event', row)">
+  <div @click.self="openRowConfig">
     <div class="form-group flex" :class="colClass[view]">
       <b-input
         v-model="row.config_values[name_config_id]"
@@ -71,6 +71,12 @@ export default {
     },
     view() {
       return this.$store.getters["tools/currentView"];
+    },
+  },
+  methods: {
+    openRowConfig() {
+      this.$store.dispatch("tools/openRowConfig", this.row);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

@@ -6,7 +6,7 @@
         ? 'selected-element rounded'
         : 'selected-element rounded transparent-border'
     "
-    @click.self="$emit('open-section-config-event', section)"
+    @click.self="openSectionConfig"
   >
     <div
       class="p-3 border rounded"
@@ -15,7 +15,7 @@
           ? ''
           : 'transparent-border'
       "
-      @click.self="$emit('open-section-config-event', section)"
+      @click.self="openSectionConfig"
     >
       <b-form-row>
         <div class="form-group flex">
@@ -32,7 +32,7 @@
             class="close-button"
             type="button"
             v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
-            @click="$emit('open-section-config-event', section)"
+            @click="openSectionConfig"
             v-on:keyup.enter="$event.target.blur()"
           >
             <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
@@ -70,7 +70,11 @@
         </div>
       </b-form-row>
       <br />
-      <Fields :idxSection="index" :idxRow="idxRow" />
+      <Fields
+        :idxSection="index"
+        :idxRow="idxRow"
+        @open-section-config="openSectionConfig"
+      />
     </div>
   </div>
 </template>
@@ -123,6 +127,12 @@ export default {
         this.$store.state.form.form.rows[this.idxRow].sections[this.index]
           .config_values[this.image_config_id];
       return file instanceof Blob ? window.URL.createObjectURL(file) : "";
+    },
+  },
+  methods: {
+    openSectionConfig() {
+      this.$store.dispatch("tools/openSectionConfig", this.section);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };
