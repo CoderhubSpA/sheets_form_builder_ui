@@ -16,7 +16,11 @@
         v-b-modal="`modal-borrar-fila-${index}`"
         @click="$emit('open-row-config-event', row)"
       >
-        <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="xl" />
+        <font-awesome-icon
+          icon="fa-solid fa-circle-xmark"
+          class="close"
+          size="xl"
+        />
       </button>
       <b-modal
         :id="`modal-borrar-fila-${index}`"
@@ -37,6 +41,15 @@
         </template>
       </b-modal>
     </div>
+    <br />
+    <div
+      class="p-3 border-solid bg-white container shadow-section"
+      v-bind="row"
+      @click.self="openRowConfig"
+    >
+      <SectionsManager @open-row-config="openRowConfig" :idxRow="index" />
+      <br />
+    </div>
   </div>
 </template>
 
@@ -46,8 +59,13 @@ $input-border-color: transparent;
 </style>
 
 <script>
+import SectionsManager from "./SectionsManager.vue";
+
 export default {
   name: "RowComponent",
+  components: {
+    SectionsManager,
+  },
   props: {
     name_config_id: {
       type: String,

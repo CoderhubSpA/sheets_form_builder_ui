@@ -13,7 +13,7 @@
                 @click.self="openRowConfig(row)"
               >
                 <div
-                class="selected-element rounded p-1"
+                  class="selected-element rounded p-1"
                   :class="
                     $store.state.tools.current_config.obj === row
                       ? ''
@@ -25,14 +25,6 @@
                     :index="index"
                     @delete-row-event="deleteRow"
                   />
-                  <br />
-                  <div
-                    class="p-3 border-solid bg-white container shadow-section"
-                    v-bind="row"
-                  >
-                    <Sections :idxRow="index" />
-                    <br />
-                  </div>
                 </div>
                 <hr />
               </div>
@@ -59,13 +51,11 @@
 
 <script>
 import draggable from "vuedraggable";
-import Sections from "./SectionsManager.vue";
 import RowComponent from "./RowComponent.vue";
 
 export default {
   name: "RowsManager",
   components: {
-    Sections,
     draggable,
     RowComponent,
   },

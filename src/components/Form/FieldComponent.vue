@@ -24,16 +24,6 @@
               <!-- <font-awesome-icon icon="fa-solid fa-xmark" size="xs" /> -->
             </button>
           </div>
-          <!-- <div class="area">
-            <button
-              type="button"
-              class="config"
-              style="display: inline"
-              @click="$emit('open-field-config-event', field)"
-            >
-              <font-awesome-icon icon="fa-solid fa-gear" size="xs" />
-            </button>
-          </div> -->
         </div>
       </div>
       <div class="text-left" style="margin-bottom: 5px">
