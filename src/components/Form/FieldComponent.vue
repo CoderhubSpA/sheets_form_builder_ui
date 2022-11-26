@@ -3,10 +3,8 @@
     class="flex field-component"
     @mouseover="field.show = true"
     @mouseleave="field.show = false"
-    :style="
-      $store.state.tools.current_config.obj === field
-        ? 'border-style: solid; border-radius: 5px; border-width: medium; border-color: #008A94;'
-        : ''
+    :class="
+      $store.state.tools.current_config.obj === field ? 'selected-field' : ''
     "
     @click="openFieldConfig"
   >
@@ -20,7 +18,11 @@
               style="display: inline"
               v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
             >
-              <font-awesome-icon icon="fa-solid fa-circle-xmark" class="close" size="lg" />
+              <font-awesome-icon
+                icon="fa-solid fa-circle-xmark"
+                class="close"
+                size="lg"
+              />
               <!-- <font-awesome-icon icon="fa-solid fa-xmark" size="xs" /> -->
             </button>
           </div>

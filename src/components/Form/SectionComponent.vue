@@ -1,10 +1,10 @@
 <template>
   <div
-    class="rounded section-component"
+    class="rounded section-component selected-element"
     :class="
       $store.state.tools.current_config.obj === section
-        ? 'selected-element rounded'
-        : 'selected-element rounded transparent-border'
+        ? ''
+        : 'transparent-border'
     "
     @click.self="openSectionConfig"
   >
@@ -25,7 +25,7 @@
             placeholder="Nombre Sección"
             v-b-tooltip.hover.bottom
             title="Cambiar nombre sección"
-            style="color: #757575; font-size: 1.125rem"
+            class="section-name-input"
             v-on:keyup.enter="$event.target.blur()"
           />
           <button
@@ -35,7 +35,11 @@
             @click="openSectionConfig"
             v-on:keyup.enter="$event.target.blur()"
           >
-            <font-awesome-icon icon="fa-solid fa-xmark" class="xmark-delete-section" size="xs" />
+            <font-awesome-icon
+              icon="fa-solid fa-xmark"
+              class="xmark-delete-section"
+              size="xs"
+            />
           </button>
           <div v-if="img_url" class="px-1 mx-1">
             <img :src="img_url" alt="section image" width="50" height="50" />
