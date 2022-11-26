@@ -22,6 +22,8 @@ npm install
 npm run dev
 ```
 
+This projects connects to the PHP server `sheets_mock` through `http://127.0.0.1:8081/`, so that server has to be running in that port. If you want to use another `url`, it can be changed in `api.js`.
+
 ### Compile and Minify for Production
 
 ```sh

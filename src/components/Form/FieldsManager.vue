@@ -33,7 +33,6 @@
         >
           <FieldComponent
             :field="field"
-            :view="view"
             :name_config_id="fieldNameConfigId"
             :description_config_id="fieldDescriptionConfigId"
             :text_info_config_id="fieldTextInfoConfigId"
@@ -42,17 +41,17 @@
             :idxRow="idxRow"
             :idxSection="idxSection"
             @delete-field-event="deleteField"
-            @open-field-config-event="openFieldConfig"
           />
         </b-col>
         <b-col
-          v-if="draggingField"
           key="drop"
           cols="12"
           @dragover="dragoverDropZone"
           @dragleave="dragleaveDropZone"
+          @click="$emit('open-section-config')"
         >
           <div
+            :style="draggingField ? 'opacity: 1' : 'opacity: 0'"
             class="p-3 my-2 border-dotted rounded text-center text-secondary"
             :class="{ 'drop-zone': overDropZone }"
           >
@@ -98,7 +97,7 @@ export default {
       ].fields;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     fieldNameConfigId() {
       return this.$store.state.api.fields_config.find(

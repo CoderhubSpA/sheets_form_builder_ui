@@ -10,8 +10,12 @@
 
   --indigo: #2c3e50;
 
-  --main-color: #008a94;
+  --main-color: #069ba3;
+  --main-color-hover: #06767c;
   --main-color-2: #03676e;
+
+  --row-name: #007672;
+  --section-name: #757575;
 
   --divider-light-1: rgba(60, 60, 60, 0.29);
   --divider-light-2: rgba(60, 60, 60, 0.12);

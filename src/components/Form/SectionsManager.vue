@@ -1,91 +1,62 @@
 <template>
-  <div>
-    <b-row class="d-flex justify-content-center">
-      <b-row class="row-cols-1">
-        <draggable
-          :list="sections"
-          @change="onChange"
-          :animation="200"
-          ghost-class="moving-element"
+  <b-row
+    class="d-flex justify-content-center row-cols-1"
+    @click.self="$emit('open-row-config')"
+  >
+    <draggable
+      :list="sections"
+      @change="onChange"
+      :animation="200"
+      ghost-class="moving-element"
+    >
+      <transition-group name="fade" tag="b-row" class="sections">
+        <b-col
+          v-for="(section, index) in sections"
+          :key="section.index"
+          :id="`section-${section.index}`"
+          :cols="
+            view === 'xl'
+              ? getColXl(section)
+                ? getColXl(section)
+                : 12
+              : view === 'md'
+              ? getColMd(section)
+                ? getColMd(section)
+                : 12
+              : getColSm(section)
+              ? getColSm(section)
+              : 12
+          "
+          class="cursor-move my-1"
         >
-          <transition-group name="fade" tag="b-row" class="sections">
-            <b-col
-              v-for="(section, index) in sections"
-              :key="section.index"
-              :id="`section-${section.index}`"
-              :cols="
-                view === 'xl'
-                  ? getColXl(section)
-                    ? getColXl(section)
-                    : 12
-                  : view === 'md'
-                  ? getColMd(section)
-                    ? getColMd(section)
-                    : 12
-                  : getColSm(section)
-                  ? getColSm(section)
-                  : 12
-              "
-              class="cursor-move my-1"
-            >
-              <SectionComponent
-                :view="view"
-                :name_config_id="sectionNameConfigId"
-                :description_config_id="sectionDescriptionConfigId"
-                :image_config_id="sectionImageConfigId"
-                :index="index"
-                :idxRow="idxRow"
-                @delete-section-event="deleteSection"
-                @open-section-config-event="openSectionConfig"
-              />
-            </b-col>
-          </transition-group>
-        </draggable>
-        <!-- pa debuguear -->
-        <!-- {{sections}} -->
-        <div class="pt-3 border-dotted bg-light rounded">
-          <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
-          <div class="container text-center">
-            <button
-              type="button"
-              class="btn-primary btn btn-circle btn-lg"
-              @click="addSection"
-              v-if="view === 'xl'"
-            >
-              <v-icon name="plus" scale="1.45" />
-            </button>
-            <button
-              type="button"
-              class="btn-primary btn btn-circle btn-md"
-              @click="addSection"
-              v-if="view === 'md'"
-            >
-              <v-icon name="plus" scale="1.25" />
-            </button>
-            <button
-              type="button"
-              class="btn-primary btn btn-circle btn-sm"
-              @click="addSection"
-              v-if="view === 'sm'"
-            >
-              <v-icon name="plus" scale="1" />
-            </button>
-            <p
-              :class="
-                view === 'xl'
-                  ? 'normalText'
-                  : view === 'md'
-                  ? 'mediumText'
-                  : 'smallText'
-              "
-            >
-              Añadir Sección
-            </p>
-          </div>
-        </div>
-      </b-row>
-    </b-row>
-  </div>
+          <SectionComponent
+            :name_config_id="sectionNameConfigId"
+            :description_config_id="sectionDescriptionConfigId"
+            :image_config_id="sectionImageConfigId"
+            :index="index"
+            :idxRow="idxRow"
+            @delete-section-event="deleteSection"
+          />
+        </b-col>
+      </transition-group>
+    </draggable>
+    <!-- pa debuguear -->
+    <!-- {{sections}} -->
+    <div class="mt-1">
+      <!-- Hacer el for aquí para que solo se haga ciclo por la fila con el boton -->
+      <div class="container pt-3 text-center border-dotted bg-light rounded">
+        <button
+          type="button"
+          class="btn-primary btn btn-circle"
+          :class="addButtonClass[view]"
+          @click="addSection"
+        >
+          <v-icon name="plus" :scale="addButtonIconScale[view]" />
+        </button>
+        <p :class="addButtonTextClass[view]">Añadir Sección</p>
+      </div>
+    </div>
+  </b-row>
 </template>
 
 <script>
@@ -113,7 +84,7 @@ export default {
       return this.$store.state.form.form.rows[this.idxRow].sections;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     sectionNameConfigId() {
       return this.$store.state.api.sections_config.find(
@@ -131,7 +102,23 @@ export default {
       ).id;
     },
   },
-  data: () => ({}),
+  data: () => ({
+    addButtonClass: {
+      xl: "btn-lg",
+      md: "btn-md",
+      sm: "btn-sm",
+    },
+    addButtonIconScale: {
+      xl: "1.45",
+      md: "1.25",
+      sm: "1",
+    },
+    addButtonTextClass: {
+      xl: "normalText",
+      md: "mediumText",
+      sm: "smallText",
+    },
+  }),
 
   created() {
     if (this.sections.length === 0) {

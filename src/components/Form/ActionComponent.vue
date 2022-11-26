@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="p-2 col-3 text-center"
-    @click.self="$emit('open-action-config-event', action)"
-  >
+  <div class="p-2 col-3 text-center" @click.self="openActionConfig">
     <button class="btn btn-block btn-success" disabled>{{ text }}</button>
   </div>
 </template>
@@ -40,6 +37,12 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    openActionConfig() {
+      this.$store.dispatch("tools/openActionConfig", this.action);
+      this.$store.commit("tools/switchConfigSlide", true);
+    },
   },
 };
 </script>

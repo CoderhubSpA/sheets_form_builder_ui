@@ -16,8 +16,12 @@
   border-radius: 5px;
   border-style: solid;
   border-color: var(--gainsboro);
-  border-width: 3px;
+  border-width: medium;
   padding: 8px;
+}
+
+.selected-field {
+  border-color: var(--main-color);
 }
 
 .border-dotted {
@@ -53,14 +57,16 @@
 .remove {
   display: none;
   position: absolute;
-  top: -26px;
-  right: -18px;
-  border-radius: 10em;
+  top: -28px;
+  right: -23px;
+  border: none;
+  background: transparent;
+  /* border-radius: 10em;
   padding: 0px 8px 0px;
   text-decoration: none;
   background: var(--red);
   border: 2px solid var(--white);
-  color: var(--white);
+  color: var(--white); */
 }
 
 .drop-zone {
@@ -84,7 +90,7 @@
   min-width: 25%;
 }
 
-.onclick-form {
+.selected-element {
   border-style: solid;
   border-width: medium;
   border-color: var(--main-color);
@@ -138,6 +144,11 @@
   font-size: 12px;
 }
 
+.row-name-input {
+  color: var(--row-name) !important;
+  font-size: 1.2rem !important;
+}
+
 .section-normal-text-size {
   font-size: 15px;
 }
@@ -150,11 +161,22 @@
   font-size: 11px;
 }
 
+.section-name-input {
+  color: var(--section-name) !important;
+  font-size: 1.125rem !important;
+}
+
 .btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
 .btn-primary:visited {
   background-color: var(--main-color) !important;
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: var(--main-color-hover) !important;
+}
+
+.create-form-button {
+  border: none !important;
 }
 
 .custom-icon {
@@ -204,6 +226,31 @@
 .close-button {
   border: none;
   background: transparent;
+}
+
+.close-button-section {
+  border-radius: 50%;
+  padding: 0.5em;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: var(--pink);
+  opacity: 0.8;
+  color: white;
+  position: relative;
+  top: -28px;
+  right: -26px;
+  margin-top: 3px;
+}
+
+.close-button-section:hover {
+  background-color: var(--red);
+}
+
+.xmark-delete-section {
+  position: relative;
+  top: -10px;
+  right: 1.5px;
 }
 
 .select-form-edit-button {
@@ -273,4 +320,20 @@
 }
 body {
   overflow: hidden;
+}
+
+.transparent-border {
+  border-color: transparent;
+}
+
+.transparent-input {
+  background-color: transparent;
+}
+
+.drag-message {
+  font-size: 14px;
+  text-align: center;
+  color: #9f9e9e;
+  font-style: italic;
+  padding-top: 8px;
 }

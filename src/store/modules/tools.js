@@ -14,6 +14,7 @@ const state = {
   current_config: {},
   show_config: false,
   show_fields: false,
+  current_view: "xl",
 };
 const getters = {
   selectFormat:
@@ -34,6 +35,9 @@ const getters = {
       console.warn("No se encontró el formato" + format);
       return "";
     },
+  currentView(state) {
+    return state.current_view;
+  },
 };
 const mutations = {
   change_hover(state, activated) {
@@ -50,6 +54,9 @@ const mutations = {
   },
   SET_CURRENT_CONFIG(state, config) {
     state.current_config = config;
+  },
+  SET_CURRENT_VIEW(state, current_view) {
+    state.current_view = current_view;
   },
 };
 

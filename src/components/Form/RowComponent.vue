@@ -1,30 +1,27 @@
 <template>
-  <div @click.self="$emit('open-row-config-event', row)">
-    <div
-      :class="
-        view === 'xl'
-          ? 'form-group col-md-4 flex'
-          : view === 'md'
-          ? 'form-group col-md-6 flex'
-          : 'form-group col-md-8 flex'
-      "
-    >
+  <div @click.self="openRowConfig">
+    <div class="form-group flex" :class="colClass[view]">
       <b-input
         v-model="row.config_values[name_config_id]"
         type="text"
-        class="border-0"
         placeholder="Nombre Fila"
         v-b-tooltip.hover.bottom
         title="Cambiar nombre fila"
-        style="color: #007672; font-size: 1.2rem"
+        class="row-name-input"
+        v-on:keyup.enter="$event.target.blur()"
+        @click="openRowConfig"
       />
       <button
         type="button"
-        class="btn btn-danger btn-sm delete"
+        class="close-button"
         v-b-modal="`modal-borrar-fila-${index}`"
         @click="$emit('open-row-config-event', row)"
       >
-        <v-icon class="custom-icon" name="trash"></v-icon>
+        <font-awesome-icon
+          icon="fa-solid fa-circle-xmark"
+          class="close"
+          size="xl"
+        />
       </button>
       <b-modal
         :id="`modal-borrar-fila-${index}`"
@@ -45,17 +42,32 @@
         </template>
       </b-modal>
     </div>
+    <br />
+    <div
+      class="p-3 border-solid bg-white container shadow-section"
+      v-bind="row"
+      @click.self="openRowConfig"
+    >
+      <SectionsManager @open-row-config="openRowConfig" :idxRow="index" />
+      <br />
+    </div>
   </div>
 </template>
 
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
+
 <script>
+import SectionsManager from "./SectionsManager.vue";
+
 export default {
   name: "RowComponent",
+  components: {
+    SectionsManager,
+  },
   props: {
-    view: {
-      type: String,
-      required: true,
-    },
     name_config_id: {
       type: String,
       required: true,
@@ -65,9 +77,25 @@ export default {
       required: true,
     },
   },
+  data: () => ({
+    colClass: {
+      xl: "col-md-4",
+      md: "col-md-6",
+      sm: "col-md-8",
+    },
+  }),
   computed: {
     row() {
       return this.$store.state.form.form.rows[this.index];
+    },
+    view() {
+      return this.$store.getters["tools/currentView"];
+    },
+  },
+  methods: {
+    openRowConfig() {
+      this.$store.dispatch("tools/openRowConfig", this.row);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

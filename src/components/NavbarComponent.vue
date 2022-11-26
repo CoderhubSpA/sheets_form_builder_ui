@@ -1,8 +1,6 @@
 <template>
-  <b-navbar type="dark" variant="dark" style="height: 5vh">
-    <b-navbar-nav
-      style="left: 50%; transform: translateX(-50%); position: fixed"
-    >
+  <b-navbar type="dark" variant="dark" class="justify-content-center w-100">
+    <b-navbar-nav>
       <b-button
         class="btn m-1"
         @click="viewXl"
@@ -36,9 +34,27 @@
       </b-spinner>
       <b-button
         class="btn btn-success text-white"
-        @click="$store.dispatch('api/postForm')"
+        v-b-modal="`modal-guardar-formulario`"
         >Guardar</b-button
       >
+      <b-modal
+          :id="`modal-guardar-formulario`"
+          centered
+          hide-header
+          @ok="$store.dispatch('api/postForm')"
+          ok-variant="danger"
+          ok-title="Sí, estoy seguro"
+          cancel-title="Cancelar"
+        >
+          <template #default="{ close }">
+            <div class="container row justify-content-end">
+              <b-button class="btn btn-close" @click="close()"> </b-button>
+              <h5 class="text-center">
+                ¿Está seguro que desea guardar este formulario?
+              </h5>
+            </div>
+          </template>
+        </b-modal>
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -50,18 +66,18 @@ export default {
   name: "NavbarComponent",
   computed: {
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
   },
   methods: {
     viewXl() {
-      this.$store.state.form.current_view = "xl";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "xl");
     },
     viewMd() {
-      this.$store.state.form.current_view = "md";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "md");
     },
     viewSm() {
-      this.$store.state.form.current_view = "sm";
+      this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
     },
   },
 };

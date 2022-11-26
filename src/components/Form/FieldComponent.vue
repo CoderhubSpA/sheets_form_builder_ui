@@ -3,12 +3,10 @@
     class="flex field-component"
     @mouseover="field.show = true"
     @mouseleave="field.show = false"
-    :style="
-      $store.state.tools.current_config.obj === field
-        ? 'border-style: solid; border-radius: 5px; border-width: medium; border-color: #008A94;'
-        : ''
+    :class="
+      $store.state.tools.current_config.obj === field ? 'selected-field' : ''
     "
-    @click.self="$emit('open-field-config-event', field)"
+    @click="openFieldConfig"
   >
     <div class="form-group col-12">
       <div v-if="field.show">
@@ -20,19 +18,14 @@
               style="display: inline"
               v-b-modal="`modal-borrar-campo-${idxRow}-${idxSection}-${index}`"
             >
-              <font-awesome-icon icon="fa-solid fa-xmark" size="xs" />
+              <font-awesome-icon
+                icon="fa-solid fa-circle-xmark"
+                class="close"
+                size="lg"
+              />
+              <!-- <font-awesome-icon icon="fa-solid fa-xmark" size="xs" /> -->
             </button>
           </div>
-          <!-- <div class="area">
-            <button
-              type="button"
-              class="config"
-              style="display: inline"
-              @click="$emit('open-field-config-event', field)"
-            >
-              <font-awesome-icon icon="fa-solid fa-gear" size="xs" />
-            </button>
-          </div> -->
         </div>
       </div>
       <div class="text-left" style="margin-bottom: 5px">
@@ -59,10 +52,10 @@
         <b-input
           v-model="field.config_values[name_config_id]"
           type="text"
-          class="border-0"
           v-b-tooltip.hover.bottom
           title="Cambiar nombre campo"
           :placeholder="field.name"
+          v-on:keyup.enter="$event.target.blur()"
         />
 
         <font-awesome-icon
@@ -94,6 +87,11 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
+
 <script>
 export default {
   name: "FieldComponent",
@@ -104,10 +102,6 @@ export default {
     },
     idxSection: {
       type: Number,
-      required: true,
-    },
-    view: {
-      type: String,
       required: true,
     },
     name_config_id: {
@@ -136,6 +130,12 @@ export default {
       return this.$store.state.form.form.rows[this.idxRow].sections[
         this.idxSection
       ].fields[this.index];
+    },
+  },
+  methods: {
+    openFieldConfig() {
+      this.$store.dispatch("tools/openFieldConfig", this.field);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

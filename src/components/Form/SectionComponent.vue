@@ -1,68 +1,93 @@
 <template>
   <div
-    class="p-3 rounded section-component"
-    :style="
+    class="rounded section-component selected-element"
+    :class="
       $store.state.tools.current_config.obj === section
-        ? 'border-style: solid; border-radius: 5%; border-width: medium; border-color: #008A94;'
-        : 'border-style: solid; border-radius: 5%;border-width: thin; border-color:#BDBBBB'
+        ? ''
+        : 'transparent-border'
     "
-    @click.self="$emit('open-section-config-event', section)"
+    @click.self="openSectionConfig"
   >
-    <b-form-row>
-      <div class="form-group flex">
-        <b-input
-          v-model="section.config_values[name_config_id]"
-          type="text"
-          class="border-0"
-          placeholder="Nombre Sección"
-          v-b-tooltip.hover.bottom
-          title="Cambiar nombre sección"
-          style="color: #757575; font-size: 1.125rem"
-        />
-        <button
-          class="close-button"
-          type="button"
-          v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
-          @click="$emit('open-section-config-event', section)"
-        >
-          <font-awesome-icon icon="fa-solid fa-xmark" class="close" />
-        </button>
-        <div v-if="img_url" class="px-1 mx-1">
-          <img :src="img_url" alt="section image" width="50" height="50" />
-        </div>
-        <font-awesome-icon
-          v-if="section.config_values[description_config_id]"
-          v-model="section.config_values[description_config_id]"
-          icon="fa-solid fa-circle-info"
-          size="lg"
-          class="info-icon-section"
-          :title="section.config_values[description_config_id]"
-        />
+    <div
+      class="p-3 border rounded"
+      :class="
+        $store.state.tools.current_config.obj === section
+          ? ''
+          : 'transparent-border'
+      "
+      @click.self="openSectionConfig"
+    >
+      <b-form-row>
+        <div class="form-group flex">
+          <b-input
+            v-model="section.config_values[name_config_id]"
+            type="text"
+            placeholder="Nombre Sección"
+            v-b-tooltip.hover.bottom
+            title="Cambiar nombre sección"
+            class="section-name-input"
+            v-on:keyup.enter="$event.target.blur()"
+            @click="openSectionConfig"
+          />
+          <button
+            class="close-button-section"
+            type="button"
+            v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
+            @click="openSectionConfig"
+            v-on:keyup.enter="$event.target.blur()"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-xmark"
+              class="xmark-delete-section"
+              size="xs"
+            />
+          </button>
+          <div v-if="img_url" class="px-1 mx-1">
+            <img :src="img_url" alt="section image" width="50" height="50" />
+          </div>
+          <font-awesome-icon
+            v-if="section.config_values[description_config_id]"
+            v-model="section.config_values[description_config_id]"
+            icon="fa-solid fa-circle-info"
+            size="lg"
+            class="info-icon-section"
+            :title="section.config_values[description_config_id]"
+          />
 
-        <b-modal
-          :id="`modal-borrar-seccion-${idxRow}-${index}`"
-          centered
-          hide-header
-          @ok="$emit('delete-section-event', index)"
-          ok-variant="danger"
-          ok-title="Sí, estoy seguro"
-          cancel-title="Cancelar"
-        >
-          <template #default="{ close }">
-            <div class="container row justify-content-end">
-              <b-button class="btn btn-close" @click="close()"> </b-button>
-              <h5 class="text-center">
-                ¿Está seguro que desea eliminar esta sección?
-              </h5>
-            </div>
-          </template>
-        </b-modal>
-      </div>
-    </b-form-row>
-    <br />
-    <Fields :idxSection="index" :idxRow="idxRow" />
+          <b-modal
+            :id="`modal-borrar-seccion-${idxRow}-${index}`"
+            centered
+            hide-header
+            @ok="$emit('delete-section-event', index)"
+            ok-variant="danger"
+            ok-title="Sí, estoy seguro"
+            cancel-title="Cancelar"
+          >
+            <template #default="{ close }">
+              <div class="container row justify-content-end">
+                <b-button class="btn btn-close" @click="close()"> </b-button>
+                <h5 class="text-center">
+                  ¿Está seguro que desea eliminar esta sección?
+                </h5>
+              </div>
+            </template>
+          </b-modal>
+        </div>
+      </b-form-row>
+      <br />
+      <Fields
+        :idxSection="index"
+        :idxRow="idxRow"
+        @open-section-config="openSectionConfig"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
 
 <script>
 import Fields from "./FieldsManager.vue";
@@ -73,10 +98,6 @@ export default {
     Fields,
   },
   props: {
-    view: {
-      type: String,
-      required: true,
-    },
     name_config_id: {
       type: String,
       required: true,
@@ -102,12 +123,21 @@ export default {
     section() {
       return this.$store.state.form.form.rows[this.idxRow].sections[this.index];
     },
+    view() {
+      return this.$store.getters["tools/currentView"];
+    },
     img_url() {
       console.log();
       let file =
         this.$store.state.form.form.rows[this.idxRow].sections[this.index]
           .config_values[this.image_config_id];
       return file instanceof Blob ? window.URL.createObjectURL(file) : "";
+    },
+  },
+  methods: {
+    openSectionConfig() {
+      this.$store.dispatch("tools/openSectionConfig", this.section);
+      this.$store.commit("tools/switchConfigSlide", true);
     },
   },
 };

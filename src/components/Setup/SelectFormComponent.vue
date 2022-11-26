@@ -3,11 +3,22 @@
     <div class="row">
       <div class="col-12">
         <h5>O elige un formulario existente</h5>
+        <div class="form-group flex" style="margin-bottom: 5px">
         <b-input
           v-model="search"
-          style="margin-bottom: 5px"
-          :placeholder="'Busque un formulario existente...'"
-        ></b-input>
+          id="section-config-name"
+          type="text"
+          
+          placeholder="Busque un formulario existente..."
+        />
+        <button
+          type="button"
+          class="btn btn-danger btn-sm delete"
+          @click="clearSearchBar"
+        >
+          <v-icon class="custom-icon" name="trash"></v-icon>
+        </button>
+      </div>
         <div class="card" v-if="options.length <= 0">
           <b-skeleton v-for="n in 15" class="m-1"></b-skeleton>
         </div>
@@ -61,6 +72,9 @@ export default {
     },
     removeAccents(str) {
       return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    },
+    clearSearchBar() {
+      this.search = "";
     },
   },
   computed: {

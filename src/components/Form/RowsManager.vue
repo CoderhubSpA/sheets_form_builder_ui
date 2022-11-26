@@ -13,27 +13,18 @@
                 @click.self="openRowConfig(row)"
               >
                 <div
-                  :style="
+                  class="selected-element rounded p-1"
+                  :class="
                     $store.state.tools.current_config.obj === row
-                      ? 'border-style: solid; border-radius: 1%; border-width: medium; border-color: #008A94;'
-                      : ''
+                      ? ''
+                      : 'transparent-border'
                   "
                 >
                   <RowComponent
-                    :view="view"
                     :name_config_id="rowNameConfigId"
                     :index="index"
                     @delete-row-event="deleteRow"
-                    @open-row-config-event="openRowConfig"
                   />
-                  <br />
-                  <div
-                    class="p-3 border-solid bg-white container shadow-section"
-                    v-bind="row"
-                  >
-                    <Sections :idxRow="index" />
-                    <br />
-                  </div>
                 </div>
                 <hr />
               </div>
@@ -43,39 +34,13 @@
             <div class="container text-center">
               <button
                 type="button"
-                class="btn btn-primary btn-circle btn-xl"
                 @click="addRow"
-                v-if="view === 'xl'"
+                class="btn btn-primary btn-circle"
+                :class="addButtonClass[view]"
               >
-                <v-icon name="plus" scale="1.75" />
+                <v-icon name="plus" :scale="addButtonIconScale[view]" />
               </button>
-              <button
-                type="button"
-                class="btn btn-primary btn-circle btn-lg"
-                @click="addRow"
-                v-if="view === 'md'"
-              >
-                <v-icon name="plus" scale="1.45" />
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary btn-circle btn-md"
-                @click="addRow"
-                v-if="view === 'sm'"
-              >
-                <v-icon name="plus" scale="1.25" />
-              </button>
-              <p
-                :class="
-                  view === 'xl'
-                    ? 'row-normal-text-size'
-                    : view === 'md'
-                    ? 'row-medium-text-size'
-                    : 'row-small-text-size'
-                "
-              >
-                Añadir Fila
-              </p>
+              <p :class="addButtonTextClass[view]">Añadir Fila</p>
             </div>
           </div>
         </div>
@@ -86,13 +51,11 @@
 
 <script>
 import draggable from "vuedraggable";
-import Sections from "./SectionsManager.vue";
 import RowComponent from "./RowComponent.vue";
 
 export default {
   name: "RowsManager",
   components: {
-    Sections,
     draggable,
     RowComponent,
   },
@@ -107,7 +70,7 @@ export default {
       return this.$store.state.form.form.rows;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
     rowNameConfigId() {
       return this.$store.state.api.rows_config.find(
@@ -115,7 +78,23 @@ export default {
       ).id;
     },
   },
-  data: () => ({}),
+  data: () => ({
+    addButtonClass: {
+      xl: "btn-xl",
+      md: "btn-lg",
+      sm: "btn-md",
+    },
+    addButtonIconScale: {
+      xl: "1.75",
+      md: "1.45",
+      sm: "1.25",
+    },
+    addButtonTextClass: {
+      xl: "row-normal-text-size",
+      md: "row-medium-text-size",
+      sm: "row-small-text-size",
+    },
+  }),
 
   created() {
     if (this.rows.length === 0) {

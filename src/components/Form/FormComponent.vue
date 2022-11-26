@@ -2,8 +2,8 @@
   <div
     :class="[
       $store.state.tools.current_config.obj === form
-        ? 'onclick-form rounded'
-        : 'border rounded',
+        ? 'selected-element rounded'
+        : 'selected-element rounded transparent-border',
       menuState === 'config' ? 'show-config-form-component' : '',
       menuState === 'fields' ? 'show-fields-form-component' : '',
       menuState === 'both' ? 'show-both-menus-form-component' : '',
@@ -23,7 +23,18 @@
         class="border rounded p-3"
         @click.self="openFormConfig(form)"
       >
-        <div class="h3 d-inline-block">{{ currentFormName }}</div>
+        <div class="h3">
+          <b-input
+            v-model="form.config_values[formNameId]"
+            type="text"
+            placeholder="Nombre Formulario"
+            v-b-tooltip.hover.bottom
+            title="Cambiar nombre formulario"
+            style="font: inherit"
+            v-on:keyup.enter="$event.target.blur()"
+            @click="openFormConfig(form)"
+          />
+        </div>
         <div class="m-2 y-2">
           <Rows />
         </div>
@@ -43,6 +54,11 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+$input-border-color: transparent;
+@import "bootstrap";
+</style>
+
 <script>
 import Rows from "./RowsManager.vue";
 import Actions from "./ActionsManager.vue";
@@ -57,14 +73,12 @@ export default {
       return this.$store.state.form.form;
     },
     view() {
-      return this.$store.state.form.current_view;
+      return this.$store.getters["tools/currentView"];
     },
-    currentFormName() {
-      return this.$store.state.form.form.config_values[
-        this.$store.state.api.form_config.find(
-          (config) => config.name === "Nombre"
-        ).id
-      ];
+    formNameId() {
+      return this.$store.state.api.form_config.find(
+        (config) => config.name === "Nombre"
+      ).id;
     },
     isLoaded() {
       return this.$store.state.form.form.is_loaded;
@@ -102,11 +116,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.onclick-form {
-  border-style: solid;
-  border-width: medium;
-  border-color: #008a94;
-}
-</style>
