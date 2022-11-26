@@ -27,6 +27,7 @@
             title="Cambiar nombre sección"
             class="section-name-input"
             v-on:keyup.enter="$event.target.blur()"
+            @click="openSectionConfig"
           />
           <button
             class="close-button-section"

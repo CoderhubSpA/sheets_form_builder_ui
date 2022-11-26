@@ -9,6 +9,7 @@
         title="Cambiar nombre fila"
         class="row-name-input"
         v-on:keyup.enter="$event.target.blur()"
+        @click="openRowConfig"
       />
       <button
         type="button"

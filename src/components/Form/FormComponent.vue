@@ -32,6 +32,7 @@
             title="Cambiar nombre formulario"
             style="font: inherit"
             v-on:keyup.enter="$event.target.blur()"
+            @click="openFormConfig(form)"
           />
         </div>
         <div class="m-2 y-2">
