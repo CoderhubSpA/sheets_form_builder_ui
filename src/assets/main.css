@@ -253,6 +253,14 @@
   right: 1.5px;
 }
 
+.delete-search {
+  opacity: 0.6;
+}
+
+.delete-search:hover {
+  opacity: 1;
+}
+
 .select-form-edit-button {
   position: relative;
   top: 6px;

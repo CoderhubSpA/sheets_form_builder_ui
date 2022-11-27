@@ -13,10 +13,13 @@
         />
         <button
           type="button"
-          class="btn btn-danger btn-sm delete"
+          class="close-button"
           @click="clearSearchBar"
         >
-          <v-icon class="custom-icon" name="trash"></v-icon>
+          <font-awesome-icon
+            icon="fa-solid fa-xmark"
+            class="delete-search"
+          />
         </button>
       </div>
         <div class="card" v-if="options.length <= 0">
