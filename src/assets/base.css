@@ -14,8 +14,11 @@
   --main-color-hover: #06767c;
   --main-color-2: #03676e;
 
+  --label-menu: #008a94;
+
   --row-name: #007672;
   --section-name: #757575;
+  --field-name: #212529;
 
   --divider-light-1: rgba(60, 60, 60, 0.29);
   --divider-light-2: rgba(60, 60, 60, 0.12);

@@ -16,9 +16,9 @@
       </b-col>
     </b-row>
     <b-row
-      class="m-0 p-0 py-3 float-end"
+      class="m-0 p-0 py-3 float-end label-menus"
       :class="showMenu ? 'd-none' : 'd-block'"
-      style="color: #008a94; writing-mode: vertical-rl; font-size: 16pt"
+      
     >
       Campos
     </b-row>

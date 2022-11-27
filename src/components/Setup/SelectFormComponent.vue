@@ -46,7 +46,7 @@
         variant="secondary"
         size="lg"
         @click="editForm"
-        style="color: white"
+        class="font-button-setup-form"
       >
         Editar formulario
       </b-button>
