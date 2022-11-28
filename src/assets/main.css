@@ -229,7 +229,7 @@
 }
 
 .close-button-section {
-  border-radius: 50%;
+  border-radius: 50% !important;
   padding: 0.5em;
   width: 20px;
   height: 20px;
@@ -237,9 +237,9 @@
   background-color: var(--pink);
   opacity: 0.8;
   color: white;
-  position: relative;
-  top: -28px;
-  right: -26px;
+  position: absolute;
+  top: -27px;
+  right: -24px;
   margin-top: 3px;
 }
 

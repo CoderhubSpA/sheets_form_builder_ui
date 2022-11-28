@@ -18,6 +18,23 @@
       @click.self="openSectionConfig"
     >
       <b-form-row>
+        <div class="column">
+          <div class="area">
+            <button
+              class="close-button-section"
+              type="button"
+              v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
+              @click="openSectionConfig"
+              v-on:keyup.enter="$event.target.blur()"
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-xmark"
+                class="xmark-delete-section"
+                size="xs"
+              />
+            </button>
+          </div>
+        </div>
         <div class="form-group flex">
           <b-input
             v-model="section.config_values[name_config_id]"
@@ -29,19 +46,6 @@
             v-on:keyup.enter="$event.target.blur()"
             @click="openSectionConfig"
           />
-          <button
-            class="close-button-section"
-            type="button"
-            v-b-modal="`modal-borrar-seccion-${idxRow}-${index}`"
-            @click="openSectionConfig"
-            v-on:keyup.enter="$event.target.blur()"
-          >
-            <font-awesome-icon
-              icon="fa-solid fa-xmark"
-              class="xmark-delete-section"
-              size="xs"
-            />
-          </button>
           <div v-if="img_url" class="px-1 mx-1">
             <img :src="img_url" alt="section image" width="50" height="50" />
           </div>
