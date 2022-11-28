@@ -4,26 +4,18 @@
       <div class="col-12">
         <h5>O elige un formulario existente</h5>
         <div class="form-group flex" style="margin-bottom: 5px">
-        <b-input
-          v-model="search"
-          id="section-config-name"
-          type="text"
-          
-          placeholder="Busque un formulario existente..."
-        />
-        <button
-          type="button"
-          class="close-button"
-          @click="clearSearchBar"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-xmark"
-            class="delete-search"
+          <b-input
+            v-model="search"
+            id="section-config-name"
+            type="text"
+            placeholder="Busque un formulario existente..."
           />
-        </button>
-      </div>
+          <button type="button" class="close-button" @click="clearSearchBar">
+            <font-awesome-icon icon="fa-solid fa-xmark" class="delete-search" />
+          </button>
+        </div>
         <div class="card" v-if="options.length <= 0">
-          <b-skeleton v-for="n in 15" class="m-1"></b-skeleton>
+          <b-skeleton v-for="n in 15" :key="n" class="m-1"></b-skeleton>
         </div>
         <b-form-select
           v-if="this.options.length > 0"
