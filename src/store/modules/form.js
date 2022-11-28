@@ -11,6 +11,9 @@ function fillObjLocalEntityData(configurations, obj) {
   if (id_val) data_values["id"] = id_val;
 
   configurations.forEach((config) => {
+    if (config.col_name === "image_id")
+      // Skip image
+      return;
     let value = values[config.id];
     // Skip undefined and null values (other falsy values like false or "" are considered and not skipped)
     if (value === undefined || value === null) return;
