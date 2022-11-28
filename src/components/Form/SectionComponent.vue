@@ -143,7 +143,10 @@ export default {
       this.$store.commit("tools/switchConfigSlide", true);
     },
     searchURL(id) {
-      return this.$store.state.api.documents_list.find((d) => d.id === id).src;
+      return (
+        this.$store.state.api.url.base +
+        this.$store.state.api.documents_list.find((d) => d.id === id).src
+      );
     },
   },
 };
