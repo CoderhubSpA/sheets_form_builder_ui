@@ -54,6 +54,7 @@
           type="text"
           v-b-tooltip.hover.bottom
           title="Cambiar nombre campo"
+          class="field-name-input"
           :placeholder="field.name"
           v-on:keyup.enter="$event.target.blur()"
         />

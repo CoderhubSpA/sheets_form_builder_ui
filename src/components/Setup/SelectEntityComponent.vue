@@ -24,7 +24,7 @@
         <b-button
           variant="danger"
           size="lg"
-          style="color: white"
+          class="font-button-setup-form"
           @click="$emit('cancel-create-form-event')"
         >
           Atrás

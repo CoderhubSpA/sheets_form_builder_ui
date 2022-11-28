@@ -30,7 +30,7 @@
             placeholder="Nombre Formulario"
             v-b-tooltip.hover.bottom
             title="Cambiar nombre formulario"
-            style="font: inherit"
+            class="form-name-input"
             v-on:keyup.enter="$event.target.blur()"
             @click="openFormConfig(form)"
           />

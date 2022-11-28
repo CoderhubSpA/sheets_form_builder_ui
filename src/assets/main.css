@@ -166,6 +166,17 @@
   font-size: 1.125rem !important;
 }
 
+.field-name-input {
+  color: var(--field-name);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.form-name-input {
+  color: var(--field-name) !important;
+  font: inherit !important;
+}
+
 .btn-primary,
 .btn-primary:visited {
   background-color: var(--main-color) !important;
@@ -344,4 +355,14 @@ body {
   color: #9f9e9e;
   font-style: italic;
   padding-top: 8px;
+}
+
+.font-button-setup-form {
+  color: var(--white) !important;
+}
+
+.label-menus {
+  color: var(--label-menu);
+  font-size: 16pt;
+  writing-mode: vertical-rl;
 }
