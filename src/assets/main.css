@@ -85,6 +85,12 @@
   color: var(--dark-2);
 }
 
+.url-style {
+  font-size: 10px;
+  color: #3490dc;
+  padding: 5px;
+}
+
 .section-component {
   max-width: 100%;
   min-width: 25%;
