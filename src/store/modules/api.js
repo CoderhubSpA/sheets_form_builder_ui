@@ -66,6 +66,7 @@ const state = {
     row_entity_name: "form_row",
     section_entity_name: "form_section",
     field_entity_name: "form_field",
+    document_entity_name: "document",
   },
   axios_no_cache_config: {
     headers: {
@@ -97,6 +98,7 @@ const state = {
       options: [],
     },
   },
+  documents_list: [],
 };
 
 const getters = {
@@ -129,6 +131,9 @@ const getters = {
   },
   fieldsDataURL(state) {
     return state.url.base + state.url.data + state.url.field_entity_name;
+  },
+  documentsDataURL(state) {
+    return state.url.base + state.url.data + state.url.document_entity_name;
   },
 };
 
@@ -168,6 +173,9 @@ const mutations = {
   },
   REMOVE_FIELD(state, field) {
     state.fields = state.fields.filter((element) => element !== field);
+  },
+  SET_DOCUMENTS(state, documents) {
+    state.documents_list = documents;
   },
 };
 
@@ -862,6 +870,28 @@ const actions = {
         state.status_msg = "";
       })
       .catch((e) => console.log(e));
+  },
+
+  /**
+   * Fetch all possible documents
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+  fetchDocuments(context) {
+    return axios.get(context.getters.documentsDataURL).then((response) => {
+      let documents = response.data.content.entities_fk.document;
+      context.commit("SET_DOCUMENTS", documents); // response.data.content.columns)
+    });
+  },
+
+  /**
+   * Search document by id
+   * @param context
+   * @param id
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+  searchDocument(id) {
+    console.log(id);
   },
 };
 

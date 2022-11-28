@@ -131,17 +131,28 @@ export default {
       return this.$store.getters["tools/currentView"];
     },
     img_url() {
-      console.log();
       let file =
         this.$store.state.form.form.rows[this.idxRow].sections[this.index]
           .config_values[this.image_config_id];
-      return file instanceof Blob ? window.URL.createObjectURL(file) : "";
+      return file instanceof Blob
+        ? window.URL.createObjectURL(file)
+        : file instanceof Array
+        ? ""
+        : this.searchURL(file);
     },
   },
   methods: {
     openSectionConfig() {
       this.$store.dispatch("tools/openSectionConfig", this.section);
       this.$store.commit("tools/switchConfigSlide", true);
+    },
+    searchURL(id) {
+      return (
+        this.$store.state.api.url.base +
+        this.$store.state.api.documents_list
+          .find((d) => d.id === id)
+          .src.slice(1)
+      );
     },
   },
 };
