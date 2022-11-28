@@ -44,7 +44,7 @@ function getValuesFromRemoteEntityData(
   configurations.forEach((config) => {
     config_values[config.id] = Array.isArray(entity_data[config.id])
       ? [...entity_data[config.id]]
-      : entity_data[config.id]
+      : entity_data[config.id] !== null
       ? entity_data[config.id]
       : selectFormat(config);
 
