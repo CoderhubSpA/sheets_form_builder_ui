@@ -73,6 +73,10 @@
   background-color: #85dbe1;
 }
 
+.required {
+  color: red;
+}
+
 .info-icon-field {
   margin-top: 0.8%;
   margin-left: 0.3%;
