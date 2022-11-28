@@ -73,7 +73,6 @@
 
       <b-form-textarea
         v-else-if="element.col_name === 'description'"
-        size="lg"
         v-model="configValues[element.id]"
         :id="'menu-' + menu_id + '-element-' + element.id"
       />
