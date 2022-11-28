@@ -44,7 +44,7 @@
     </div>
     <br />
     <div
-      class="p-3 border-solid bg-white container shadow-section"
+      class="px-2 py-3 border-solid bg-white container shadow-section"
       v-bind="row"
       @click.self="openRowConfig"
     >

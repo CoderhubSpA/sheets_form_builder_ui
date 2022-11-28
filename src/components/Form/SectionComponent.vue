@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded section-component selected-element"
+    class="rounded section-component selected-element mb-2"
     :class="
       $store.state.tools.current_config.obj === section
         ? ''
@@ -9,7 +9,7 @@
     @click.self="openSectionConfig"
   >
     <div
-      class="p-3 border rounded"
+      class="p-2 border rounded"
       :class="
         $store.state.tools.current_config.obj === section
           ? ''
