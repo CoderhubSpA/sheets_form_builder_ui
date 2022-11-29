@@ -134,9 +134,10 @@ export default {
       let file =
         this.$store.state.form.form.rows[this.idxRow].sections[this.index]
           .config_values[this.image_config_id];
+      console.log(file);
       return file instanceof Blob
         ? window.URL.createObjectURL(file)
-        : file instanceof Array
+        : file instanceof Array || file === null
         ? ""
         : this.searchURL(file);
     },
