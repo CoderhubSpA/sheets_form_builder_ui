@@ -4,62 +4,59 @@
     :class="showMenu ? 'show-fields-menu' : 'hide-fields-menu'"
     class="flex-shrink-0 custom-side-menu bg-light"
   >
-    <b-row class="m-0">
-      <b-col class="p-2">
-        <v-icon
-          @click="switchMenu"
-          class="float-end"
-          role="button"
-          :name="showMenu ? 'angle-left' : 'angle-right'"
-          scale="1.5"
-        />
-      </b-col>
-    </b-row>
-    <b-row
-      class="m-0 p-0 py-3 float-end label-menus"
-      :class="showMenu ? 'd-none' : 'd-block'"
-      
-    >
-      Campos
-    </b-row>
-    <b-row class="mx-2" :class="showMenu ? 'd-block' : 'd-none'">
-      <div class="form-group flex">
-        <b-input
-          v-model="search"
-          id="section-config-name"
-          type="text"
-          placeholder="Busca un campo aquí..."
-        />
-        <button
-          type="button"
-          class="close-button"
-          @click="clearSearchBar"
-        >
-          <font-awesome-icon
-            icon="fa-solid fa-xmark"
-            class="delete-search"
-            size="sm"
+    <div style="max-height: 92%; overflow-x: hidden; overflow-y: auto">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon
+            @click="switchMenu"
+            class="float-end"
+            role="button"
+            :name="showMenu ? 'angle-left' : 'angle-right'"
+            scale="1.5"
           />
-        </button>
-      </div>
-      <p class="drag-message">Arrastra los campos al formulario</p>
-      <draggable
-        @dragstart.native="hover_fields = true"
-        @dragend.native="hover_fields = false"
-        class="card-deck row"
-        style="display: flex; margin: 5px 0 5px 0"
-        :group="{ name: 'Fields', pull: true, put: false }"
-        :list="fields"
+        </b-col>
+      </b-row>
+      <b-row
+        class="m-0 p-0 py-3 float-end label-menus"
+        :class="showMenu ? 'd-none' : 'd-block'"
       >
-        <FieldMenuComponent
-          v-for="element in fields"
-          :key="element.name"
-          :text="element.name"
-          :format_config_id="element.format_config_id"
-          :config="element.config_values"
-        />
-      </draggable>
-    </b-row>
+        Campos
+      </b-row>
+      <b-row class="mx-2" :class="showMenu ? 'd-block' : 'd-none'">
+        <div class="form-group flex">
+          <b-input
+            v-model="search"
+            id="section-config-name"
+            type="text"
+            placeholder="Busca un campo aquí..."
+          />
+          <button type="button" class="close-button" @click="clearSearchBar">
+            <font-awesome-icon
+              icon="fa-solid fa-xmark"
+              class="delete-search"
+              size="sm"
+            />
+          </button>
+        </div>
+        <p class="drag-message">Arrastra los campos al formulario</p>
+        <draggable
+          @dragstart.native="hover_fields = true"
+          @dragend.native="hover_fields = false"
+          class="card-deck row"
+          style="display: flex; margin: 5px 0 5px 0"
+          :group="{ name: 'Fields', pull: true, put: false }"
+          :list="fields"
+        >
+          <FieldMenuComponent
+            v-for="element in fields"
+            :key="element.name"
+            :text="element.name"
+            :format_config_id="element.format_config_id"
+            :config="element.config_values"
+          />
+        </draggable>
+      </b-row>
+    </div>
   </div>
 </template>
 

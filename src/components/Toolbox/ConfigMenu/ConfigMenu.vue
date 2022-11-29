@@ -4,31 +4,33 @@
     :class="showMenu ? 'show-config-menu' : 'hide-config-menu'"
     class="flex-shrink-0 float-end custom-side-menu bg-light"
   >
-    <b-row class="m-0">
-      <b-col class="p-2">
-        <v-icon
-          @click="switchMenu"
-          class="float-start"
-          role="button"
-          :name="showMenu ? 'angle-right' : 'angle-left'"
-          scale="1.5"
-        />
-      </b-col>
-    </b-row>
-    <b-row
-      class="m-0 p-0 py-3 label-menus"
-      :class="showMenu ? 'd-none' : 'd-block'"
-    >
-      Configuración
-    </b-row>
-    <b-row class="m-0" :class="showMenu ? 'd-block' : 'd-none'">
-      <b-col class="px-3 m-0">
-        <ConfigMenuComponent
-          v-if="this.$store.state.tools.current_config.obj"
-          :menu_id="menu_id"
-        />
-      </b-col>
-    </b-row>
+    <div style="max-height: 92%; overflow-x: hidden; overflow-y: auto">
+      <b-row class="m-0">
+        <b-col class="p-2">
+          <v-icon
+            @click="switchMenu"
+            class="float-start"
+            role="button"
+            :name="showMenu ? 'angle-right' : 'angle-left'"
+            scale="1.5"
+          />
+        </b-col>
+      </b-row>
+      <b-row
+        class="m-0 p-0 py-3 label-menus"
+        :class="showMenu ? 'd-none' : 'd-block'"
+      >
+        Configuración
+      </b-row>
+      <b-row class="m-0" :class="showMenu ? 'd-block' : 'd-none'">
+        <b-col class="px-3 m-0">
+          <ConfigMenuComponent
+            v-if="this.$store.state.tools.current_config.obj"
+            :menu_id="menu_id"
+          />
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
