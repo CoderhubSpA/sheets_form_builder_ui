@@ -59,6 +59,10 @@
           v-on:keyup.enter="$event.target.blur()"
         />
 
+        <div class="required" v-if="field.config_values[required_config_id]">
+          *
+        </div>
+
         <font-awesome-icon
           v-if="field.config_values[description_config_id]"
           v-model="field.config_values[description_config_id]"
@@ -131,6 +135,11 @@ export default {
       return this.$store.state.form.form.rows[this.idxRow].sections[
         this.idxSection
       ].fields[this.index];
+    },
+    required_config_id() {
+      return this.$store.state.api.fields_config.find(
+        (config) => config.col_name === "required"
+      ).id;
     },
   },
   methods: {

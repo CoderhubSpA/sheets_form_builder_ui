@@ -44,26 +44,31 @@ function getValuesFromRemoteEntityData(
   configurations.forEach((config) => {
     config_values[config.id] = Array.isArray(entity_data[config.id])
       ? [...entity_data[config.id]]
-      : entity_data[config.id]
+      : entity_data[config.id] !== null
       ? entity_data[config.id]
       : selectFormat(config);
 
-    // Additional parsing to data
+    /* Additional parsing to data */
+
     if (Array.isArray(config_values[config.id]))
+      // Parse Arrays
       config_values[config.id].forEach((id_val, index) => {
         config_values[config.id][index] = configurations_select[
           config.id
         ].options.find((option) => option.id === id_val);
       });
     else if (config.format === "SELECTOR") {
+      // Parse Selectors
       config_values[config.id] = config_values[config.id].toString();
       config_values[config.id] = configurations_select[config.id].options.find(
         (option) => option.id === config_values[config.id]
       );
     } else if (["col_sm", "col_md", "col_xl"].includes(config.col_name))
+      // Some Numbers to Strings
       config_values[config.id] = config_values[config.id].toString();
-    else if (["valid"].includes(config.col_name))
-      config_values[config.id] = !!config_values[config.id]; // to boolean
+    else if (["valid", "required"].includes(config.col_name))
+      // Number to boolean
+      config_values[config.id] = !!config_values[config.id];
   });
 
   return config_values;
