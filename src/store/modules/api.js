@@ -910,9 +910,13 @@ const actions = {
       .then((response) => {
         console.log(response);
         console.log("Finished");
+        this._vm.$toasted.success("Formulario guardado!");
         state.status_msg = "";
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        this._vm.$toasted.error("Error al guardar formulario!");
+        console.log(e);
+      });
   },
 
   /**
