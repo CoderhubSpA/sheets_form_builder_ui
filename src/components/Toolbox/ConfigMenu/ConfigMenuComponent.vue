@@ -208,12 +208,15 @@
         v-else-if="element.format === 'DOCUMENT[IMAGE]'"
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
-        <b-form-file
-          v-model="configValues[element.id]"
-          :id="'section-config-image' + element.id"
+        <input
+          class="form-control"
+          type="file"
+          :id="element.id"
+          :ref="'input-file-' + element.id"
+          @change="handleImage"
           accept="image/jpeg, image/png, image/gif"
-          plain
-        ></b-form-file>
+          :key="fileInputKey"
+        />
       </b-form-row>
 
       <b-list-group-item v-else>
@@ -233,6 +236,7 @@ export default {
   },
   data() {
     return {
+      fileInputKey: 0,
       hidden_config: [
         "Formulario",
         "Fila del formulario",
@@ -258,8 +262,13 @@ export default {
     showFields(entity_id) {
       this.$store.dispatch("api/fetchFields", entity_id);
     },
-    handleImage(obj) {
-      obj.image_url = window.URL.createObjectURL(obj.image);
+    handleImage(event) {
+      const config_image_id = event.target.id;
+      this.configValues[config_image_id] = {
+        id: "",
+        file: event.target.files[0],
+      };
+      this.fileInputKey++;
     },
   },
   computed: {
@@ -315,17 +324,17 @@ export default {
         ];
       return name.name ? name.name : name;
     },
-    filterConfig(){
-      const config = this.configurations
-      const list = []
-      const col = ['col_xl', 'col_md', 'col_sm']
-      config.forEach(element => {
-        if (element.name.includes(this.view) || !col.includes(element.name)){
-          list.push(element)
+    filterConfig() {
+      const config = this.configurations;
+      const list = [];
+      const col = ["col_xl", "col_md", "col_sm"];
+      config.forEach((element) => {
+        if (element.name.includes(this.view) || !col.includes(element.name)) {
+          list.push(element);
         }
       });
-      return list
-    }
+      return list;
+    },
   },
 };
 </script>

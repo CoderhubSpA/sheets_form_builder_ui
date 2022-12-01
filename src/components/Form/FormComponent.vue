@@ -109,10 +109,6 @@ export default {
     isLoaded() {
       this.openFormConfig(this.form);
     },
-
-    menuState(newVal) {
-      console.log(newVal);
-    },
   },
 };
 </script>

@@ -6,7 +6,7 @@ const state = {
     { name: "SELECTOR[MULTIPLE]", value: [] },
     { name: "SELECTOR[1XN][ONLYNEW]", value: [] },
     { name: "SiNo", value: false },
-    { name: "DOCUMENT[IMAGE]", value: [] },
+    { name: "DOCUMENT[IMAGE]", value: { id: "", file: "" } },
     { name: "URL", value: "" },
   ],
   format_inputs: [
