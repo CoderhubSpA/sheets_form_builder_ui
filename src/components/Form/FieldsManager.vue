@@ -37,6 +37,7 @@
             :description_config_id="fieldDescriptionConfigId"
             :text_info_config_id="fieldTextInfoConfigId"
             :url_info_config_id="fieldUrlInfoConfigId"
+            :format_config_id="fieldFormatConfigId"
             :index="index"
             :idxRow="idxRow"
             :idxSection="idxSection"
@@ -117,6 +118,11 @@ export default {
     fieldUrlInfoConfigId() {
       return this.$store.state.api.fields_config.find(
         (config) => config.name === "Más Información URL"
+      ).id;
+    },
+    fieldFormatConfigId() {
+      return this.$store.state.api.fields_config.find(
+        (config) => config.name === "Formato del campo"
       ).id;
     },
     draggingField: {

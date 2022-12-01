@@ -24,6 +24,12 @@
   border-color: var(--main-color);
 }
 
+.inputs-fields {
+  border-style: solid;
+  border-width: thin; 
+  border-color: var(--border-dotted) !important;
+}
+
 .border-dotted {
   border-style: dotted;
   border-color: var(--border-dotted);
