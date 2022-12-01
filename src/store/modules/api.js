@@ -135,6 +135,12 @@ const getters = {
   documentsDataURL(state) {
     return state.url.base + state.url.data + state.url.document_entity_name;
   },
+  sectionImageURL: (state) => (id) => {
+    return (
+      state.url.base +
+      state.documents_list.find((d) => d.id === id).src.slice(1)
+    );
+  },
 };
 
 const mutations = {
@@ -691,6 +697,39 @@ const actions = {
                 // POST sections
                 let section_requests = [];
                 row.sections.forEach((section) => {
+                  // let section_config_img =
+                  //   section.config_values[
+                  //     state.sections_config.find(
+                  //       (config) => config.col_name === "image_id"
+                  //     ).id
+                  //   ];
+                  // if (section_config_img.id) {
+                  //   section.local_entity_data[
+                  //     state.sections_config.find(
+                  //       (config) => config.col_name === "image_id"
+                  //     ).id
+                  //   ] = section_config_img.id;
+                  // } else if (section_config_img.img) {
+                  //   console.log(section_config_img);
+                  //   axios
+                  //     .post(
+                  //       state.url.base + "documents",
+                  //       section_config_img.img
+                  //     )
+                  //     .then((response) => {
+                  //       let img_id = response.data.content.inserted_id;
+                  //       section.config_values[
+                  //         state.sections_config.find(
+                  //           (config) => config.col_name === "image_id"
+                  //         ).id
+                  //       ].id = section.local_entity_data[
+                  //         state.sections_config.find(
+                  //           (config) => config.col_name === "image_id"
+                  //         ).id
+                  //       ] = img_id;
+                  //     })
+                  //     .catch(console.log("error!"));
+                  // }
                   let content = {};
                   content[sections_config_id] = [section.local_entity_data];
 
@@ -882,16 +921,6 @@ const actions = {
       let documents = response.data.content.entities_fk.document;
       context.commit("SET_DOCUMENTS", documents); // response.data.content.columns)
     });
-  },
-
-  /**
-   * Search document by id
-   * @param context
-   * @param id
-   * @returns {Promise<AxiosResponse<any>>}
-   */
-  searchDocument(id) {
-    console.log(id);
   },
 };
 

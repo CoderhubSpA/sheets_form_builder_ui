@@ -38,7 +38,7 @@ function getValuesFromRemoteEntityData(
   configurations,
   configurations_select,
   entity_data,
-  selectFormat
+  context
 ) {
   let config_values = {};
   configurations.forEach((config) => {
@@ -46,7 +46,7 @@ function getValuesFromRemoteEntityData(
       ? [...entity_data[config.id]]
       : entity_data[config.id] !== null
       ? entity_data[config.id]
-      : selectFormat(config);
+      : context.rootGetters["tools/selectFormat"](config);
 
     /* Additional parsing to data */
 
@@ -69,6 +69,14 @@ function getValuesFromRemoteEntityData(
     else if (["valid", "required"].includes(config.col_name))
       // Number to boolean
       config_values[config.id] = !!config_values[config.id];
+    else if (config.format === "DOCUMENT[IMAGE]" && entity_data[config.id]) {
+      console.log(entity_data[config.id]);
+      context.rootGetters["api/sectionImageURL"](entity_data[config.id]);
+      config_values[config.id] = {
+        id: entity_data[config.id],
+        img: context.rootGetters["api/sectionImageURL"](entity_data[config.id]),
+      };
+    }
   });
 
   return config_values;
@@ -209,7 +217,7 @@ const actions = {
       api_state.form_config,
       api_state.form_config_select,
       form,
-      context.rootGetters["tools/selectFormat"]
+      context
     );
 
     let form_actions = [];
@@ -226,7 +234,7 @@ const actions = {
         api_state.actions_config,
         api_state.actions_config_select,
         action,
-        context.rootGetters["tools/selectFormat"]
+        context
       );
       form_actions.push({
         config_values: action_config_values,
@@ -249,7 +257,7 @@ const actions = {
         api_state.rows_config,
         api_state.rows_config_select,
         row,
-        context.rootGetters["tools/selectFormat"]
+        context
       );
       let row_sections = [];
       let row_id_config = api_state.sections_config.find(
@@ -271,7 +279,7 @@ const actions = {
             api_state.sections_config,
             api_state.sections_config_select,
             section,
-            context.rootGetters["tools/selectFormat"]
+            context
           );
           let section_fields = [];
           let section_id_config = api_state.fields_config.find(
@@ -292,7 +300,7 @@ const actions = {
                 api_state.fields_config,
                 api_state.fields_config_select,
                 field,
-                context.rootGetters["tools/selectFormat"]
+                context
               );
 
               let api_field = api_state.fields.find(
