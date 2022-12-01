@@ -3,6 +3,7 @@ import App from "./App.vue";
 import Icon from "vue-awesome/components/Icon";
 import BootstrapVue from "bootstrap-vue";
 import store from "./store";
+import Toasted from "vue-toasted";
 import VueRouter from "vue-router";
 
 import routes from "./routes";
@@ -29,6 +30,17 @@ import "./assets/multiselect.scss";
 
 Vue.component("v-icon", Icon);
 Vue.use(BootstrapVue);
+Vue.use(Toasted, {
+  position: "bottom-center",
+  duration: 3000,
+  class: "toasted-class",
+  action: {
+    text: "x",
+    onClick: (e, toastObject) => {
+      toastObject.goAway(0);
+    },
+  },
+});
 Vue.component("custom-slider", CustomSlider);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.use(VueRouter);

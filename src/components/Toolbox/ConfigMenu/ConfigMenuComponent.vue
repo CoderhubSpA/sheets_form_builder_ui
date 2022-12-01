@@ -208,15 +208,19 @@
         v-else-if="element.format === 'DOCUMENT[IMAGE]'"
         :id="'menu-' + menu_id + '-element-' + element.id"
       >
-        <input
-          class="form-control"
-          type="file"
-          :id="element.id"
-          :ref="'input-file-' + element.id"
-          @change="handleImage"
-          accept="image/jpeg, image/png, image/gif"
-          :key="fileInputKey"
-        />
+        <label class="btn btn-success text-white" :for="element.id"
+          >Selecciona Imagen
+          <input
+            class="form-control"
+            type="file"
+            :id="element.id"
+            :ref="'input-file-' + element.id"
+            @change="handleImage"
+            accept="image/jpeg, image/png, image/gif"
+            :key="fileInputKey"
+            hidden
+          />
+        </label>
       </b-form-row>
 
       <b-list-group-item v-else>
