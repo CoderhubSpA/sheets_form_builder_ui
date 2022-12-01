@@ -266,7 +266,7 @@ export default {
       const config_image_id = event.target.id;
       this.configValues[config_image_id] = {
         id: "",
-        img: event.target.files[0],
+        file: event.target.files[0],
       };
       this.fileInputKey++;
     },

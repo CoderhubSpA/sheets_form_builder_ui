@@ -131,7 +131,7 @@ export default {
       return this.$store.getters["tools/currentView"];
     },
     img_url() {
-      let img = this.section.config_values[this.image_config_id].img;
+      let img = this.section.config_values[this.image_config_id].file;
       return img instanceof Blob
         ? window.URL.createObjectURL(img)
         : img instanceof Array || img === null

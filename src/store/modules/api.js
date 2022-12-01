@@ -709,13 +709,17 @@ const actions = {
                   //       (config) => config.col_name === "image_id"
                   //     ).id
                   //   ] = section_config_img.id;
-                  // } else if (section_config_img.img) {
+                  // } else if (section_config_img.file) {
                   //   console.log(section_config_img);
+                  //   let sectionData = new FormData();
+                  //   sectionData.append("file", section_config_img.file);
+                  //   console.log(sectionData);
                   //   axios
-                  //     .post(
-                  //       state.url.base + "documents",
-                  //       section_config_img.img
-                  //     )
+                  //     .post(state.url.base + state.url.document_entity_name, sectionData, {
+                  //       headers: {
+                  //         "Content-Type": "multipart/form-data",
+                  //       },
+                  //     })
                   //     .then((response) => {
                   //       let img_id = response.data.content.inserted_id;
                   //       section.config_values[

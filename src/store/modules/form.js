@@ -74,7 +74,9 @@ function getValuesFromRemoteEntityData(
       context.rootGetters["api/sectionImageURL"](entity_data[config.id]);
       config_values[config.id] = {
         id: entity_data[config.id],
-        img: context.rootGetters["api/sectionImageURL"](entity_data[config.id]),
+        file: context.rootGetters["api/sectionImageURL"](
+          entity_data[config.id]
+        ),
       };
     }
   });
