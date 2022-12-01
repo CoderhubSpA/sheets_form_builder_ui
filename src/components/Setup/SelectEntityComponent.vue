@@ -67,7 +67,8 @@ export default {
       )?.id;
     },
     entityOptions() {
-      return this.$store.state.api?.form_config_select[this.entityConfigId]?.options;
+      return this.$store.state.api?.form_config_select[this.entityConfigId]
+        ?.options;
     },
     submitDisabled: function () {
       return this.entitySelected.length === 0 ? true : false;

@@ -10,16 +10,16 @@ const state = {
     { name: "URL", value: "" },
   ],
   format_inputs: [
-    {name: "TEXT", value: "text"},
-    {name: "DATE", value: "date"},
-    {name: "NUMBER", value: "number"},
-    {name: "PASSWORD", value: "password"},
-    {name: "RADIO", value: "radio"},
-    {name: "DATETIME", value: "datetime-local"},
-    {name: "DOCUMENT", value: "file"},
-    {name: "URL", value:"url"},
-    {name: "SELECTOR", value: "selector"},
-    {name: "SiNo", value: "checkbox"}
+    { name: "TEXT", value: "text" },
+    { name: "DATE", value: "date" },
+    { name: "NUMBER", value: "number" },
+    { name: "PASSWORD", value: "password" },
+    { name: "RADIO", value: "radio" },
+    { name: "DATETIME", value: "datetime-local" },
+    { name: "DOCUMENT", value: "file" },
+    { name: "URL", value: "url" },
+    { name: "SELECTOR", value: "selector" },
+    { name: "SiNo", value: "checkbox" },
   ],
   hover_fields: false,
   actual_tab: "config",
@@ -44,16 +44,15 @@ const getters = {
       }
       let type = state.format_types.find((element) => element.name === format);
       if (type) return type.value;
-      console.warn("No se encontró el formato" + format);
       return "";
     },
-  selectInputType:
-    (state) =>
-    (format) => {
-      let type = state.format_inputs.find((element) => element.name === format || format.includes(element.name));
-      if (type) return type.value;
-      else return "text";
-    },
+  selectInputType: (state) => (format) => {
+    let type = state.format_inputs.find(
+      (element) => element.name === format || format.includes(element.name)
+    );
+    if (type) return type.value;
+    else return "text";
+  },
   currentView(state) {
     return state.current_view;
   },

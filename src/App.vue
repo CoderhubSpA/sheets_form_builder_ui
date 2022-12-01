@@ -8,7 +8,7 @@ import FormBuilder from "./components/FormBuilder.vue";
 export default {
   name: "App",
   components: {
-    FormBuilder
+    FormBuilder,
   },
   data: () => ({}),
   created: function () {},

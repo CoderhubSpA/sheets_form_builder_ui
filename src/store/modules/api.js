@@ -138,7 +138,7 @@ const getters = {
   sectionImageURL: (state) => (id) => {
     return (
       state.url.base +
-      state.documents_list.find((d) => d.id === id).src.slice(1)
+      state.documents_list.find((d) => d.id === id)?.src.slice(1)
     );
   },
 };
@@ -639,7 +639,6 @@ const actions = {
                     action_id;
               })
               .catch((error) => {
-                console.log("Error en el post de una acción:");
                 console.log(error);
               })
           );

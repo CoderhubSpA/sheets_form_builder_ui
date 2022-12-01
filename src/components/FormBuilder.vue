@@ -1,6 +1,6 @@
 <template>
   <div style="max-height: 100vh" v-if="ready">
-    <NavbarComponent @formSaved="switchToEditMode"/><!--@formSaved="switchToEditMode"-->
+    <NavbarComponent /><!--@formSaved="switchToEditMode"-->
     <div
       id="app"
       style="min-height: 600px; height: 95vh"
@@ -28,24 +28,27 @@ export default {
     FieldsMenu,
   },
   data: () => ({
-    entitySelected: [], 
+    entitySelected: [],
     id: "",
     ready: false,
-
   }),
   created: function () {},
   mounted: async function () {
     this.id = this.$route.params.id;
 
     if (!this.entityOptions) {
-      await this.$store.dispatch("api/fetchFormConfig")
-      await this.$store.dispatch("api/fetchFormList")
-      this.entitySelected = this.entityOptions.find(option => option.id === this.id);
+      await this.$store.dispatch("api/fetchFormConfig");
+      await this.$store.dispatch("api/fetchFormList");
     }
+
+    this.entitySelected = this.entityOptions.find(
+      (option) => option.id === this.id
+    );
 
     await this.$store.dispatch("api/fetchRowsConfig");
     await this.$store.dispatch("api/fetchSectionConfig");
     await this.$store.dispatch("api/fetchFieldsConfig");
+    await this.$store.dispatch("api/fetchDocuments");
     await this.$store.dispatch("api/fetchActionsConfig");
 
     if (this.mode === "create") {
@@ -53,34 +56,38 @@ export default {
     } else if (this.mode === "edit") {
       await this.editForm();
     }
-    this.entitySelected = this.entityOptions.find(option => option.id === this.id);
+
     this.ready = true;
   },
   computed: {
     entityConfigId() {
-      return this.$store.state.api?.form_config?.find(
+      return this.$store.state.api.form_config.find(
         (config) => config.col_name === "entity_type_id"
       )?.id;
     },
     entityOptions() {
-      return this.$store.state.api?.form_config_select[this.entityConfigId]?.options;
-    },
-    submitDisabled: function () {
-      return this.entitySelected.length === 0 ? true : false;
+      return this.$store.state.api.form_config_select[this.entityConfigId]
+        ?.options;
     },
   },
   methods: {
+    openFormConfig() {
+      this.$store.dispatch("tools/openFormConfig", this.$store.state.form.form);
+      this.$store.commit("tools/switchConfigSlide", true);
+    },
     createForm() {
-      this.$store.dispatch("form/newForm").then(() => {
-        this.$store.state.form.form.config_values[this.entityConfigId] = this.entitySelected;
-        this.$store.dispatch("api/fetchFields", this.id);
-      });
+      this.$store
+        .dispatch("form/newForm")
+        .then(() => {
+          this.$store.state.form.form.config_values[this.entityConfigId] =
+            this.entitySelected;
+          this.$store.dispatch("api/fetchFields", this.id);
+        })
+        .then(this.openFormConfig());
     },
     editForm() {
       if (this.id) {
-        this.$store
-          .dispatch("api/fetchForm", this.id)
-          .then(this.$bvModal.hide("setup-modal"));
+        this.$store.dispatch("api/fetchForm", this.id);
       }
     },
     // esto se puede borrar si el modal funciona
@@ -95,8 +102,8 @@ export default {
   props: {
     mode: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>

@@ -38,7 +38,7 @@
     </div>
     <div class="row select-form-edit-button">
       <router-link
-        :to="{ name: 'edit', params: { id: selectedFormId }}"
+        :to="{ name: 'edit', params: { id: selectedFormId } }"
         custom
         v-slot="{ navigate }"
       >
