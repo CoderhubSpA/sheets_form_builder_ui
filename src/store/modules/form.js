@@ -70,7 +70,6 @@ function getValuesFromRemoteEntityData(
       // Number to boolean
       config_values[config.id] = !!config_values[config.id];
     else if (config.format === "DOCUMENT[IMAGE]" && entity_data[config.id]) {
-      console.log(entity_data[config.id]);
       context.rootGetters["api/sectionImageURL"](entity_data[config.id]);
       config_values[config.id] = {
         id: entity_data[config.id],
