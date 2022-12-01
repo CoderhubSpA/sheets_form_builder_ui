@@ -3,7 +3,9 @@ import App from "./App.vue";
 import Icon from "vue-awesome/components/Icon";
 import BootstrapVue from "bootstrap-vue";
 import store from "./store";
+import VueRouter from "vue-router";
 
+import routes from "./routes"
 import "vue-awesome/icons";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,8 +32,17 @@ Vue.component("v-icon", Icon);
 Vue.use(BootstrapVue);
 Vue.component("custom-slider", CustomSlider);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.use(VueRouter);
+
+
+const router = new VueRouter({
+  routes: routes,
+  mode: "history"
+});
+
 
 new Vue({
   store: store,
+  router,
   render: (h) => h(App),
 }).$mount("#app");

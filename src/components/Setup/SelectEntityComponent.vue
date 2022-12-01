@@ -31,15 +31,22 @@
         </b-button>
       </div>
       <div class="col-6 d-flex justify-content-end">
-        <b-button
-          class="create-form-button"
-          variant="primary"
-          size="lg"
-          @click="createForm"
-          :disabled="submitDisabled"
+        <router-link
+          :to="{ name: 'create', params: { id: entitySelected.id } }"
+          custom
+          v-slot="{ navigate }"
         >
-          Crear formulario
-        </b-button>
+          <b-button
+            class="create-form-button"
+            variant="primary"
+            size="lg"
+            role="link"
+            @click="navigate"
+            :disabled="submitDisabled"
+          >
+            Crear formulario
+          </b-button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -55,13 +62,12 @@ export default {
   },
   computed: {
     entityConfigId() {
-      return this.$store.state.api.form_config.find(
+      return this.$store.state.api?.form_config?.find(
         (config) => config.col_name === "entity_type_id"
-      ).id;
+      )?.id;
     },
     entityOptions() {
-      return this.$store.state.api.form_config_select[this.entityConfigId]
-        .options;
+      return this.$store.state.api?.form_config_select[this.entityConfigId]?.options;
     },
     submitDisabled: function () {
       return this.entitySelected.length === 0 ? true : false;

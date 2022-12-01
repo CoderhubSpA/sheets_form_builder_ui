@@ -79,6 +79,11 @@ export default {
     viewSm() {
       this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
     },
+    // esto se puede borrar si el modal funciona
+    // save(){
+    //   this.$store.dispatch('api/postForm')
+    //   .then(this.$emit("formSaved"));
+    // }
   },
 };
 </script>

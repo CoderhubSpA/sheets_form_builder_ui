@@ -73,9 +73,9 @@ export default {
       return this.$store.getters["tools/currentView"];
     },
     rowNameConfigId() {
-      return this.$store.state.api.rows_config.find(
+      return this.$store.state.api?.rows_config?.find(
         (config) => config.name === "Nombre"
-      ).id;
+      )?.id;
     },
   },
   data: () => ({
