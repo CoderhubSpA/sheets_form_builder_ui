@@ -221,6 +221,10 @@ const actions = {
       context
     );
 
+    form_config_values[
+      api_state.form_config.find((config) => config.name === "Acciones").id
+    ] = [];
+
     let form_actions = [];
     actions.forEach((action) => {
       // Skip inactive/deleted (not valid) actions
@@ -231,12 +235,24 @@ const actions = {
         ]
       )
         return;
+
       let action_config_values = getValuesFromRemoteEntityData(
         api_state.actions_config,
         api_state.actions_config_select,
         action,
         context
       );
+
+      form_config_values[
+        api_state.form_config.find((config) => config.name === "Acciones").id
+      ].push(
+        action_config_values[
+          api_state.actions_config.find(
+            (config) => config.col_name === "action_id"
+          ).id
+        ]
+      );
+
       form_actions.push({
         config_values: action_config_values,
         index: -1,
