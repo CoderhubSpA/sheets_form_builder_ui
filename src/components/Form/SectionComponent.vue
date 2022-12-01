@@ -127,7 +127,6 @@ export default {
       return this.$store.getters["tools/currentView"];
     },
     img_url() {
-      console.log();
       let file =
         this.$store.state.form.form.rows[this.idxRow].sections[this.index]
           .config_values[this.image_config_id];

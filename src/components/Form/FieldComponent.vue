@@ -127,9 +127,7 @@ export default {
   },
   computed: {
     field() {
-      return this.$store.state.form.form.rows[this.idxRow].sections[
-        this.idxSection
-      ].fields[this.index];
+      return this.$store.state.form.form?.rows[this.idxRow]?.sections[this.idxSection]?.fields[this.index];
     },
   },
   methods: {

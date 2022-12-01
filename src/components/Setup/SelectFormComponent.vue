@@ -42,14 +42,20 @@
       <br />
     </div>
     <div class="row select-form-edit-button">
-      <b-button
-        variant="secondary"
-        size="lg"
-        @click="editForm"
-        style="color: white"
+      <router-link
+        :to="{ name: 'edit', params: { id: selectedFormId }}"
+        custom
+        v-slot="{ navigate }"
       >
-        Editar formulario
-      </b-button>
+        <b-button
+          variant="secondary"
+          size="lg"
+          @click="navigate"
+          style="color: white"
+        >
+          Editar formulario
+        </b-button>
+      </router-link>
     </div>
   </div>
 </template>

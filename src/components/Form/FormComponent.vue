@@ -76,9 +76,10 @@ export default {
       return this.$store.getters["tools/currentView"];
     },
     formNameId() {
-      return this.$store.state.api.form_config.find(
+      let formName = this.$store.state.api.form_config.find(
         (config) => config.name === "Nombre"
-      ).id;
+      );
+      return formName?.id;
     },
     isLoaded() {
       return this.$store.state.form.form.is_loaded;
