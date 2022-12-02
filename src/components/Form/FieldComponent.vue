@@ -84,25 +84,18 @@
           {{ field.config_values[text_info_config_id] }}
         </a>
       </div>
-
-      <input
-        v-if="!(typesInput.includes('selector') || typesInput == 'checkbox')"
-        class="form-control inputs-fields"
-        :type="typesInput"
-      />
-
+      <select
+        v-if="typesInput.includes('selector')"
+        class="form-select inputs-fields"
+      >
+        <option></option>
+      </select>
       <input
         v-else-if="typesInput === 'checkbox'"
         class="inputs-fields"
         :type="typesInput"
       />
-
-      <select
-        v-else-if="typesInput.includes('selector')"
-        class="form-select inputs-fields"
-      >
-        <option></option>
-      </select>
+      <input v-else class="form-control inputs-fields" :type="typesInput" />
     </div>
   </div>
 </template>
