@@ -33,6 +33,7 @@ const state = {
     "Columna",
     "Id",
     "Acción",
+    "Orden",
   ],
   hover_fields: false,
   actual_tab: "config",
