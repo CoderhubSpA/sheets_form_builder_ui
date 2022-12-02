@@ -32,6 +32,12 @@
         style="margin-right: 2em"
       >
       </b-spinner>
+      <b-spinner
+        v-else-if="$store.state.api.status.msg === 'Error'"
+        variant="danger"
+        style="margin-right: 2em"
+      >
+      </b-spinner>
       <b-button
         class="btn btn-success text-white"
         v-b-modal="`modal-guardar-formulario`"
