@@ -903,6 +903,7 @@ const actions = {
       })
       .catch((e) => {
         this._vm.$toasted.error("Error al guardar formulario!");
+        state.status_msg = "";
         console.log(e);
       });
   },
