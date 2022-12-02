@@ -1,6 +1,6 @@
 <template>
   <div style="max-height: 100vh" v-if="ready">
-    <NavbarComponent /><!--@formSaved="switchToEditMode"-->
+    <NavbarComponent @saveForm="save"/>
     <div
       id="app"
       style="min-height: 600px; height: 95vh"
@@ -31,10 +31,12 @@ export default {
     entitySelected: [],
     id: "",
     ready: false,
+    editMode: false
   }),
   created: function () {},
   mounted: async function () {
     this.id = this.$route.params.id;
+    this.editMode = this.mode === "edit";
 
     if (!this.entityOptions) {
       await this.$store.dispatch("api/fetchFormConfig");
@@ -51,10 +53,10 @@ export default {
     await this.$store.dispatch("api/fetchDocumentsConfig");
     await this.$store.dispatch("api/fetchActionsConfig");
 
-    if (this.mode === "create") {
-      await this.createForm();
-    } else if (this.mode === "edit") {
+    if (this.editMode) {
       await this.editForm();
+    } else {
+      await this.createForm();
     }
 
     this.ready = true;
@@ -91,13 +93,14 @@ export default {
       }
     },
     // esto se puede borrar si el modal funciona
-    // switchToEditMode() {
-    //   if (this.mode === "create") {
-    //     // this.mode = "edit";
-    //     this.id = this.$store.state.form.form.local_entity_data["id"];
-    //     this.$router.replace({ name: "edit", params: { id: this.id } });
-    //   }
-    // }
+    async save() {
+      await this.$store.dispatch('api/postForm');
+      if (!this.editMode) {
+        this.editMode = true;
+        this.id = this.$store.state.form.form.local_entity_data["id"];
+        this.$router.push({ name: "edit", params: { id: this.id } });
+      }
+    }
   },
   props: {
     mode: {
