@@ -21,6 +21,38 @@ const state = {
     { name: "SELECTOR", value: "selector" },
     { name: "SiNo", value: "checkbox" },
   ],
+  format_v_icon: [
+    { format: "CLP", name: "dollar-sign" },
+    { format: "DATE", name: "calendar" },
+    { format: "DATETIME", name: "clock" },
+    { format: "DOCUMENT", name: "file" },
+    { format: "DOCUMENT[EXCEL]", name: "file-excel" },
+    { format: "DOCUMENT[IMAGE]", name: "file-image" },
+    { format: "INFO", name: "circle-info" },
+    { format: "LATITUDE", name: "location-dot" },
+    { format: "LONGITUDE", name: "location-dot" },
+    { format: "MAPA", name: "map" },
+    { format: "PASSWORD", name: "key" },
+    { format: "PERCENTAGE", name: "percent" },
+    { format: "PERCENTAGE[X100]", name: "percent" },
+    { format: "QUESTION", name: "question" },
+    { format: "RADIO", name: "radio-button-checked" },
+    { format: "RUT", name: "user" },
+    { format: "SELECTOR", name: "list" },
+    { format: "SELECTOR[1XN][ALL]", name: "check-square" },
+    { format: "SELECTOR[1XN][AVAILABLES]", name: "check-square" },
+    { format: "SELECTOR[1XN][ONLYNEW]", name: "check-square" },
+    { format: "SELECTOR[IMAGELIST]", name: "check-square" },
+    { format: "SELECTOR[MULTIPLE]", name: "list" },
+    { format: "SELECTOR[MULTIPLE][ADVANCED]", name: "check-square" },
+    { format: "SELECTOR[REMOTE]", name: "check-square" },
+    { format: "SELECTOR[REMOTE][MULTIPLE]", name: "check-square" },
+    { format: "SELECTOR[REMOTE][MULTIPLE][ALL]", name: "check-square" },
+    { format: "SiNo", name: "check-square" },
+    { format: "TEXT", name: "edit" },
+    { format: "TEXT[AREA]", name: "edit" },
+    { format: "URL", name: "link" },
+  ],
   hidden_config: [
     "Formulario",
     "Fila del formulario",
@@ -66,6 +98,11 @@ const getters = {
     );
     if (type) return type.value;
     else return "text";
+  },
+  selectVIconName: (state) => (format) => {
+    let type = state.format_v_icon.find((element) => element.format === format);
+    if (type) return type.name;
+    return "file";
   },
   currentView(state) {
     return state.current_view;
