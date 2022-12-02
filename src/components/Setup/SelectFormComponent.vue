@@ -47,6 +47,7 @@
           size="lg"
           @click="navigate"
           style="color: white"
+          :disabled="!selectedFormId"
         >
           Editar formulario
         </b-button>
