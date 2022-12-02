@@ -55,7 +55,10 @@ function parseJSONValues(json) {
 }
 
 const state = {
-  status_msg: "",
+  status: {
+    msg: "",
+    submitting: false,
+  },
   url: {
     base: "http://127.0.0.1:8081/",
     info: "entity/info/",
@@ -517,7 +520,8 @@ const actions = {
 
     // Then starts the posting-process
 
-    state.status_msg = "Guardando";
+    state.status.msg = "Guardando";
+    state.status.submitting = true;
 
     let config_id,
       actions_config_id,
@@ -921,10 +925,16 @@ const actions = {
       .then(() => {
         console.log("Finished");
         this._vm.$toasted.success("Formulario guardado!");
-        state.status_msg = "";
+        state.status.msg = "";
+        state.status.submitting = false;
       })
       .catch((e) => {
         this._vm.$toasted.error("Error al guardar formulario!");
+        state.status.submitting = false;
+        state.status.msg = "Error";
+        setTimeout(() => {
+          state.status.msg = "";
+        }, 700);
         console.log(e);
       });
   },
