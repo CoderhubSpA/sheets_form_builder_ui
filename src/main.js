@@ -20,9 +20,10 @@ import {
   faXmark,
   faGear,
   faCircleXmark,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faCircleInfo, faXmark, faGear, faCircleXmark);
+library.add(faCircleInfo, faXmark, faGear, faCircleXmark, faEye);
 
 import "./assets/main.css";
 import "./assets/bootstrap-colors.scss";
