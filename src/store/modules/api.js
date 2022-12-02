@@ -588,7 +588,6 @@ const actions = {
           ] =
           form.local_entity_data["id"] =
             form_id;
-        console.log("inserted form_id " + form_id);
 
         // find the 'Formulario' configuration
 
@@ -646,10 +645,8 @@ const actions = {
                   ] =
                   action.local_entity_data["id"] =
                     action_id;
-                console.log("inserted action_id " + action_id);
               })
               .catch((error) => {
-                console.log("Error en el post de una acción:");
                 console.log(error);
               })
           );
@@ -677,7 +674,6 @@ const actions = {
                   ] =
                   row.local_entity_data["id"] =
                     row_id;
-                console.log("inserted row_id " + row_id);
 
                 row.sections.forEach((section) => {
                   // Associate the section with the created row and form
@@ -779,7 +775,6 @@ const actions = {
                           ] =
                           section.local_entity_data["id"] =
                             section_id;
-                        console.log("inserted section_id " + section_id);
 
                         section.fields.forEach((field) => {
                           // Associate the field with the created section and form
@@ -834,7 +829,6 @@ const actions = {
                                   ] =
                                   field.local_entity_data["id"] =
                                     field_id;
-                                console.log("inserted field_id " + field_id);
                               })
                           );
                         });
@@ -890,7 +884,6 @@ const actions = {
                   (config) => config.col_name === "valid"
                 ).id
               ] = false;
-              console.log(deleted_field_entity_data);
               content[fields_config_id].push(deleted_field_entity_data);
             }
           );
@@ -923,11 +916,9 @@ const actions = {
         }
 
         if (Object.keys(content).length === 0) return response;
-        console.log("delete");
         return axios.post(state.url.base + "entity/update", content);
       })
       .then((response) => {
-        console.log(response);
         console.log("Finished");
         this._vm.$toasted.success("Formulario guardado!");
         state.status_msg = "";

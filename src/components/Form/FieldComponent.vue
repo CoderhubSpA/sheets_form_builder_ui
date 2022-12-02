@@ -85,9 +85,24 @@
         </a>
       </div>
 
-      <div class="card mt-2">
-        <div class="card-body"></div>
-      </div>
+      <input
+        v-if="!(typesInput.includes('selector') || typesInput == 'checkbox')"
+        class="form-control inputs-fields"
+        :type="typesInput"
+      />
+
+      <input
+        v-else-if="typesInput === 'checkbox'"
+        class="inputs-fields"
+        :type="typesInput"
+      />
+
+      <select
+        v-else-if="typesInput.includes('selector')"
+        class="form-select inputs-fields"
+      >
+        <option></option>
+      </select>
     </div>
   </div>
 </template>
@@ -125,6 +140,10 @@ export default {
       type: String,
       required: true,
     },
+    format_config_id: {
+      type: String,
+      required: true,
+    },
     index: {
       type: Number,
       required: true,
@@ -132,14 +151,19 @@ export default {
   },
   computed: {
     field() {
-      return this.$store.state.form.form.rows[this.idxRow].sections[
+      return this.$store.state.form.form?.rows[this.idxRow]?.sections[
         this.idxSection
-      ].fields[this.index];
+      ]?.fields[this.index];
     },
     required_config_id() {
       return this.$store.state.api.fields_config.find(
         (config) => config.col_name === "required"
       ).id;
+    },
+    typesInput() {
+      const fieldFormat = this.field.config_values[this.format_config_id]["id"];
+      var c = this.$store.getters["tools/selectInputType"](fieldFormat);
+      return c;
     },
   },
   methods: {

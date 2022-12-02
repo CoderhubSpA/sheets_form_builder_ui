@@ -16,7 +16,12 @@
       <div v-else>
         <div class="container">
           <div class="row">
-            <b-button class="create-form-button" variant="primary" size="lg" @click="create = true">
+            <b-button
+              class="create-form-button"
+              variant="primary"
+              size="lg"
+              @click="create = true"
+            >
               Crear un nuevo formulario
             </b-button>
           </div>

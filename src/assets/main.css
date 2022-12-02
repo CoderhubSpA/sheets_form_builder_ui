@@ -24,6 +24,12 @@
   border-color: var(--main-color);
 }
 
+.inputs-fields {
+  border-style: solid;
+  border-width: thin;
+  border-color: var(--border-dotted) !important;
+}
+
 .border-dotted {
   border-style: dotted;
   border-color: var(--border-dotted);
@@ -61,12 +67,6 @@
   right: -27px;
   border: none;
   background: transparent;
-  /* border-radius: 10em;
-  padding: 0px 8px 0px;
-  text-decoration: none;
-  background: var(--red);
-  border: 2px solid var(--white);
-  color: var(--white); */
 }
 
 .drop-zone {
