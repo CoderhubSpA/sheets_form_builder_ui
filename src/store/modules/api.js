@@ -918,7 +918,7 @@ const actions = {
         if (Object.keys(content).length === 0) return response;
         return axios.post(state.url.base + "entity/update", content);
       })
-      .then((response) => {
+      .then(() => {
         console.log("Finished");
         this._vm.$toasted.success("Formulario guardado!");
         state.status_msg = "";

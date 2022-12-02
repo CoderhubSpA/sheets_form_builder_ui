@@ -75,7 +75,6 @@ function getValuesFromRemoteEntityData(
       context
         .dispatch("api/searchDocument", entity_data[config.id], { root: true })
         .then((response) => {
-          console.log(response);
           config_values[config.id] = {
             id: entity_data[config.id],
             file: response,
