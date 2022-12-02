@@ -27,7 +27,7 @@
       style="left: 99%; transform: translateX(-99%); position: fixed"
     >
       <b-spinner
-        v-if="$store.state.api.status_msg.length > 0"
+        v-if="$store.state.api.status.submitting"
         variant="info"
         style="margin-right: 2em"
       >
