@@ -48,7 +48,7 @@ export default {
     await this.$store.dispatch("api/fetchRowsConfig");
     await this.$store.dispatch("api/fetchSectionConfig");
     await this.$store.dispatch("api/fetchFieldsConfig");
-    await this.$store.dispatch("api/fetchDocuments");
+    await this.$store.dispatch("api/fetchDocumentsConfig");
     await this.$store.dispatch("api/fetchActionsConfig");
 
     if (this.mode === "create") {
