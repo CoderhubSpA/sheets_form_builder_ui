@@ -26,6 +26,14 @@
     <b-navbar-nav
       style="left: 99%; transform: translateX(-99%); position: fixed"
     >
+      <a
+        v-if="$store.state.api.status.form_url"
+        class="text-white"
+        style="margin-top: 2px"
+        :href="$store.state.api.status.form_url"
+      >
+        Ver formulario generado
+      </a>
       <b-spinner
         v-if="$store.state.api.status.submitting"
         variant="info"
@@ -84,7 +92,7 @@ export default {
     },
     viewSm() {
       this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
-    }
+    },
   },
 };
 </script>

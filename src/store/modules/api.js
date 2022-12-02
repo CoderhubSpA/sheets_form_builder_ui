@@ -58,6 +58,7 @@ const state = {
   status: {
     msg: "",
     submitting: false,
+    form_url: "",
   },
   url: {
     base: "http://127.0.0.1:8081/",
@@ -877,6 +878,8 @@ const actions = {
       this._vm.$toasted.success("Formulario guardado!");
       state.status.msg = "";
       state.status.submitting = false;
+      state.status.form_url =
+        "https://formbuilderui.appstart.cl/internal_form/" + form_id;
     } catch (e) {
       this._vm.$toasted.error("Error al guardar formulario!");
       state.status.submitting = false;
