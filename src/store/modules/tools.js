@@ -21,6 +21,19 @@ const state = {
     { name: "SELECTOR", value: "selector" },
     { name: "SiNo", value: "checkbox" },
   ],
+  hidden_config: [
+    "Formulario",
+    "Fila del formulario",
+    "Sección formulario",
+    "Alternativas",
+    "Entidad del form",
+    "Sección siguiente default",
+    "Mostrar solo por el campo",
+    "Mostrar solo si el campo posee valor",
+    "Columna",
+    "Id",
+    "Acción",
+  ],
   hover_fields: false,
   actual_tab: "config",
   current_config: {},
@@ -55,6 +68,9 @@ const getters = {
   },
   currentView(state) {
     return state.current_view;
+  },
+  hiddenConfig(state) {
+    return state.hidden_config;
   },
 };
 const mutations = {

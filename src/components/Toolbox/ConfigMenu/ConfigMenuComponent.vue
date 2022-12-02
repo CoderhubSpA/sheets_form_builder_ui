@@ -241,19 +241,6 @@ export default {
   data() {
     return {
       fileInputKey: 0,
-      hidden_config: [
-        "Formulario",
-        "Fila del formulario",
-        "Sección formulario",
-        "Alternativas",
-        "Entidad del form",
-        "Sección siguiente default",
-        "Mostrar solo por el campo",
-        "Mostrar solo si el campo posee valor",
-        "Columna",
-        "Id",
-        "Acción",
-      ],
     };
   },
   props: {
@@ -291,6 +278,9 @@ export default {
     view() {
       return this.$store.getters["tools/currentView"];
     },
+    hiddenConfig() {
+      return this.$store.getters["tools/hiddenConfig"];
+    },
     configActions: {
       get() {
         return this.configObject.config_values[
@@ -314,7 +304,7 @@ export default {
 
       return this.$store.state.api[this.configType].filter(
         (element) =>
-          !this.hidden_config.includes(element.name) &&
+          !this.hiddenConfig.includes(element.name) &&
           ((!on_edit && element.show_in_create_form === 2) ||
             (on_edit && element.show_in_edit_form === 2))
       );
