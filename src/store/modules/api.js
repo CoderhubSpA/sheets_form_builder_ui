@@ -98,7 +98,7 @@ const state = {
       options: [],
     },
   },
-  documents_list: [],
+  documents_config: [],
 };
 
 const getters = {
@@ -117,6 +117,9 @@ const getters = {
   fieldsConfigURL(state) {
     return state.url.base + state.url.info + state.url.field_entity_name;
   },
+  documentsConfigURL(state) {
+    return state.url.base + state.url.info + state.url.document_entity_name;
+  },
   formDataURL(state) {
     return state.url.base + state.url.data + state.url.form_entity_name;
   },
@@ -134,12 +137,6 @@ const getters = {
   },
   documentsDataURL(state) {
     return state.url.base + state.url.data + state.url.document_entity_name;
-  },
-  sectionImageURL: (state) => (id) => {
-    return (
-      state.url.base +
-      state.documents_list.find((d) => d.id === id).src.slice(1)
-    );
   },
 };
 
@@ -171,6 +168,9 @@ const mutations = {
   SET_FIELDS_CONFIG(state, config) {
     state.fields_config = config;
   },
+  SET_DOCUMENTS_CONFIG(state, config) {
+    state.documents_config = config;
+  },
   SET_FIELDS_CONFIG_SELECT_OPTIONS(state, config_select_options) {
     state.fields_config_select = config_select_options;
   },
@@ -179,9 +179,6 @@ const mutations = {
   },
   REMOVE_FIELD(state, field) {
     state.fields = state.fields.filter((element) => element !== field);
-  },
-  SET_DOCUMENTS(state, documents) {
-    state.documents_list = documents;
   },
 };
 
@@ -264,6 +261,17 @@ const actions = {
         response.data.content.entities_fk
       );
       context.commit("SET_FIELDS_CONFIG_SELECT_OPTIONS", config_select);
+    });
+  },
+  /**
+   * Fetch documents-entity configuration
+   * @param context
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+  fetchDocumentsConfig(context) {
+    return axios.get(context.getters.documentsConfigURL).then((response) => {
+      let config_columns = response.data.content.columns;
+      context.commit("SET_DOCUMENTS_CONFIG", config_columns);
     });
   },
   /**
@@ -697,43 +705,6 @@ const actions = {
                 // POST sections
                 let section_requests = [];
                 row.sections.forEach((section) => {
-                  // let section_config_img =
-                  //   section.config_values[
-                  //     state.sections_config.find(
-                  //       (config) => config.col_name === "image_id"
-                  //     ).id
-                  //   ];
-                  // if (section_config_img.id) {
-                  //   section.local_entity_data[
-                  //     state.sections_config.find(
-                  //       (config) => config.col_name === "image_id"
-                  //     ).id
-                  //   ] = section_config_img.id;
-                  // } else if (section_config_img.file) {
-                  //   console.log(section_config_img);
-                  //   let sectionData = new FormData();
-                  //   sectionData.append("file", section_config_img.file);
-                  //   console.log(sectionData);
-                  //   axios
-                  //     .post(state.url.base + state.url.document_entity_name, sectionData, {
-                  //       headers: {
-                  //         "Content-Type": "multipart/form-data",
-                  //       },
-                  //     })
-                  //     .then((response) => {
-                  //       let img_id = response.data.content.inserted_id;
-                  //       section.config_values[
-                  //         state.sections_config.find(
-                  //           (config) => config.col_name === "image_id"
-                  //         ).id
-                  //       ].id = section.local_entity_data[
-                  //         state.sections_config.find(
-                  //           (config) => config.col_name === "image_id"
-                  //         ).id
-                  //       ] = img_id;
-                  //     })
-                  //     .catch(console.log("error!"));
-                  // }
                   let content = {};
                   content[sections_config_id] = [section.local_entity_data];
 
@@ -748,6 +719,54 @@ const actions = {
                       )
                       .then((response) => {
                         let section_id = response.data.content.inserted_id;
+                        let section_config_img =
+                          section.config_values[
+                            state.sections_config.find(
+                              (config) => config.col_name === "image_id"
+                            ).id
+                          ];
+                        if (section_config_img.id) {
+                          section.local_entity_data[
+                            state.sections_config.find(
+                              (config) => config.col_name === "image_id"
+                            ).id
+                          ] = section_config_img.id;
+                        } else if (section_config_img.file) {
+                          console.log(section_config_img);
+                          let sectionData = new FormData();
+                          sectionData.append("file", section_config_img.file);
+                          axios
+                            .post(
+                              state.url.base + state.url.document_entity_name,
+                              sectionData,
+                              {
+                                headers: {
+                                  "Content-Type": "multipart/form-data",
+                                },
+                              }
+                            )
+                            .then((response) => {
+                              let img_id = response.data.content.inserted_id;
+                              section.config_values[
+                                state.sections_config.find(
+                                  (config) => config.col_name === "image_id"
+                                ).id
+                              ].id = section.local_entity_data[
+                                state.sections_config.find(
+                                  (config) => config.col_name === "image_id"
+                                ).id
+                              ] = img_id;
+                              content[sections_config_id] = [
+                                section.local_entity_data,
+                              ];
+                              axios
+                                .post(state.url.base + "entity/update", content)
+                                .then(() => console.log("Imagen asociada"))
+                                .catch((e) => console.log(e));
+                            })
+                            .catch((e) => console.log(e));
+                        }
+
                         section.config_values[
                           state.sections_config.find(
                             (config) => config.name === "id"
@@ -920,15 +939,22 @@ const actions = {
   },
 
   /**
-   * Fetch all possible documents
+   * Search document using id
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchDocuments(context) {
-    return axios.get(context.getters.documentsDataURL).then((response) => {
-      let documents = response.data.content.entities_fk.document;
-      context.commit("SET_DOCUMENTS", documents); // response.data.content.columns)
-    });
+  searchDocument(context, document_id) {
+    let src_id = context.state.documents_config.find(
+      (config) => config.col_name === "src"
+    ).id;
+    return axios
+      .get(context.getters.documentsDataURL + "/" + document_id)
+      .then((response) => {
+        return (
+          context.state.url.base +
+          response.data.content.data[0][src_id].slice(1)
+        );
+      });
   },
 };
 

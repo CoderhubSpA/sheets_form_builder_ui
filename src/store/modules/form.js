@@ -11,9 +11,11 @@ function fillObjLocalEntityData(configurations, obj) {
   if (id_val) data_values["id"] = id_val;
 
   configurations.forEach((config) => {
-    if (config.col_name === "image_id")
+    if (config.col_name === "image_id") {
       // Skip image
       return;
+    }
+
     let value = values[config.id];
     // Skip undefined and null values (other falsy values like false or "" are considered and not skipped)
     if (value === undefined || value === null) return;
@@ -70,14 +72,15 @@ function getValuesFromRemoteEntityData(
       // Number to boolean
       config_values[config.id] = !!config_values[config.id];
     else if (config.format === "DOCUMENT[IMAGE]" && entity_data[config.id]) {
-      console.log(entity_data[config.id]);
-      context.rootGetters["api/sectionImageURL"](entity_data[config.id]);
-      config_values[config.id] = {
-        id: entity_data[config.id],
-        file: context.rootGetters["api/sectionImageURL"](
-          entity_data[config.id]
-        ),
-      };
+      context
+        .dispatch("api/searchDocument", entity_data[config.id], { root: true })
+        .then((response) => {
+          console.log(response);
+          config_values[config.id] = {
+            id: entity_data[config.id],
+            file: response,
+          };
+        });
     }
   });
 

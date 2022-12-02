@@ -42,7 +42,7 @@ export default {
     this.$store.dispatch("api/fetchSectionConfig");
     this.$store.dispatch("api/fetchFieldsConfig");
     this.$store.dispatch("api/fetchActionsConfig");
-    this.$store.dispatch("api/fetchDocuments");
+    this.$store.dispatch("api/fetchDocumentsConfig");
   },
   methods: {},
 };
