@@ -450,7 +450,7 @@ const actions = {
    * Post the form after validating it and parsing it
    * @param context
    */
-  postForm(context) {
+  async postForm(context) {
     /**
      * First checks that all required configurations are valid.
      * Then starts sending in cascade the form configuration, the rows, the sections and the fields
@@ -459,53 +459,51 @@ const actions = {
 
     let autofill_order = (elements, order_id) => {
       // fills the order on the config_values
-      elements.forEach((element, index) => {
+      for (let [index, element] of elements.entries()) {
         element.config_values[order_id] = index;
-      });
+      }
     };
     let form = context.rootState.form.form;
-
     // First fills the order config for all elements that need it
     let rows = form.rows;
     autofill_order(
       rows,
       state.rows_config.find((config) => config.name === "Orden").id
     );
-    rows.forEach((row) => {
+    for (let row of rows) {
       autofill_order(
         row.sections,
         state.sections_config.find((config) => config.name === "Orden").id
       );
-      row.sections.forEach((section) => {
+      for (let section of row.sections) {
         autofill_order(
           section.fields,
           state.fields_config.find((config) => config.name === "Orden").id
         );
-      });
-    });
-
+      }
+    }
     // Then call for filling the local entity data,
     // parsing each config_values
-    context.dispatch("form/fillLocalEntityData", null, { root: true });
-
+    await context.dispatch("form/fillLocalEntityData", null, { root: true });
     // As last step of the preparations, we count the unfilled_required_values, throwing an error if there's any
     let unfilled_required_count = form.unfilled_required_values.length;
-    form.rows.forEach((row) => {
+    for (let row of form.rows) {
       unfilled_required_count += row.unfilled_required_values.length;
-      row.sections.forEach((section) => {
+      for (let section of row.sections) {
         unfilled_required_count += section.unfilled_required_values.length;
-        section.fields.forEach((field) => {
+        for (let field of section.fields) {
           unfilled_required_count += field.unfilled_required_values.length;
-        });
-      });
-    });
-    form.actions.forEach((action) => {
+        }
+      }
+    }
+    for (let action of form.actions) {
       unfilled_required_count += action.unfilled_required_values.length;
-    });
+    }
 
     // TODO: It should show a modal letting the user know that there're required configurations that are not filled
-    if (unfilled_required_count)
+    if (unfilled_required_count) {
       throw Error("There are " + unfilled_required_count + " unfilled values");
+    }
 
     // Then starts the posting-process
 
@@ -516,359 +514,249 @@ const actions = {
       rows_config_id,
       sections_config_id,
       fields_config_id;
+    
+    try {
+      // Get the urls where to post the information
+      let formConfigURLResponse = await axios.get(context.getters.formConfigURL);
+      config_id = formConfigURLResponse.data.content.entity_type.id;
+      let actionsConfigURLResponse = await axios.get(context.getters.actionsConfigURL);
+      actions_config_id = actionsConfigURLResponse.data.content.entity_type.id;
+      let rowsConfigURLResponse = await axios.get(context.getters.rowsConfigURL);
+      rows_config_id = rowsConfigURLResponse.data.content.entity_type.id;
+      let sectionsConfigURLResponse = await axios.get(context.getters.sectionsConfigURL);
+      sections_config_id = sectionsConfigURLResponse.data.content.entity_type.id;
+      let fieldsConfigURLResponse = await axios.get(context.getters.fieldsConfigURL);
+      fields_config_id = fieldsConfigURLResponse.data.content.entity_type.id;
 
-    // Get the urls where to post the information
-    Promise.all([
-      axios
-        .get(context.getters.formConfigURL)
-        .then((response) => (config_id = response.data.content.entity_type.id)),
-      axios
-        .get(context.getters.actionsConfigURL)
-        .then(
-          (response) =>
-            (actions_config_id = response.data.content.entity_type.id)
-        ),
-      axios
-        .get(context.getters.rowsConfigURL)
-        .then(
-          (response) => (rows_config_id = response.data.content.entity_type.id)
-        ),
-      axios
-        .get(context.getters.sectionsConfigURL)
-        .then(
-          (response) =>
-            (sections_config_id = response.data.content.entity_type.id)
-        ),
-      axios
-        .get(context.getters.fieldsConfigURL)
-        .then(
-          (response) =>
-            (fields_config_id = response.data.content.entity_type.id)
-        ),
-    ])
-      .then(() => {
-        /**
-         * POST request using the config_id with the values in a JSON that the API supports.
-         */
-        let content = {};
-
-        let actions_config_id = state.form_config.find(
-          (config) => config.name === "Acciones"
-        ).id;
-        if (form.local_entity_data[actions_config_id]) {
-          delete form.local_entity_data[actions_config_id];
-        }
-        content[config_id] = [form.local_entity_data];
-        return axios.post(
-          state.url.base +
-            (form.local_entity_data["id"] ? "entity/update" : "entity"),
-          content
-        );
-      })
-      .then((response) => {
-        /**
-         * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
-         *
-         * Then, add the inserted_id in all the actions and rows and post them
-         */
-        let form_id = response.data.content.inserted_id;
-        form.config_values[
+      /**
+       * POST request using the config_id with the values in a JSON that the API supports.
+        */
+      let content = {};
+      let _actions_config_id = state.form_config.find(
+        (config) => config.name === "Acciones"
+      ).id;
+      if (form.local_entity_data[_actions_config_id]) {
+        delete form.local_entity_data[_actions_config_id];
+      }
+      content[config_id] = [form.local_entity_data];
+      let postResponse = await axios.post(
+        state.url.base + (form.local_entity_data["id"] ? "entity/update" : "entity"),
+        content
+      );
+      /**
+       * Add the inserted_id in the form_config_values, and add it to form.cloud_entity_data.
+       *
+       * Then, add the inserted_id in all the actions and rows and post them
+       */
+      let form_id = postResponse.data.content.inserted_id;
+    
+      form.config_values[
+        state.form_config.find((config) => config.name === "id").id
+      ] =
+        form.local_entity_data[
           state.form_config.find((config) => config.name === "id").id
         ] =
-          form.local_entity_data[
-            state.form_config.find((config) => config.name === "id").id
+        form.local_entity_data["id"] =
+          form_id;
+
+      // find the 'Formulario' configuration
+      let action_form_config = state.actions_config.find(
+        (config) => config.name === "Formulario"
+      ).id;
+      for (let action of form.actions) {
+        // Associate the action with the created form
+        action.config_values[action_form_config] = form_id;
+        action.local_entity_data[action_form_config] = form_id;
+      }
+
+      let row_form_config = state.rows_config.find(
+        (config) => config.name === "Formulario"
+      ).id;
+      for (let row of form.rows) {
+        // Associate the row with the created form
+        row.config_values[row_form_config] = form_id;
+        row.local_entity_data[row_form_config] = form_id;
+      }
+
+      // The API doesn't return the inserted_id of all elements, so while we can send all the rows,
+      // we shouldn't because we need all the inserted_id
+      // POST actions
+      for (let action of form.actions) {
+        let _content = {};
+
+        if (action.local_entity_data["id"]) {
+          delete action.local_entity_data[
+            state.actions_config.find((config) => config.name === "id").id
+          ];
+          _content[actions_config_id] = [action.local_entity_data];
+        }
+        try {
+          let _postResponse = await axios.post(
+            state.url.base + (action.local_entity_data["id"] ? "entity/update" : "entity"),
+            _content
+          );
+
+          let action_id = _postResponse.data.content.inserted_id;
+          action.config_values[
+            state.actions_config.find((config) => config.name === "id").id
           ] =
-          form.local_entity_data["id"] =
-            form_id;
+            action.local_entity_data[
+              state.actions_config.find(
+                (config) => config.name === "id"
+              ).id
+            ] =
+            action.local_entity_data["id"] =
+              action_id;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      // POST rows
+      for (let row of form.rows) {
+        let _content = {};
+        _content[rows_config_id] = [row.local_entity_data];
+        let _postResponse = await axios.post(
+          state.url.base + (row.local_entity_data["id"] ? "entity/update" : "entity"),
+          _content
+        );
 
-        // find the 'Formulario' configuration
+        let row_id = _postResponse.data.content.inserted_id;
+        row.config_values[
+          state.rows_config.find((config) => config.name === "id").id
+        ] =
+          row.local_entity_data[
+            state.rows_config.find((config) => config.name === "id").id
+          ] =
+          row.local_entity_data["id"] =
+            row_id;
 
-        let action_form_config = state.actions_config.find(
-          (config) => config.name === "Formulario"
-        ).id;
-        form.actions.forEach((action) => {
-          // Associate the action with the created form
-          action.config_values[action_form_config] = form_id;
-          action.local_entity_data[action_form_config] = form_id;
-        });
+        for (let section of row.sections) {
+          section.local_entity_data[
+            state.sections_config.find(
+              (config) => config.name === "Fila del formulario"
+            ).id
+          ] = section.config_values[
+            state.sections_config.find(
+              (config) => config.name === "Fila del formulario"
+            ).id
+          ] = row_id;
+          section.local_entity_data[
+            state.sections_config.find(
+              (config) => config.name === "Formulario"
+            ).id
+          ] = section.config_values[
+            state.sections_config.find(
+              (config) => config.name === "Formulario"
+            ).id
+          ] = form_id;
+        }
 
-        let row_form_config = state.rows_config.find(
-          (config) => config.name === "Formulario"
-        ).id;
-        form.rows.forEach((row) => {
-          // Associate the row with the created form
-          row.config_values[row_form_config] = form_id;
-          row.local_entity_data[row_form_config] = form_id;
-        });
-
-        // The API doesn't return the inserted_id of all elements, so while we can send all the rows,
-        // we shouldn't because we need all the inserted_id
-        /*
-        let content = {};
-        content[rows_config_id] = rows_data;
-        */
-        // POST actions
-        let action_requests = [];
-        form.actions.forEach((action) => {
-          let content = {};
-
-          if (action.local_entity_data["id"])
-            delete action.local_entity_data[
-              state.actions_config.find((config) => config.name === "id").id
-            ];
-          content[actions_config_id] = [action.local_entity_data];
-
-          action_requests.push(
-            axios
-              .post(
-                state.url.base +
-                  (action.local_entity_data["id"] ? "entity/update" : "entity"),
-                content
-              )
-              .then((response) => {
-                let action_id = response.data.content.inserted_id;
-                action.config_values[
-                  state.actions_config.find((config) => config.name === "id").id
-                ] =
-                  action.local_entity_data[
-                    state.actions_config.find(
-                      (config) => config.name === "id"
-                    ).id
-                  ] =
-                  action.local_entity_data["id"] =
-                    action_id;
-              })
-              .catch((error) => {
-                console.log(error);
-              })
+        for (let section of row.sections) {
+          let _content = {};
+          _content[sections_config_id] = [section.local_entity_data];
+          let _postResponse = await axios.post(
+            state.url.base + (section.local_entity_data["id"] ? "entity/update" : "entity"),
+            _content
           );
-        });
-        // POST rows
-        let row_requests = [];
-        form.rows.forEach((row) => {
-          let content = {};
-          content[rows_config_id] = [row.local_entity_data];
+          let section_id = _postResponse.data.content.inserted_id;
+          section.config_values[
+            state.sections_config.find(
+              (config) => config.name === "id"
+            ).id
+          ] =
+            section.local_entity_data[
+              state.sections_config.find(
+                (config) => config.name === "id"
+              ).id
+            ] =
+            section.local_entity_data["id"] =
+              section_id;
 
-          row_requests.push(
-            axios
-              .post(
-                state.url.base +
-                  (row.local_entity_data["id"] ? "entity/update" : "entity"),
-                content
-              )
-              .then((response) => {
-                let row_id = response.data.content.inserted_id;
-                row.config_values[
-                  state.rows_config.find((config) => config.name === "id").id
-                ] =
-                  row.local_entity_data[
-                    state.rows_config.find((config) => config.name === "id").id
-                  ] =
-                  row.local_entity_data["id"] =
-                    row_id;
-
-                row.sections.forEach((section) => {
-                  // Associate the section with the created row and form
-                  section.local_entity_data[
-                    state.sections_config.find(
-                      (config) => config.name === "Fila del formulario"
-                    ).id
-                  ] = section.config_values[
-                    state.sections_config.find(
-                      (config) => config.name === "Fila del formulario"
-                    ).id
-                  ] = row_id;
-
-                  section.local_entity_data[
-                    state.sections_config.find(
-                      (config) => config.name === "Formulario"
-                    ).id
-                  ] = section.config_values[
-                    state.sections_config.find(
-                      (config) => config.name === "Formulario"
-                    ).id
-                  ] = form_id;
-                });
-
-                // POST sections
-                let section_requests = [];
-                row.sections.forEach((section) => {
-                  // let section_config_img =
-                  //   section.config_values[
-                  //     state.sections_config.find(
-                  //       (config) => config.col_name === "image_id"
-                  //     ).id
-                  //   ];
-                  // if (section_config_img.id) {
-                  //   section.local_entity_data[
-                  //     state.sections_config.find(
-                  //       (config) => config.col_name === "image_id"
-                  //     ).id
-                  //   ] = section_config_img.id;
-                  // } else if (section_config_img.file) {
-                  //   let sectionData = new FormData();
-                  //   sectionData.append("file", section_config_img.file);
-                  //   axios
-                  //     .post(state.url.base + state.url.document_entity_name, sectionData, {
-                  //       headers: {
-                  //         "Content-Type": "multipart/form-data",
-                  //       },
-                  //     })
-                  //     .then((response) => {
-                  //       let img_id = response.data.content.inserted_id;
-                  //       section.config_values[
-                  //         state.sections_config.find(
-                  //           (config) => config.col_name === "image_id"
-                  //         ).id
-                  //       ].id = section.local_entity_data[
-                  //         state.sections_config.find(
-                  //           (config) => config.col_name === "image_id"
-                  //         ).id
-                  //       ] = img_id;
-                  //     })
-                  // }
-                  let content = {};
-                  content[sections_config_id] = [section.local_entity_data];
-
-                  section_requests.push(
-                    axios
-                      .post(
-                        state.url.base +
-                          (section.local_entity_data["id"]
-                            ? "entity/update"
-                            : "entity"),
-                        content
-                      )
-                      .then((response) => {
-                        let section_id = response.data.content.inserted_id;
-                        section.config_values[
-                          state.sections_config.find(
-                            (config) => config.name === "id"
-                          ).id
-                        ] =
-                          section.local_entity_data[
-                            state.sections_config.find(
-                              (config) => config.name === "id"
-                            ).id
-                          ] =
-                          section.local_entity_data["id"] =
-                            section_id;
-
-                        section.fields.forEach((field) => {
-                          // Associate the field with the created section and form
-                          field.local_entity_data[
-                            state.fields_config.find(
-                              (config) => config.name === "Sección formulario"
-                            ).id
-                          ] = field.config_values[
-                            state.fields_config.find(
-                              (config) => config.name === "Sección formulario"
-                            ).id
-                          ] = section_id;
-
-                          field.local_entity_data[
-                            state.fields_config.find(
-                              (config) => config.name === "Formulario"
-                            ).id
-                          ] = field.config_values[
-                            state.fields_config.find(
-                              (config) => config.name === "Formulario"
-                            ).id
-                          ] = form_id;
-                        });
-
-                        // POST fields
-                        let fields_requests = [];
-                        section.fields.forEach((field) => {
-                          let content = {};
-                          content[fields_config_id] = [field.local_entity_data];
-
-                          fields_requests.push(
-                            axios
-                              .post(
-                                state.url.base +
-                                  (field.local_entity_data["id"]
-                                    ? "entity/update"
-                                    : "entity"),
-                                content
-                              )
-                              .then((response) => {
-                                let field_id =
-                                  response.data.content.inserted_id;
-                                field.config_values[
-                                  state.fields_config.find(
-                                    (config) => config.name === "id"
-                                  ).id
-                                ] =
-                                  field.local_entity_data[
-                                    state.fields_config.find(
-                                      (config) => config.name === "id"
-                                    ).id
-                                  ] =
-                                  field.local_entity_data["id"] =
-                                    field_id;
-                              })
-                          );
-                        });
-                        return Promise.all(fields_requests);
-                      })
-                  );
-                });
-                return Promise.all(section_requests);
-              })
-          );
-        });
-        return Promise.all(row_requests);
-      })
-      .then((response) => {
+          for (let field of section.fields)  {
+            // Associate the field with the created section and form
+            field.local_entity_data[
+              state.fields_config.find(
+                (config) => config.name === "Sección formulario"
+              ).id
+            ] = field.config_values[
+              state.fields_config.find(
+                (config) => config.name === "Sección formulario"
+              ).id
+            ] = section_id;
+            field.local_entity_data[
+              state.fields_config.find(
+                (config) => config.name === "Formulario"
+              ).id
+            ] = field.config_values[
+              state.fields_config.find(
+                (config) => config.name === "Formulario"
+              ).id
+            ] = form_id;
+          }
+          // POST fields
+          for (let field of section.fields) {
+            let _content = {};
+            _content[fields_config_id] = [field.local_entity_data];
+            let _postResponse = await axios.post(
+              state.url.base + (field.local_entity_data["id"] ? "entity/update" : "entity"),
+              _content
+            );
+            let field_id = _postResponse.data.content.inserted_id;
+            field.config_values[
+              state.fields_config.find(
+                (config) => config.name === "id"
+              ).id
+            ] =
+              field.local_entity_data[
+                state.fields_config.find(
+                  (config) => config.name === "id"
+                ).id
+              ] =
+              field.local_entity_data["id"] =
+                field_id;
+          }
+        }
         // Delete requests
-        let content = {};
-
+        let del_content = {};
         // Deleted rows
         if (context.rootState.form.deleted.rows.length > 0) {
-          content[rows_config_id] = [];
-          context.rootState.form.deleted.rows.forEach(
-            (deleted_row_entity_data) => {
-              deleted_row_entity_data[
-                state.rows_config.find(
-                  (config) => config.col_name === "valid"
-                ).id
-              ] = false;
-              content[rows_config_id].push(deleted_row_entity_data);
-            }
-          );
+          del_content[rows_config_id] = [];
+          for (let deleted_row_entity_data of context.rootState.form.deleted.rows) {
+            deleted_row_entity_data[
+              state.rows_config.find(
+                (config) => config.col_name === "valid"
+              ).id
+            ] = false;
+            del_content[rows_config_id].push(deleted_row_entity_data);
+          }
         }
         // Deleted sections
         if (context.rootState.form.deleted.sections.length > 0) {
-          content[sections_config_id] = [];
-          context.rootState.form.deleted.sections.forEach(
-            (deleted_section_entity_data) => {
-              deleted_section_entity_data[
-                state.sections_config.find(
-                  (config) => config.col_name === "valid"
-                ).id
-              ] = false;
-              content[sections_config_id].push(deleted_section_entity_data);
-            }
-          );
+          del_content[sections_config_id] = [];
+          for (let deleted_section_entity_data of context.rootState.form.deleted.sections) {
+            deleted_section_entity_data[
+              state.sections_config.find(
+                (config) => config.col_name === "valid"
+              ).id
+            ] = false;
+            del_content[sections_config_id].push(deleted_section_entity_data);
+          }
         }
         // Deleted fields
         if (context.rootState.form.deleted.fields.length > 0) {
-          content[fields_config_id] = [];
-          context.rootState.form.deleted.fields.forEach(
-            (deleted_field_entity_data) => {
-              deleted_field_entity_data[
-                state.fields_config.find(
-                  (config) => config.col_name === "valid"
-                ).id
-              ] = false;
-              content[fields_config_id].push(deleted_field_entity_data);
-            }
-          );
+          del_content[fields_config_id] = [];
+          for (let deleted_field_entity_data of context.rootState.form.deleted.fields) {
+            deleted_field_entity_data[
+              state.fields_config.find(
+                (config) => config.col_name === "valid"
+              ).id
+            ] = false;
+            del_content[fields_config_id].push(deleted_field_entity_data);
+          }
         }
         // Deleted actions
         context.rootState.form.deleted.actions = [];
-        context.rootState.form.form.actions_unlisted.forEach((action) => {
+        for (let action of context.rootState.form.form.actions_unlisted) {
           let action_id =
             action.config_values[
               state.actions_config.find((config) => config.col_name === "id").id
@@ -883,28 +771,24 @@ const actions = {
               action.local_entity_data
             );
           }
-        });
-        if (context.rootState.form.deleted.actions.length > 0) {
-          content[actions_config_id] = [];
-          context.rootState.form.deleted.actions.forEach(
-            (deleted_action_entity_data) => {
-              content[actions_config_id].push(deleted_action_entity_data);
-            }
-          );
         }
-
-        if (Object.keys(content).length === 0) return response;
-        return axios.post(state.url.base + "entity/update", content);
-      })
-      .then((response) => {
-        console.log("Finished");
-        this._vm.$toasted.success("Formulario guardado!");
-        state.status_msg = "";
-      })
-      .catch((e) => {
-        this._vm.$toasted.error("Error al guardar formulario!");
-        console.log(e);
-      });
+        if (context.rootState.form.deleted.actions.length > 0) {
+          del_content[actions_config_id] = [];
+          for (let deleted_action_entity_data of context.rootState.form.deleted.actions) {
+            del_content[actions_config_id].push(deleted_action_entity_data);
+          }
+        }
+        if (Object.keys(del_content).length > 0) {
+          await axios.post(state.url.base + "entity/update", del_content);
+        }
+      } 
+      console.log("Finished");
+      this._vm.$toasted.success("Formulario guardado!");
+      state.status_msg = "";
+    } catch (e) {
+      this._vm.$toasted.error("Error al guardar formulario!");
+      console.log(e);
+    }
   },
 
   /**

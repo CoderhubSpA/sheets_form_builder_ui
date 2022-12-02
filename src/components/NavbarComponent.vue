@@ -41,7 +41,7 @@
         :id="`modal-guardar-formulario`"
         centered
         hide-header
-        @ok="$store.dispatch('api/postForm')"
+        @ok="$emit('saveForm')"
         ok-variant="danger"
         ok-title="Sí, estoy seguro"
         cancel-title="Cancelar"
@@ -78,12 +78,7 @@ export default {
     },
     viewSm() {
       this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
-    },
-    // esto se puede borrar si el modal funciona
-    // save(){
-    //   this.$store.dispatch('api/postForm')
-    //   .then(this.$emit("formSaved"));
-    // }
+    }
   },
 };
 </script>
