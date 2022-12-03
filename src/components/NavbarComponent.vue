@@ -26,14 +26,19 @@
     <b-navbar-nav
       style="left: 99%; transform: translateX(-99%); position: fixed"
     >
-      <a
-        v-if="$store.state.api.status.form_url"
-        class="text-white"
-        style="margin-top: 2px"
-        :href="$store.state.api.status.form_url"
+      <b-button
+        v-if="($store.state.api.status.form_url && !$store.state.api.status.submitting)"
+        class="btn btn-primary m-1"
+        role="link"
+        @click="openInNewTab($store.state.api.status.form_url)"
+        :variant="view === 'sm' ? 'secondary' : 'dark'"
       >
-        Ver formulario generado
-      </a>
+        <font-awesome-icon
+          icon="fa-solid fa-eye"
+          size="lg"
+          title="Vista previa"
+        />
+      </b-button>
       <b-spinner
         v-if="$store.state.api.status.submitting"
         variant="info"
@@ -93,6 +98,9 @@ export default {
     viewSm() {
       this.$store.commit("tools/SET_CURRENT_VIEW", "sm");
     },
+    openInNewTab(url) {
+      window.open(url, '_blank', 'noreferrer');
+    }
   },
 };
 </script>

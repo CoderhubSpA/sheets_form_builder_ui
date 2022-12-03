@@ -58,7 +58,9 @@ export default {
     } else {
       await this.createForm();
     }
-
+    if (this.editMode) {
+      this.$store.state.api.status.form_url = this.$store.state.api.url.preview_base + this.id;
+    }
     this.ready = true;
   },
   computed: {
