@@ -721,7 +721,6 @@ const actions = {
               ).id
             ] = section_config_img.id;
           } else if (section_config_img.file) {
-            console.log(section_config_img);
             let sectionData = new FormData();
             sectionData.append("file", section_config_img.file);
 
@@ -747,7 +746,6 @@ const actions = {
               ] = img_id;
               content[sections_config_id] = [section.local_entity_data];
               await axios.post(state.url.base + "entity/update", content);
-              console.log("Imagen asociada");
             } catch (error) {
               console.log(error);
             }
@@ -875,7 +873,6 @@ const actions = {
           await axios.post(state.url.base + "entity/update", del_content);
         }
       }
-      console.log("Finished");
       this._vm.$toasted.success("Formulario guardado!");
       state.status.msg = "";
       state.status.submitting = false;
