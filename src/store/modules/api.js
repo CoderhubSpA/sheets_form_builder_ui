@@ -61,7 +61,7 @@ const state = {
     form_url: "",
   },
   url: {
-    base: "http://127.0.0.1:8081/",
+    base: "",
     preview_base: "https://formbuilderui.appstart.cl/internal_form/",
     info: "entity/info/",
     data: "entity/data/",
@@ -185,6 +185,9 @@ const mutations = {
   REMOVE_FIELD(state, field) {
     state.fields = state.fields.filter((element) => element !== field);
   },
+  SET_URL_BASE(state, url) {
+    state.url.base = url;
+  },
 };
 
 const actions = {
@@ -193,8 +196,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchFormConfig(context) {
-    return axios.get(context.getters.formConfigURL).then((response) => {
+  async fetchFormConfig(context) {
+    return await axios.get(context.getters.formConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_FORM_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -209,8 +212,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchActionsConfig(context) {
-    return axios.get(context.getters.actionsConfigURL).then((response) => {
+  async fetchActionsConfig(context) {
+    return await axios.get(context.getters.actionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_ACTIONS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -225,8 +228,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchRowsConfig(context) {
-    return axios.get(context.getters.rowsConfigURL).then((response) => {
+  async fetchRowsConfig(context) {
+    return await axios.get(context.getters.rowsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_ROWS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -241,8 +244,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchSectionConfig(context) {
-    return axios.get(context.getters.sectionsConfigURL).then((response) => {
+  async fetchSectionConfig(context) {
+    return await axios.get(context.getters.sectionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_SECTIONS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -257,8 +260,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchFieldsConfig(context) {
-    return axios.get(context.getters.fieldsConfigURL).then((response) => {
+  async fetchFieldsConfig(context) {
+    return await axios.get(context.getters.fieldsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_FIELDS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -273,8 +276,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchDocumentsConfig(context) {
-    return axios.get(context.getters.documentsConfigURL).then((response) => {
+  async fetchDocumentsConfig(context) {
+    return await axios.get(context.getters.documentsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_DOCUMENTS_CONFIG", config_columns);
     });
@@ -285,8 +288,8 @@ const actions = {
    * @param entity_id id of the form's entity-type
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchFields(context, entity_id) {
-    return axios
+  async fetchFields(context, entity_id) {
+    return await axios
       .get(state.url.base + state.url.info + entity_id)
       .then((response) => {
         let fields = [];
@@ -337,8 +340,8 @@ const actions = {
    * @param getters
    * @returns {Promise<AxiosResponse<any>>}
    */
-  fetchFormList({ state, getters }) {
-    return axios
+  async fetchFormList({ state, getters }) {
+    return await axios
       .get(getters.formDataURL, state.axios_no_cache_config)
       .then((response) => {
         let form_options = [];
@@ -367,19 +370,19 @@ const actions = {
    * @param form_id
    * @returns {Promise<any>}
    */
-  fetchForm(context, form_id) {
+  async fetchForm(context, form_id) {
     // Fetch the form and all of its content
     let form, rows, sections, fields, actions;
     let requests = [
       // Form
-      axios
+      await axios
         .get(context.getters.formDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           form = response.data.content.data.find((form) => form.id === form_id);
           parseJSONValues(form);
         }),
       // Rows
-      axios
+      await axios
         .get(context.getters.rowsDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           let form_id_config = context.state.rows_config.find(
@@ -391,7 +394,7 @@ const actions = {
           parseJSONValues(rows);
         }),
       // Sections
-      axios
+      await axios
         .get(
           context.getters.sectionsDataURL,
           context.state.axios_no_cache_config
@@ -406,7 +409,7 @@ const actions = {
           parseJSONValues(sections);
         }),
       // Fields
-      axios
+      await axios
         .get(context.getters.fieldsDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           let form_id_config = context.state.fields_config.find(
@@ -418,7 +421,7 @@ const actions = {
           parseJSONValues(fields);
         }),
       // Actions
-      axios
+      await axios
         .get(
           context.getters.actionsDataURL,
           context.state.axios_no_cache_config
@@ -434,7 +437,7 @@ const actions = {
     ];
 
     // Calls to fetch the form's possible fields, and then calls for loading the form with all the info
-    return Promise.all(requests)
+    return await Promise.all(requests)
       .then(() =>
         context.dispatch(
           "fetchFields",
@@ -905,6 +908,9 @@ const actions = {
           response.data.content.data[0][src_id].slice(1)
         );
       });
+  },
+  setUrlBase(context, url) {
+    context.commit("SET_URL_BASE", url);
   },
 };
 
