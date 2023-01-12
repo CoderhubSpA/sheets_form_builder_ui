@@ -12,6 +12,7 @@
       <SelectEntityComponent
         v-if="create"
         @cancel-create-form-event="create = false"
+        v-on:entity-and-mode="entityAndMode"
       />
       <div v-else>
         <div class="container">
@@ -27,7 +28,10 @@
           </div>
         </div>
         <br />
-        <SelectFormComponent v-if="$store.state.api.form_config" />
+        <SelectFormComponent
+          v-if="$store.state.api.form_config"
+          v-on:entity-and-mode="entityAndMode"
+        />
         <p v-else>Cargando configuración</p>
       </div>
     </b-modal>
@@ -49,6 +53,10 @@ export default {
       create: false,
     };
   },
-  methods: {},
+  methods: {
+    entityAndMode(entityAndMode) {
+      this.$emit('entity-and-mode', entityAndMode);
+    }
+  },
 };
 </script>

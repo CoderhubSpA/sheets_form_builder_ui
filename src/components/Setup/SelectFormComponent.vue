@@ -37,21 +37,15 @@
       <br />
     </div>
     <div class="row select-form-edit-button">
-      <router-link
-        :to="{ name: 'edit', params: { id: selectedFormId } }"
-        custom
-        v-slot="{ navigate }"
+      <b-button
+        variant="secondary"
+        size="lg"
+        @click="entityAndMode"
+        style="color: white"
+        :disabled="!selectedFormId"
       >
-        <b-button
-          variant="secondary"
-          size="lg"
-          @click="navigate"
-          style="color: white"
-          :disabled="!selectedFormId"
-        >
-          Editar formulario
-        </b-button>
-      </router-link>
+        Editar formulario
+      </b-button>
     </div>
   </div>
 </template>
@@ -64,20 +58,6 @@ export default {
       selectedFormId: null,
       search: "",
     };
-  },
-  methods: {
-    editForm() {
-      if (this.selectedFormId)
-        this.$store
-          .dispatch("api/fetchForm", this.selectedFormId)
-          .then(this.$bvModal.hide("setup-modal"));
-    },
-    removeAccents(str) {
-      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    },
-    clearSearchBar() {
-      this.search = "";
-    },
   },
   computed: {
     options() {
@@ -98,5 +78,25 @@ export default {
       return this.options;
     },
   },
+  methods: {
+    editForm() {
+      if (this.selectedFormId)
+        this.$store
+          .dispatch("api/fetchForm", this.selectedFormId)
+          .then(this.$bvModal.hide("setup-modal"));
+    },
+    removeAccents(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    },
+    clearSearchBar() {
+      this.search = "";
+    },
+    entityAndMode() {
+      this.$emit("entity-and-mode", {
+        formId: this.selectedFormId,
+        mode: "edit"
+      })
+    }
+  }
 };
 </script>

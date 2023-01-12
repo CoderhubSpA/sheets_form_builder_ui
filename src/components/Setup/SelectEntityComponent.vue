@@ -31,22 +31,16 @@
         </b-button>
       </div>
       <div class="col-6 d-flex justify-content-end">
-        <router-link
-          :to="{ name: 'create', params: { id: entitySelected.id } }"
-          custom
-          v-slot="{ navigate }"
+        <b-button
+          class="create-form-button"
+          variant="primary"
+          size="lg"
+          role="link"
+          v-on:click="entityAndMode"
+          :disabled="submitDisabled"
         >
-          <b-button
-            class="create-form-button"
-            variant="primary"
-            size="lg"
-            role="link"
-            @click="navigate"
-            :disabled="submitDisabled"
-          >
-            Crear formulario
-          </b-button>
-        </router-link>
+          Crear formulario
+        </b-button>
       </div>
     </div>
   </div>
@@ -85,6 +79,12 @@ export default {
           this.$bvModal.hide("setup-modal");
         });
     },
+    entityAndMode() {
+      this.$emit("entity-and-mode", {
+        entityId: this.entitySelected.id,
+        mode: "create"
+      })
+    }
   },
 };
 </script>

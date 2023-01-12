@@ -1,6 +1,6 @@
 <template>
   <div style="max-height: 100vh" v-if="ready">
-    <NavbarComponent @saveForm="save"/>
+    <NavbarComponent @saveForm="save" v-on:go-setup-page="goSetupPage"/>
     <div
       id="app"
       style="min-height: 600px; height: 95vh"
@@ -20,7 +20,21 @@ import ConfigMenu from "./Toolbox/ConfigMenu/ConfigMenu.vue";
 import FieldsMenu from "./Toolbox/FieldsMenu/FieldsMenu.vue";
 
 export default {
-  name: "FormBuilder",
+  name: "FormBuilderUi",
+  props: {
+    baseUrl: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    mode: {
+      type: String,
+      required: true
+    },
+  },
   components: {
     FormComponent,
     NavbarComponent,
@@ -29,13 +43,11 @@ export default {
   },
   data: () => ({
     entitySelected: [],
-    id: "",
     ready: false,
     editMode: false
   }),
   created: function () {},
   mounted: async function () {
-    this.id = this.$route.params.id;
     this.editMode = this.mode === "edit";
 
     if (!this.entityOptions) {
@@ -46,6 +58,8 @@ export default {
     this.entitySelected = this.entityOptions.find(
       (option) => option.id === this.id
     );
+
+    this.$store.dispatch("api/setUrlBase", this.baseUrl);
 
     await this.$store.dispatch("api/fetchRowsConfig");
     await this.$store.dispatch("api/fetchSectionConfig");
@@ -102,13 +116,10 @@ export default {
         this.id = this.$store.state.form.form.local_entity_data["id"];
         this.$router.push({ name: "edit", params: { id: this.id } });
       }
-    }
-  },
-  props: {
-    mode: {
-      type: String,
-      required: true,
     },
+    goSetupPage() {
+      this.$emit('go-setup-page');
+    }
   },
 };
 </script>

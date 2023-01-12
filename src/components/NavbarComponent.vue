@@ -1,5 +1,12 @@
 <template>
   <b-navbar type="dark" variant="dark" class="justify-content-center w-100">
+    <b-navbar-nav style="right: 92%; transform: translateX(-99%); position: fixed">
+      <b-button
+        v-on:click="$emit('go-setup-page')"
+        class="btn btn-secondary text-white">
+        Volver
+      </b-button>
+    </b-navbar-nav>
     <b-navbar-nav>
       <b-button
         class="btn m-1"
@@ -52,7 +59,7 @@
       >
       </b-spinner>
       <b-button
-        class="btn btn-success text-white"
+        class="btn btn-primary text-white"
         v-b-modal="`modal-guardar-formulario`"
         >Guardar</b-button
       >

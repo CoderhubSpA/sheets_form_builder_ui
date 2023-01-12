@@ -1,18 +1,39 @@
 <template>
-  <router-view></router-view>
+  <div>
+    <Setup
+      v-if="!id"
+      base-url="http://sheets.local/api/"
+      v-on:entity-and-mode="entityAndMode"
+    />
+    <FormBuilderUi
+      v-if="id"
+      :id="id"
+      :mode="mode"
+      base-url="http://sheets.local/api/"
+      v-on:go-setup-page="id = ''"
+    />
+  </div>
 </template>
 
 <script>
-import FormBuilder from "./components/FormBuilder.vue";
+import Setup from "./components/Setup.vue";
+import FormBuilderUi from './components/FormBuilderUi.vue';
 
 export default {
-  name: "App",
+  name: "form-builder-ui",
   components: {
-    FormBuilder,
+    Setup: Setup,
+    FormBuilderUi: FormBuilderUi
   },
-  data: () => ({}),
-  created: function () {},
-  mounted: function () {},
-  methods: {},
+  data: () => ({
+    id: '',
+    mode: ''
+  }),
+  methods: {
+    entityAndMode(entityAndMode) {
+      this.id = entityAndMode.entityId || entityAndMode.formId;
+      this.mode = entityAndMode.mode;
+    }
+  }
 };
 </script>
