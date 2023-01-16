@@ -196,8 +196,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchFormConfig(context) {
-    return await axios.get(context.getters.formConfigURL).then((response) => {
+  fetchFormConfig(context) {
+    return axios.get(context.getters.formConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_FORM_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -212,8 +212,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchActionsConfig(context) {
-    return await axios.get(context.getters.actionsConfigURL).then((response) => {
+  fetchActionsConfig(context) {
+    return axios.get(context.getters.actionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_ACTIONS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -228,8 +228,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchRowsConfig(context) {
-    return await axios.get(context.getters.rowsConfigURL).then((response) => {
+  fetchRowsConfig(context) {
+    return axios.get(context.getters.rowsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_ROWS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -244,8 +244,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchSectionConfig(context) {
-    return await axios.get(context.getters.sectionsConfigURL).then((response) => {
+  fetchSectionConfig(context) {
+    return axios.get(context.getters.sectionsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_SECTIONS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -260,8 +260,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchFieldsConfig(context) {
-    return await axios.get(context.getters.fieldsConfigURL).then((response) => {
+  fetchFieldsConfig(context) {
+    return axios.get(context.getters.fieldsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_FIELDS_CONFIG", config_columns);
       let config_select = retrieveConfigurationsOptions(
@@ -276,8 +276,8 @@ const actions = {
    * @param context
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchDocumentsConfig(context) {
-    return await axios.get(context.getters.documentsConfigURL).then((response) => {
+  fetchDocumentsConfig(context) {
+    return axios.get(context.getters.documentsConfigURL).then((response) => {
       let config_columns = response.data.content.columns;
       context.commit("SET_DOCUMENTS_CONFIG", config_columns);
     });
@@ -288,8 +288,8 @@ const actions = {
    * @param entity_id id of the form's entity-type
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchFields(context, entity_id) {
-    return await axios
+  fetchFields(context, entity_id) {
+    return axios
       .get(state.url.base + state.url.info + entity_id)
       .then((response) => {
         let fields = [];
@@ -340,8 +340,8 @@ const actions = {
    * @param getters
    * @returns {Promise<AxiosResponse<any>>}
    */
-  async fetchFormList({ state, getters }) {
-    return await axios
+  fetchFormList({ state, getters }) {
+    return axios
       .get(getters.formDataURL, state.axios_no_cache_config)
       .then((response) => {
         let form_options = [];
@@ -370,19 +370,19 @@ const actions = {
    * @param form_id
    * @returns {Promise<any>}
    */
-  async fetchForm(context, form_id) {
+  fetchForm(context, form_id) {
     // Fetch the form and all of its content
     let form, rows, sections, fields, actions;
     let requests = [
       // Form
-      await axios
+      axios
         .get(context.getters.formDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           form = response.data.content.data.find((form) => form.id === form_id);
           parseJSONValues(form);
         }),
       // Rows
-      await axios
+      axios
         .get(context.getters.rowsDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           let form_id_config = context.state.rows_config.find(
@@ -394,7 +394,7 @@ const actions = {
           parseJSONValues(rows);
         }),
       // Sections
-      await axios
+      axios
         .get(
           context.getters.sectionsDataURL,
           context.state.axios_no_cache_config
@@ -409,7 +409,7 @@ const actions = {
           parseJSONValues(sections);
         }),
       // Fields
-      await axios
+      axios
         .get(context.getters.fieldsDataURL, context.state.axios_no_cache_config)
         .then((response) => {
           let form_id_config = context.state.fields_config.find(
@@ -421,7 +421,7 @@ const actions = {
           parseJSONValues(fields);
         }),
       // Actions
-      await axios
+      axios
         .get(
           context.getters.actionsDataURL,
           context.state.axios_no_cache_config
@@ -437,7 +437,7 @@ const actions = {
     ];
 
     // Calls to fetch the form's possible fields, and then calls for loading the form with all the info
-    return await Promise.all(requests)
+    return Promise.all(requests)
       .then(() =>
         context.dispatch(
           "fetchFields",
