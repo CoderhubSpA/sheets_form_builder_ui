@@ -80,10 +80,11 @@ export default {
   },
   methods: {
     editForm() {
-      if (this.selectedFormId)
+      if (this.selectedFormId) {
         this.$store
           .dispatch("api/fetchForm", this.selectedFormId)
           .then(this.$bvModal.hide("setup-modal"));
+      }
     },
     removeAccents(str) {
       return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");

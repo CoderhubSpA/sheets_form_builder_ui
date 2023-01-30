@@ -62,7 +62,7 @@ const state = {
   },
   url: {
     base: "",
-    preview_base: "https://formbuilderui.appstart.cl/internal_form/",
+    preview_base: "internal_form/",
     info: "entity/info/",
     data: "entity/data/",
     records: "sheets/getrecord/form/",

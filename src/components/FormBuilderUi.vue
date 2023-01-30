@@ -50,6 +50,8 @@ export default {
   mounted: async function () {
     this.editMode = this.mode === "edit";
 
+    this.$store.dispatch("api/setUrlBase", this.baseUrl);
+
     if (!this.entityOptions) {
       await this.$store.dispatch("api/fetchFormConfig");
       await this.$store.dispatch("api/fetchFormList");
@@ -58,8 +60,6 @@ export default {
     this.entitySelected = this.entityOptions.find(
       (option) => option.id === this.id
     );
-
-    this.$store.dispatch("api/setUrlBase", this.baseUrl);
 
     await this.$store.dispatch("api/fetchRowsConfig");
     await this.$store.dispatch("api/fetchSectionConfig");
@@ -114,7 +114,6 @@ export default {
       if (!this.editMode) {
         this.editMode = true;
         this.id = this.$store.state.form.form.local_entity_data["id"];
-        this.$router.push({ name: "edit", params: { id: this.id } });
       }
     },
     goSetupPage() {
