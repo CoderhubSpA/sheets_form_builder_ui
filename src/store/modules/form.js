@@ -130,7 +130,7 @@ const mutations = {
     state.form.config_values = payload.config_values;
     state.form.local_entity_data = payload.local_entity_data;
     state.form.unfilled_required_values = payload.unfilled_required_values;
-    state.form.is_loaded = true;
+    state.form.is_loaded = false;
   },
   SET_FORM_LOCAL_ENTITY_DATA(state, payload) {
     state.form.local_entity_data = payload;
@@ -171,6 +171,9 @@ const mutations = {
       payload.fieldIdx
     ].unfilled_required_values = payload.data;
   },
+  SET_IS_LOADED(state, payload){
+    state.form.is_loaded = payload;
+  }
 };
 
 const actions = {
@@ -203,6 +206,8 @@ const actions = {
       local_entity_data: {},
       unfilled_required_values: 0,
     });
+
+    context.commit("SET_IS_LOADED", true);
   },
   /**
    * Loads a form, instead of creating a new one.
@@ -328,7 +333,7 @@ const actions = {
                   api_field.name ===
                   field_config_values[
                     api_state.fields_config.find(
-                      (config) => config.name === "Columna"
+                      (config) => config.col_name === "column_id"
                     ).id
                   ].name
               );
@@ -338,7 +343,7 @@ const actions = {
                   "Possible duplicated field in the form. Column: " +
                     field_config_values[
                       api_state.fields_config.find(
-                        (config) => config.name === "Columna"
+                        (config) => config.col_name === "column_id"
                       ).id
                     ].name
                 );
@@ -429,6 +434,7 @@ const actions = {
       local_entity_data: form,
       unfilled_required_values: 0,
     });
+    context.commit("SET_IS_LOADED", true);
   },
   /**
    * Updates `form.actions` using the actions selected in `form.config_values`

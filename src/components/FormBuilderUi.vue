@@ -52,6 +52,10 @@ export default {
 
     this.$store.dispatch("api/setUrlBase", this.baseUrl);
 
+    const previewUrl = `${window.location.origin}/internal_form/`
+
+    this.$store.dispatch("api/setPreviewUrl", previewUrl);
+
     if (!this.entityOptions) {
       await this.$store.dispatch("api/fetchFormConfig");
       await this.$store.dispatch("api/fetchFormList");

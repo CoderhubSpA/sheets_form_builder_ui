@@ -62,7 +62,7 @@ const state = {
   },
   url: {
     base: "",
-    preview_base: "internal_form/",
+    preview_base: "",
     info: "entity/info/",
     data: "entity/data/",
     records: "sheets/getrecord/form/",
@@ -187,6 +187,9 @@ const mutations = {
   },
   SET_URL_BASE(state, url) {
     state.url.base = url;
+  },
+  SET_PREVIEW_URL(state, url) {
+    state.url.preview_base = url;
   },
 };
 
@@ -443,7 +446,7 @@ const actions = {
           "fetchFields",
           form[
             context.state.form_config.find(
-              (config) => config.name === "Tipo de Entidad"
+              (config) => config.col_name === "entity_type_id"
             ).id
           ]
         )
@@ -758,20 +761,20 @@ const actions = {
             // Associate the field with the created section and form
             field.local_entity_data[
               state.fields_config.find(
-                (config) => config.name === "Sección formulario"
+                (config) => config.col_name === "form_section_id"
               ).id
             ] = field.config_values[
               state.fields_config.find(
-                (config) => config.name === "Sección formulario"
+                (config) => config.col_name === "form_section_id"
               ).id
             ] = section_id;
             field.local_entity_data[
               state.fields_config.find(
-                (config) => config.name === "Formulario"
+                (config) => config.col_name === "form_id"
               ).id
             ] = field.config_values[
               state.fields_config.find(
-                (config) => config.name === "Formulario"
+                (config) => config.col_name === "form_id"
               ).id
             ] = form_id;
           }
@@ -793,12 +796,12 @@ const actions = {
                   let field_id = _postResponse.data.content.inserted_id;
                   field.config_values[
                     state.fields_config.find(
-                      (config) => config.name === "id"
+                      (config) => config.col_name === "id"
                     ).id
                   ] =
                     field.local_entity_data[
                       state.fields_config.find(
-                        (config) => config.name === "id"
+                        (config) => config.col_name === "id"
                       ).id
                     ] =
                     field.local_entity_data["id"] =
@@ -879,7 +882,7 @@ const actions = {
       this._vm.$toasted.success("Formulario guardado!");
       state.status.msg = "";
       state.status.submitting = false;
-      state.status.form_url = state.url.preview_base + form_id;
+      //state.status.form_url = state.url.base + '/' + state.url.preview_base + form_id;
     } catch (e) {
       this._vm.$toasted.error("Error al guardar formulario!");
       state.status.submitting = false;
@@ -912,6 +915,9 @@ const actions = {
   setUrlBase(context, url) {
     context.commit("SET_URL_BASE", url);
   },
+  setPreviewUrl(context, url) {
+    context.commit("SET_PREVIEW_URL", url);
+  }
 };
 
 export default {
