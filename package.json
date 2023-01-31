@@ -1,6 +1,7 @@
 {
-  "name": "form-builder-ui",
+  "name": "@paupololi/sheets_form_builder_ui",
   "version": "1.0.0",
+  "author": "Coderhub",
   "type": "module",
   "files": [
     "dist"
