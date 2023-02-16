@@ -58,5 +58,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paupololi/sheets_form_builder_ui.git"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/paupololi/sheets_form_builder_ui/issues"
+  },
+  "homepage": "https://github.com/paupololi/sheets_form_builder_ui#readme"
 }
