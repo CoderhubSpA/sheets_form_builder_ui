@@ -54,5 +54,9 @@
     "sass-loader": "^13.1.0",
     "terser": "^5.14.2",
     "vite": "^3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paupololi/sheets_form_builder_ui.git"
   }
 }
