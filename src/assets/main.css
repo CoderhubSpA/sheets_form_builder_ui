@@ -346,9 +346,6 @@
   position: relative;
   transition: all 0.3s ease;
 }
-body {
-  overflow: hidden;
-}
 
 .transparent-border {
   border-color: transparent;
