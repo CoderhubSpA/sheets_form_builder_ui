@@ -2,7 +2,7 @@
   <div style="max-height: 100vh" v-if="ready">
     <NavbarComponent @saveForm="save" v-on:go-setup-page="goSetupPage"/>
     <div
-      id="app"
+      id="form-builder-ui-wrapper"
       style="min-height: 600px; height: 95vh"
       class="d-flex flex-row"
     >
@@ -126,3 +126,11 @@ export default {
   },
 };
 </script>
+<style lang="sass" scoped>
+  @import 'bootstrap/scss/bootstrap.scss'
+  @import "vue-custom-range-slider/dist/vue-custom-range-slider.css"
+  @import '../assets/base.scss'
+  @import '../assets/main.scss'
+  @import '../assets/multiselect.scss'
+  @import 'bootstrap-vue/dist/bootstrap-vue.css'
+</style>

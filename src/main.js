@@ -11,13 +11,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCircleInfo, faXmark, faGear, faCircleXmark, faEye } from "@fortawesome/free-solid-svg-icons";
 
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-import "vue-custom-range-slider/dist/vue-custom-range-slider.css";
-import "./assets/main.css";
 import "./assets/bootstrap-colors.scss";
-import "./assets/multiselect.scss";
 
 library.add(faCircleInfo, faXmark, faGear, faCircleXmark, faEye);
 

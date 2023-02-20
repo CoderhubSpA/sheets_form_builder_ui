@@ -1,0 +1,352 @@
+#form-builder-ui-wrapper {
+
+  :deep(.field-component) {
+    margin-bottom: 15px;
+    background-color: var(--white);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--gainsboro);
+    border-width: medium;
+    padding: 0 8px 3px 8px;
+  }
+
+  :deep(.selected-field) {
+    border-color: var(--main-color);
+  }
+
+  :deep(.inputs-fields) {
+    border-style: solid;
+    border-width: thin;
+    border-color: var(--border-dotted) !important;
+  }
+
+  :deep(.border-dotted) {
+    border-style: dotted;
+    border-color: var(--border-dotted);
+  }
+
+  :deep(.flex) {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+  }
+
+  :deep(.ghost) {
+    display: none;
+  }
+
+  :deep(.area) {
+    position: relative;
+  }
+
+  :deep(.config) {
+    display: none;
+    position: absolute;
+    top: -26px;
+    right: 14px;
+    border-radius: 10em;
+    padding: 0px 6px 0px;
+    background: #079a90;
+    border: 2px solid var(--white);
+    color: var(--white);
+  }
+  :deep(.remove) {
+    display: none;
+    position: absolute;
+    top: -20px;
+    right: -27px;
+    border: none;
+    background: transparent;
+  }
+
+  :deep(.drop-zone) {
+    background-color: #85dbe1;
+  }
+
+  :deep(.required) {
+    color: red;
+  }
+
+  :deep(.info-icon-field) {
+    margin-top: 0.8%;
+    margin-left: 0.3%;
+    color: var(--dark-2);
+  }
+
+  :deep(.info-icon-section) {
+    margin-top: 1.2%;
+    margin-left: 0.3%;
+    color: var(--dark-2);
+  }
+
+  :deep(.url-style) {
+    font-size: 10px;
+    color: #3490dc;
+    padding: 5px;
+  }
+
+  :deep(.section-component) {
+    max-width: 100%;
+    min-width: 25%;
+  }
+
+  :deep(.selected-element) {
+    border-style: solid;
+    border-width: medium;
+    border-color: var(--main-color);
+  }
+
+  :deep(.btn-circle.btn-xl) {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  :deep(.btn-circle.btn-lg) {
+    width: 58px;
+    height: 58px;
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  :deep(.btn-circle.btn-md) {
+    width: 50px;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 25px;
+    font-size: 10px;
+    text-align: center;
+  }
+
+  :deep(.btn-circle.btn-sm) {
+    width: 40px;
+    height: 40px;
+    padding: 6px 0px;
+    border-radius: 20px;
+    font-size: 8px;
+    text-align: center;
+  }
+
+  :deep(.row-normal-text-size) {
+    font-size: 16px;
+  }
+
+  :deep(.row-medium-text-size) {
+    font-size: 14px;
+  }
+
+  :deep(.row-small-text-size) {
+    font-size: 12px;
+  }
+
+  :deep(.row-name-input) {
+    color: var(--row-name) !important;
+    font-size: 1.2rem !important;
+  }
+
+  :deep(.section-normal-text-size) {
+    font-size: 15px;
+  }
+
+  :deep(.section-medium-text-size) {
+    font-size: 13px;
+  }
+
+  :deep(.section-small-text-size) {
+    font-size: 11px;
+  }
+
+  :deep(.section-name-input) {
+    color: var(--section-name) !important;
+    font-size: 1.125rem !important;
+  }
+
+  :deep(.field-name-input) {
+    color: var(--field-name);
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  :deep(.form-name-input) {
+    color: var(--field-name) !important;
+    font: inherit !important;
+  }
+
+  :deep(.custom-icon) {
+    fill: var(--white);
+  }
+
+  :deep(.moving-element) {
+    opacity: 0.5;
+    background: var(--white);
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+  }
+
+  .cursor-move,
+  :deep(.cursor-move:hover) {
+    cursor: move;
+  }
+
+  :deep(.shadow-section) {
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+  }
+
+  :deep(.border-0) {
+    background: transparent !important;
+  }
+
+  :deep(.border-0:hover) {
+    border: 1px solid !important;
+  }
+
+  :deep(.close) {
+    cursor: pointer;
+    top: 23%;
+    color: var(--pink);
+    border: none;
+    background: none;
+    opacity: 0.8;
+    margin-left: 1%;
+    margin-top: 1.4%;
+  }
+
+  :deep(.close:hover) {
+    color: var(--red);
+    opacity: 1;
+  }
+
+  :deep(.close-button) {
+    border: none;
+    background: transparent;
+  }
+
+  :deep(.close-button-section) {
+    border-radius: 50% !important;
+    padding: 0.5em;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: var(--pink);
+    opacity: 0.8;
+    color: white;
+    position: absolute;
+    top: -24px;
+    right: -19px;
+    margin-top: 3px;
+  }
+
+  :deep(.close-button-section:hover) {
+    background-color: var(--red);
+  }
+
+  :deep(.xmark-delete-section) {
+    position: relative;
+    top: -10px;
+    right: 1.5px;
+  }
+
+  :deep(.delete-search) {
+    opacity: 0.6;
+  }
+
+  :deep(.delete-search:hover) {
+    opacity: 1;
+  }
+
+  :deep(.select-form-edit-button) {
+    position: relative;
+    top: 6px;
+  }
+  :deep(.slider) {
+    margin-top: 1em !important;
+    margin-bottom: 0 !important;
+  }
+
+  :deep(.custom-side-menu) {
+    width: 20%;
+    max-width: 20%;
+    height: 100%;
+    max-height: 100%;
+    position: absolute;
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+  }
+
+  :deep(.show-fields-menu) {
+    left: 0;
+  }
+  :deep(.hide-fields-menu) {
+    left: -18%;
+  }
+  :deep(.show-config-menu) {
+    right: 0;
+  }
+  :deep(.hide-config-menu) {
+    right: -18%;
+  }
+  :deep(.show-fields-form-component) {
+    width: 78%;
+    left: 20%;
+    right: 2%;
+  }
+  :deep(.show-config-form-component) {
+    width: 78%;
+    left: 2%;
+    right: 20%;
+  }
+  :deep(.show-both-menus-form-component) {
+    width: 60%;
+    left: 20%;
+    right: 20%;
+  }
+  :deep(.hide-both-menus-form-component) {
+    width: 96%;
+    left: 2%;
+    right: 2%;
+  }
+  :deep(.field-menu-component) {
+    color: var(--black);
+    padding: 5px 10px;
+    cursor: pointer;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
+  :deep(.custom-form-component) {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  :deep(.transparent-border) {
+    border-color: transparent;
+  }
+
+  :deep(.transparent-input) {
+    background-color: transparent;
+  }
+
+  :deep(.drag-message) {
+    font-size: 14px;
+    text-align: center;
+    color: #9f9e9e;
+    font-style: italic;
+    padding-top: 8px;
+  }
+
+  :deep(.font-button-setup-form) {
+    color: var(--white) !important;
+  }
+
+  :deep(.label-menus) {
+    color: var(--label-menu);
+    font-size: 16pt;
+    writing-mode: vertical-rl;
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="min-height: 600px; height: 95vh" class="d-flex flex-row">
+  <div id="app-form-builder-ui" style="min-height: 600px; height: 95vh" class="d-flex flex-row">
     <SetupModalComponent
       v-on:entity-and-mode="entityAndMode"
     />

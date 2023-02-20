@@ -1,6 +1,6 @@
 <template>
-  <b-navbar type="dark" variant="dark" class="justify-content-center w-100">
-    <b-navbar-nav style="right: 92%; transform: translateX(-99%); position: fixed">
+  <b-navbar type="dark" variant="dark" class="d-flex justify-content-between w-100">
+    <b-navbar-nav class="ms-2">
       <b-button
         v-on:click="$emit('go-setup-page')"
         class="btn btn-secondary text-white">
@@ -30,9 +30,7 @@
         <v-icon class="custom-icon" name="mobile"></v-icon>
       </b-button>
     </b-navbar-nav>
-    <b-navbar-nav
-      style="left: 99%; transform: translateX(-99%); position: fixed"
-    >
+    <b-navbar-nav class="me-2">
       <b-button
         v-if="($store.state.api.status.form_url && !$store.state.api.status.submitting)"
         class="btn btn-primary m-1"
