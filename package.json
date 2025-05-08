@@ -1,7 +1,7 @@
 {
-  "name": "@paupololi/sheets_form_builder_ui",
-  "version": "1.0.3",
-  "author": "Coderhub",
+  "name": "coderhubspa_sheets_form_builder_ui",
+  "version": "1.0.5",
+  "author": "CoderhubSpA",
   "type": "module",
   "files": [
     "dist"
@@ -57,10 +57,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paupololi/sheets_form_builder_ui.git"
+    "url": "git+https://github.com/CoderhubSpA/sheets_form_builder_ui.git"
   },
   "bugs": {
-    "url": "https://github.com/paupololi/sheets_form_builder_ui/issues"
+    "url": "https://github.com/CoderhubSpA/sheets_form_builder_ui/issues"
   },
-  "homepage": "https://github.com/paupololi/sheets_form_builder_ui#readme"
+  "homepage": "https://github.com/CoderhubSpA/sheets_form_builder_ui#readme"
 }
