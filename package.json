@@ -34,7 +34,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.3",
     "bootstrap-vue": "^2.22.0",
-    "vue": "^2.7.10",
+    "vue": "^3.0.0",
     "vue-awesome": "^4.5.0",
     "vue-axios": "^3.4.1",
     "vue-custom-range-slider": "^0.2.3",
